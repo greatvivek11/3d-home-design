@@ -1,6 +1,8 @@
 # Implementation Plan and Acceptance Criteria
 
-## M0 — Environment and repository foundation
+The copy-ready Codex prompts live in [tasks/README.md](tasks/README.md). Execute one milestone at a time and review its artifacts before continuing.
+
+## M0 — Environment and repository foundation ([Codex task](tasks/00-foundation.md))
 
 - Inspect macOS, Blender, Python, Git, Node.js and npm versions before installing anything.
 - Document reproducible setup and commands.
@@ -8,9 +10,9 @@
 - Generate a minimal editable Blender scene and preview render.
 - Add tests for schema validation and unit conversion.
 
-**Exit criteria:** clean setup docs, passing tests, a saved .blend, and a preview render.
+**Exit criteria:** clean setup docs, passing tests, a saved .blend, and a preview render or a documented environment blocker.
 
-## M1 — 2D layout solver and review
+## M1 — 2D layout solver and review ([Codex task](tasks/01-floorplan-layout.md))
 
 - Confirm site inputs or explicitly leave them unresolved.
 - Create explicit room rectangles and coordinate system.
@@ -20,7 +22,7 @@
 
 **Exit criteria:** floor-plan study and conflict report are reviewable before detailed 3D work. Do not call it code-compliant.
 
-## M2 — Architectural shell
+## M2 — Architectural shell ([Codex task](tasks/02-blender-architecture.md))
 
 - Generate slabs, walls, true openings, windows, doors, stairs, roof and optional balcony.
 - Use stable identifiers and named collections for floors and rooms.
@@ -28,16 +30,16 @@
 
 **Exit criteria:** aligned, editable two-floor .blend with geometry checks.
 
-## M3 — Materials, furniture and rendering
+## M3 — Materials, furniture and rendering ([Codex task](tasks/03-visualization-rendering.md))
 
 - Add reusable minimalist materials and furniture/fixture assets.
 - Use Eevee for previews and Cycles for final stills.
-- Produce exterior, interior and cutaway images.
+- Produce exterior, interior and cutaway renders.
 - Check furniture clearances and camera composition.
 
 **Exit criteria:** coherent visual render set and reproducible render command.
 
-## M4 — GLB export and web walkthrough
+## M4 — GLB export and web walkthrough ([Codex task](tasks/04-web-walkthrough.md))
 
 - Export a compact GLB with usable object/floor/room identity.
 - Add React + TypeScript + Vite + React Three Fiber + Drei frontend.
@@ -47,7 +49,7 @@
 
 **Exit criteria:** browser model loads and first-person movement avoids obvious wall penetration and stair traps.
 
-## M5 — GitHub and Vercel publication
+## M5 — GitHub and Vercel publication ([Codex task](tasks/05-deploy-portfolio.md))
 
 - Keep source/spec/docs in Git; avoid committing transient renders and caches.
 - Consider Git LFS for large .blend files and assets.
