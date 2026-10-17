@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Blender
+*.blend1
+*.blend2
+*.blend@*
+*.tmp
+
+# Generated artifacts
+output/
+renders/
+*.png
+*.jpg
+*.jpeg
+*.exr
+*.mp4
+
+# Web tooling
+node_modules/
+web/dist/
+web/.vite/
+
+# Local/editor files
+.DS_Store
+.vscode/
+.idea/
+.env
+.env.*
+!.env.example
