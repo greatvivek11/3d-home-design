@@ -1,0 +1,84 @@
+{
+  "project": {
+    "name": "Dream Home",
+    "version": 1,
+    "status": "concept",
+    "input_units": "ft",
+    "internal_units": "m",
+    "architectural_style": "modern_minimalist",
+    "primary_goal": "visualization",
+    "design_type": "independent_house"
+  },
+  "site": {
+    "width": 30,
+    "depth": 50,
+    "dimensions_confirmed": false,
+    "front_orientation": null,
+    "road_width": null,
+    "jurisdiction": null,
+    "setbacks": {
+      "front": null,
+      "rear": null,
+      "left": null,
+      "right": null,
+      "status": "requires_verification"
+    },
+    "buildable_envelope_status": "unresolved"
+  },
+  "building": {
+    "storeys": 2,
+    "floor_names": ["ground", "first"],
+    "floor_to_floor_height": 10,
+    "exterior_wall_thickness": 0.75,
+    "interior_wall_thickness": 0.375,
+    "dimensions_are_provisional": true,
+    "structural_design": "not_in_scope"
+  },
+  "style": {
+    "palette": ["warm_white", "light_oak", "light_stone", "charcoal_accents"],
+    "roof_style": "flat_conceptual",
+    "rendering": {
+      "preview_engine": "BLENDER_EEVEE",
+      "final_engine": "CYCLES"
+    }
+  },
+  "parking": {
+    "car_count": 1,
+    "clear_width": 9,
+    "clear_length": 16,
+    "dimensions_provisional": true
+  },
+  "floors": [
+    {
+      "id": "ground",
+      "level": 0,
+      "rooms": [
+        {"id": "living", "name": "Living Room", "target_width": 11, "target_depth": 14, "required": true},
+        {"id": "dining", "name": "Dining", "target_width": 9, "target_depth": 10, "required": true},
+        {"id": "kitchen", "name": "Kitchen", "target_width": 9, "target_depth": 10, "required": true},
+        {"id": "bedroom_1", "name": "Ground Floor Bedroom", "target_width": 10, "target_depth": 12, "required": true}
+      ],
+      "additional_requirements": ["bathroom", "staircase", "utility", "circulation", "entrance"]
+    },
+    {
+      "id": "first",
+      "level": 1,
+      "rooms": [
+        {"id": "primary_bedroom", "name": "Primary Bedroom", "target_width": 12, "target_depth": 13, "required": true},
+        {"id": "bedroom_3", "name": "Bedroom 3", "target_width": 10, "target_depth": 12, "required": true},
+        {"id": "bedroom_4", "name": "Bedroom 4", "target_width": 10, "target_depth": 11, "required": true}
+      ],
+      "additional_requirements": ["bathrooms", "stair_landing", "wardrobes", "optional_balcony"]
+    }
+  ],
+  "web": {
+    "export_format": "glb",
+    "frontend": "react",
+    "language": "typescript",
+    "bundler": "vite",
+    "renderer": "react-three-fiber",
+    "walkthrough": true,
+    "collision_detection": true,
+    "floor_visibility_controls": true
+  }
+}
