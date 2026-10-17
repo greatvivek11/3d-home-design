@@ -1,0 +1,25 @@
+{
+  "blender": "5.2.2 LTS",
+  "blend": "dream-home-study.blend",
+  "blend_bytes": 4291253,
+  "visual_quality": "refined-01",
+  "layout_sha256": "784ae6fe54e51c9d338fd7c2275b38cdc8e5f7ae961ff85c4815026e12f3f098",
+  "brief_sha256": "40257587e167234d247ab185b8ce549c0329220c789706f1e1039e425d1993b3",
+  "locked_fixtures_checked": 99,
+  "packed_finish_maps": 20,
+  "opening_scene": "07 - All four plans side by side",
+  "render_scenes": {
+    "overview": "01 - Garden and ground overview",
+    "ground": "02 - Ground plan",
+    "basement": "03 - Basement plan",
+    "first": "04 - First-floor plan",
+    "roof": "05 - Roof terrace plan",
+    "all-floors": "07 - All four plans side by side",
+    "living-detail": "08 - Living and kitchen detail",
+    "office-detail": "09 - Office detail",
+    "bedroom-detail": "10 - Bedroom detail"
+  },
+  "renders": [],
+  "geometry_status": "PASS",
+  "overall_status": "NEEDS REVIEW"
+}

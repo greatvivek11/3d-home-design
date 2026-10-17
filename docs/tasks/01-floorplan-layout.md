@@ -8,33 +8,37 @@ Read house-spec/house.json, docs/room-schedule.md, docs/validation-rules.md, doc
 
 ## Goal
 
-Create editable, dimensioned 2D layout studies for both floors and a clear report explaining whether the provisional requirements fit together.
+Create editable, dimensioned 2D layout studies for basement, ground, first, roof and outdoor/access areas, with a clear report explaining whether the user-approved program fits the proposed study site.
 
 ## Site and coordinate rules
 
-- Plot target is 30 ft × 50 ft, still unconfirmed.
+- Initial plot area target is 4,000-5,000 sq ft, flexible upward; 500 sq yd reference equals 4,500 sq ft. Width/depth are unknown. Propose and label a study rectangle rather than treating one as approved.
+- Front/back yard fractions of roughly 20%/30% include associated paths, driveway/ramp and other uses. Connect yards via side paths; do not infer a fixed building footprint or double-count access.
 - Use a local plotting coordinate convention (for example, X across the plot width and Y along its depth). Treat the front edge as a drawing convention only; it does not establish compass direction or road orientation.
-- Setbacks, road width, city/jurisdiction and buildable envelope are unresolved. Do not present the whole plot as the legally buildable envelope.
-- If creating a maximal illustrative study using the entire plot rectangle, label it clearly as a visual feasibility study, not a permit-ready or code-compliant design.
+- Setbacks, road width, jurisdiction, basement permissions, ground conditions and buildable envelopes are unresolved. Do not present the whole plot as legally buildable or assume basement and above-ground envelopes match.
+- Flat, standalone and front-road context may be used only as labeled study assumptions. Do not erase required outdoor space to fit the house. Any feasibility study remains unapproved, not permit-ready or code-compliant.
 - Use metres internally. Show labels and dimensions in feet for review where helpful.
 
 ## Requirements
 
-1. Define a layout data structure with explicit room rectangles, room IDs, floor IDs, doors, windows, stairs and required circulation paths.
-2. Keep target dimensions from house-spec/house.json separate from actual candidate layout dimensions. If a room cannot fit its target, report the conflict instead of silently resizing it.
-3. Generate readable dimensioned 2D plan outputs for both floors. SVG is an acceptable first output because it can be generated without a graphics dependency; PNG is optional.
-4. Show plot bounds, candidate envelope status, room labels, target/actual sizes, dimension strings, doors, windows, stairs and parking target.
-5. Implement geometry checks for invalid or non-finite dimensions, room overlap beyond a documented tolerance, out-of-bounds placements, missing/invalid host walls for openings, parking/access conflicts and basic floor-to-floor stair connectivity.
+1. Define layout data with explicit rooms/zones, stable IDs, floor IDs, furniture/equipment footprints, doors, windows, stairs and circulation. Include site, verandas, balconies, pool/barriers and roof terrace.
+2. Derive proposed sizes from approved furniture/storage/seating and movement requirements, not superseded starter dimensions. Keep proposals separate from the brief's null unknowns. Assign office and laundry exactly once to allowed floors.
+3. Generate readable dimensioned plan outputs for basement, ground, first and roof/site. SVG is an acceptable first output because it can be generated without a graphics dependency; PNG is optional.
+4. Show plot bounds, candidate envelopes/status, labels, proposed sizes, dimension strings, openings, stairs, ramp, full parking/access and allocated outdoor areas.
+5. Check finite/positive dimensions, unintended overlaps, bounds, host walls, furniture use, three-SUV swept paths and independent exits, other vehicle storage, privacy sightlines, bathroom access and basement-to-roof stair connectivity. Flag occupied garage separation, drainage, services and pool/fall safety for professional review.
 6. Distinguish PASS, FAIL and NEEDS REVIEW. An unresolved setback or jurisdiction should produce NEEDS REVIEW and block claims of regulatory compliance.
 7. Add tests for positive cases and intentionally invalid cases.
-8. Produce a candidate layout and report, but do not describe it as approved. Where the four-bedroom target does not fit plausibly, show the conflict and propose explicit alternatives for review.
+8. Produce a candidate layout and report, never an automatically approved plan. If five bedrooms, separate office, full basement functions and gardens do not fit, report conflicts and alternatives including a larger plot. Do not silently cut protected priorities or imply budget feasibility.
+9. Represent the two master toilet cubicles, dual-access guest/receiving bathroom with reviewed privacy design, family toilet, three children's ensuites and basement toilet. Include prayer alcove, pantry, covered verandas and laundry/drying route.
+10. Size the basement from its functions, not a 70-80% plot rule. Account for ramp/openings, potential garden-over-basement constraints, soil/groundwater and tree viability as unresolved review items.
 
 ## Acceptance criteria
 
-- Both floor plans are dimensioned and readable.
+- Basement, ground, first and roof/site plans are dimensioned and readable.
 - Layout data is separate from geometry generation and can be edited without modifying Blender scripts.
 - Geometry validation results are reproducible and covered by tests.
 - All unresolved site constraints are visible in the report.
+- Approved furniture-led functions and flexible-space assignments are traceable; budget and professional-review risks remain visible.
 - No detailed 3D shell work starts until the candidate layout has been reviewed.
 
 ## Report back

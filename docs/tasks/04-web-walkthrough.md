@@ -21,9 +21,9 @@ Build a responsive static web experience where visitors can inspect the house in
 ## Requirements
 
 1. Load the exported GLB with clear loading, error and retry states.
-2. Provide orbit/inspection mode, reset-camera control, roof visibility and per-floor visibility.
+2. Provide orbit/inspection mode, reset-camera control and visibility for site, basement, ground, first and roof. Roof terrace and removable roof/slab geometry must have clear semantics.
 3. Provide a first-person mode with keyboard movement and pointer/mouse look on desktop; show usable on-screen controls or an appropriate fallback on touch devices.
-4. Implement collision-aware movement using simplified collision geometry where practical. The camera must not pass directly through walls. Stairs and floor transitions must be tested to avoid trapping the camera.
+4. Implement collision-aware movement using simplified collision geometry where practical. The camera must not pass through walls or modeled pool/fall boundaries. Test internal basement-to-roof stairs, garden/external basement access and balconies; visibility changes must not trap the camera or break navigation.
 5. Use stable floor/room IDs or documented object naming from Blender for visibility toggles and room selection.
 6. Handle resize, device pixel ratio and reduced graphics capability without excessive GPU cost.
 7. Use sensible model scale, camera height, movement speed and eye-level orientation. Include a way to return to a known spawn point.
@@ -38,6 +38,7 @@ Build a responsive static web experience where visitors can inspect the house in
 - Orbit mode, floor/roof toggles and first-person navigation work.
 - Obvious wall collision and stair connectivity cases are tested manually or automated where feasible.
 - The UI identifies the project as a design visualization, not approved construction documentation.
+- The complete furnished dream is shown, including upstairs, with no implied cost, safety or site-compliance certification.
 
 ## Report back
 
