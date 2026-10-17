@@ -8,7 +8,7 @@ Read the house specification, room schedule, reviewed layout, Blender generation
 
 ## Goal
 
-Create a cohesive modern minimalist visualization while preserving architectural readability and practical furniture clearances.
+Create the complete finished warm, nature-connected modern minimalist visualization while preserving architectural readability and furniture/equipment clearances. This is not a budget-validated construction proposal.
 
 ## Style direction
 
@@ -24,11 +24,13 @@ Create a cohesive modern minimalist visualization while preserving architectural
 2. Add furniture and fixtures using parametric objects or assets with suitable licenses. Prefer simple generated placeholders while getting placement correct; do not download assets with unclear licensing.
 3. Keep object placement data-driven and separate from core wall geometry.
 4. Check furniture bounds against room bounds and flag obvious blocked passages or door swings.
-5. Create useful saved cameras for exterior, living/dining, kitchen, bedroom, stair/landing and cutaway/dollhouse views.
+5. Create useful saved cameras for front/back gardens, exterior/verandas, living/dining, kitchen, master/children's rooms, office, basement recreation/parking, balconies/roof and cutaway/dollhouse views.
 6. Use Eevee for quick previews and Cycles for higher-quality stills when supported by the installed Blender version.
 7. Make render resolution, samples and output paths configurable. Use repeatable commands and keep generated renders outside tracked source unless explicitly chosen for documentation.
 8. Ensure the roof and selected walls can be hidden for interior/cutaway rendering.
 9. Avoid implying physically accurate daylight simulation or construction suitability from the visual render alone.
+10. Furnish all five bedrooms including upstairs, separate office with workstation/shared table/piano, eight-seat dining, mandatory kitchen island, gym/gaming and outdoor/roof seating. Real-world furnishing deferral does not reduce visualization scope.
+11. Render large glazing with appropriate shading/privacy intent, screens and guarding. Keep pool/fall safety and occupied basement separation legible; do not portray these as professionally verified.
 
 ## Acceptance criteria
 

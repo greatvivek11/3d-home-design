@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="1430" viewBox="0 0 980 1430">
+<rect width="100%" height="100%" fill="#faf8f3"/>
+<style>text{font-family:Arial,sans-serif;fill:#263b37}</style>
+<text x="70" y="28" font-size="20" font-weight="bold">DREAM HOME / ROOF / STUDY 003</text>
+<text x="70" y="48" font-size="12">UNAPPROVED CONCEPT - 70 x 100 ft study plot - compass direction unresolved</text>
+<rect x="70" y="70" width="840" height="1200" fill="#eef1e5" stroke="#536a56" stroke-width="1"/>
+<rect x="118" y="430" width="600" height="600" fill="#f2ede1" stroke="#9b9e91" stroke-width="1"/>
+<rect x="604.0" y="784.0" width="108" height="240" fill="#c8c5bb" stroke="#9b9e91" stroke-width="1"/>
+<rect x="130" y="814" width="348" height="204" fill="#d0d4d7" stroke="#9b9e91" stroke-width="1" stroke-dasharray="5 4"/>
+<rect x="130" y="634" width="456" height="168" fill="#eadfcc" stroke="#9b9e91" stroke-width="1" stroke-dasharray="5 4"/>
+<rect x="130" y="442" width="288" height="168" fill="#eadfcc" stroke="#9b9e91" stroke-width="1" stroke-dasharray="5 4"/>
+<rect x="454" y="442" width="252" height="168" fill="#a4bd89" stroke="#9b9e91" stroke-width="1" stroke-dasharray="5 4"/>
+<rect x="154" y="550" width="96" height="36" fill="#8a9a8c" stroke="#68786f" stroke-width="1"/>
+<rect x="202" y="496.0" width="48" height="30.0" fill="#8a9a8c" stroke="#68786f" stroke-width="1"/>
+<rect x="310" y="502" width="36" height="36" fill="#8a9a8c" stroke="#68786f" stroke-width="1"/>
+<rect x="154" y="934" width="120" height="60" fill="#8a9a8c" stroke="#68786f" stroke-width="1"/>
+<rect x="310" y="934" width="120" height="60" fill="#8a9a8c" stroke="#68786f" stroke-width="1"/>
+<rect x="154" y="838" width="120" height="60" fill="#8a9a8c" stroke="#68786f" stroke-width="1"/>
+<rect x="310" y="838" width="120" height="60" fill="#8a9a8c" stroke="#68786f" stroke-width="1"/>
+<rect x="466" y="562" width="60" height="36" fill="#8a9a8c" stroke="#68786f" stroke-width="1"/>
+<rect x="574" y="562" width="60" height="36" fill="#8a9a8c" stroke="#68786f" stroke-width="1"/>
+<rect x="466" y="454" width="60" height="36" fill="#8a9a8c" stroke="#68786f" stroke-width="1"/>
+<rect x="574" y="454" width="60" height="36" fill="#8a9a8c" stroke="#68786f" stroke-width="1"/>
+<line x1="121.0" y1="1027.0" x2="715.0" y2="1027.0" stroke="#46514b" stroke-width="4"/>
+<line x1="601.0" y1="781.0" x2="715.0" y2="781.0" stroke="#46514b" stroke-width="4"/>
+<line x1="121.0" y1="433.0" x2="715.0" y2="433.0" stroke="#46514b" stroke-width="4"/>
+<line x1="121.0" y1="1027.0" x2="121.0" y2="433.0" stroke="#46514b" stroke-width="4"/>
+<line x1="601.0" y1="1027.0" x2="601.0" y2="820.0" stroke="#46514b" stroke-width="4"/>
+<line x1="601.0" y1="784.0" x2="601.0" y2="781.0" stroke="#46514b" stroke-width="4"/>
+<line x1="715.0" y1="1027.0" x2="715.0" y2="433.0" stroke="#46514b" stroke-width="4"/>
+<text x="658.0" y="886.0" text-anchor="middle" font-size="10">Roof stair head</text>
+<text x="658.0" y="898.0" text-anchor="middle" font-size="10">/ landing</text>
+<text x="658.0" y="910.0" text-anchor="middle" font-size="10">9 x 20 ft | 180 sq ft</text>
+<text x="304.0" y="904.0" text-anchor="middle" font-size="10">Solar reserve / service access</text>
+<text x="304.0" y="916.0" text-anchor="middle" font-size="10">29 x 17 ft | 493 sq ft</text>
+<text x="358.0" y="706.0" text-anchor="middle" font-size="10">Open gathering terrace</text>
+<text x="358.0" y="718.0" text-anchor="middle" font-size="10">38 x 14 ft | 532 sq ft</text>
+<text x="274.0" y="514.0" text-anchor="middle" font-size="10">Shaded seating / pergola</text>
+<text x="274.0" y="526.0" text-anchor="middle" font-size="10">24 x 14 ft | 336 sq ft</text>
+<text x="580.0" y="514.0" text-anchor="middle" font-size="10">Planters - not a soil lawn</text>
+<text x="580.0" y="526.0" text-anchor="middle" font-size="10">21 x 14 ft | 294 sq ft</text>
+<line x1="601.0" y1="820.0" x2="601.0" y2="784.0" stroke="#b8753b" stroke-width="2" stroke-dasharray="3 2"/>
+<text x="490.0" y="1325" text-anchor="middle" font-size="14">FRONT / ROAD CONVENTION - 70 ft</text>
+<text x="70" y="1360" font-size="12">All dimensions proposed. L-shaped zones list outer extents and net area excluding enclosed child rooms.</text>
+<text x="70" y="1380" font-size="12">Colored zones: uses. Dark: cutaway walls. Orange: doors. Purple: soft bath/dressing dividers.</text>
+<text x="70" y="1400" font-size="12">NOT a construction plan. See review-report.json for limitations and unresolved checks.</text>
+</svg>

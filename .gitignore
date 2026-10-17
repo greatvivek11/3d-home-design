@@ -26,6 +26,7 @@ renders/
 node_modules/
 web/dist/
 web/.vite/
+web/*.tsbuildinfo
 
 # Local/editor files
 .DS_Store
