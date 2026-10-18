@@ -1,0 +1,3251 @@
+{
+  "id": "study-007",
+  "status": "unapproved_concept",
+  "units": "ft",
+  "description": "Compact 5,000 sq ft study: front-lawn lift with an internal front landing and no external stair link; smaller equal bedrooms/recreation, protected family privacy, pantry fridge and a sampled curved SUV approach",
+  "site": {
+    "width": 60,
+    "depth": 83.33333333333333,
+    "front_depth": 16,
+    "back_start": 64
+  },
+  "wall_thickness": 0.5,
+  "section_height": 3,
+  "floors": [
+    {
+      "id": "basement",
+      "elevation": -8.5,
+      "rise": 10,
+      "envelope": [
+        3.5,
+        2.5,
+        40.5,
+        80.33333333333333
+      ],
+      "stair_entry_edge": "front",
+      "rooms": [
+        {
+          "id": "gym",
+          "name": "Compact gym / equal net recreation",
+          "rect": [
+            4,
+            3,
+            17.615384615384617,
+            13
+          ],
+          "kind": "recreation"
+        },
+        {
+          "id": "tech_cave",
+          "name": "Compact gaming / equal net recreation",
+          "short_label": "Gaming",
+          "rect": [
+            22.115384615384617,
+            3,
+            21.384615384615383,
+            13
+          ],
+          "kind": "recreation"
+        },
+        {
+          "id": "front_passage",
+          "name": "Internal recreation and stair gallery",
+          "short_label": "Recreation gallery",
+          "rect": [
+            4,
+            16.5,
+            30,
+            4
+          ],
+          "kind": "circulation",
+          "open": true,
+          "label": true
+        },
+        {
+          "id": "general_storage",
+          "name": "General / emergency store",
+          "rect": [
+            4,
+            21,
+            10,
+            6
+          ],
+          "kind": "storage"
+        },
+        {
+          "id": "food_storage",
+          "name": "Food / grain reserve / capacity to review",
+          "rect": [
+            14.5,
+            21,
+            10,
+            6
+          ],
+          "kind": "storage"
+        },
+        {
+          "id": "clean_spine",
+          "name": "Protected basement gallery",
+          "short_label": "Basement gallery",
+          "rect": [
+            25,
+            21,
+            9,
+            20
+          ],
+          "kind": "circulation",
+          "open": true,
+          "label": true
+        },
+        {
+          "id": "stairs",
+          "name": "Internal U-stair / front full-floor landing",
+          "short_label": "Stairs",
+          "rect": [
+            34.5,
+            16.5,
+            9,
+            17
+          ],
+          "kind": "stairs"
+        },
+        {
+          "id": "laundry",
+          "name": "Compact clean-side basement laundry",
+          "short_label": "Laundry",
+          "rect": [
+            4,
+            31,
+            14,
+            5
+          ],
+          "kind": "service"
+        },
+        {
+          "id": "laundry_passage",
+          "name": "Clean laundry access",
+          "rect": [
+            4,
+            27.5,
+            20.5,
+            3
+          ],
+          "kind": "circulation",
+          "open": true
+        },
+        {
+          "id": "basement_toilet",
+          "name": "Clean-side basement WC",
+          "rect": [
+            18.5,
+            31,
+            6,
+            5
+          ],
+          "kind": "bathroom"
+        },
+        {
+          "id": "clean_lobby",
+          "name": "Clean-side garage airlock lobby",
+          "short_label": "Airlock lobby",
+          "rect": [
+            25,
+            34,
+            9,
+            7
+          ],
+          "kind": "circulation",
+          "open": true,
+          "label": true
+        },
+        {
+          "id": "lift",
+          "name": "Front-lawn lift / internal stair landing",
+          "short_label": "Front lift",
+          "rect": [
+            36.5,
+            9,
+            7,
+            7
+          ],
+          "kind": "lift",
+          "parent": "tech_cave",
+          "exclude_from_parent": true,
+          "boundary_cutout": true
+        },
+        {
+          "id": "garage_airlock",
+          "name": "Protected two-door garage airlock",
+          "short_label": "Garage airlock",
+          "rect": [
+            34.5,
+            34,
+            9,
+            7
+          ],
+          "kind": "service"
+        },
+        {
+          "id": "garage_access",
+          "name": "Garage-side airlock approach",
+          "rect": [
+            34.5,
+            41.5,
+            9,
+            4
+          ],
+          "kind": "circulation",
+          "open": true
+        },
+        {
+          "id": "garage_side_walk",
+          "name": "Garage pedestrian strip / 3 ft reserve",
+          "rect": [
+            40.5,
+            41.5,
+            3,
+            19.5
+          ],
+          "kind": "circulation",
+          "open": true
+        },
+        {
+          "id": "drive_aisle",
+          "name": "Rear SUV arrival / manoeuvring reserve",
+          "short_label": "Turning aisle",
+          "rect": [
+            4,
+            61.5,
+            39.5,
+            20.83333333333333
+          ],
+          "kind": "circulation",
+          "open": true,
+          "label": true
+        },
+        {
+          "id": "ramp_landing",
+          "name": "Flared curved garage arrival",
+          "rect": [
+            34.5,
+            56.5,
+            9,
+            25
+          ],
+          "kind": "circulation",
+          "open": true
+        },
+        {
+          "id": "vehicle_parking",
+          "name": "Three SUV bays / front of garage only",
+          "short_label": "SUV bays",
+          "rect": [
+            4,
+            41.5,
+            30,
+            19.5
+          ],
+          "kind": "garage",
+          "open": true
+        },
+        {
+          "id": "two_wheelers",
+          "name": "Compact bikes / scooter / cycles",
+          "short_label": "Two-wheelers",
+          "rect": [
+            34.5,
+            46,
+            5.5,
+            10
+          ],
+          "kind": "garage",
+          "open": true
+        }
+      ],
+      "partitions": [
+        {
+          "id": "garage_barrier",
+          "axis": "x",
+          "at": 36.25,
+          "start": 3.75,
+          "end": 24.75,
+          "intended_height": 10,
+          "label": "SEALED GARAGE SEPARATION / CUTAWAY"
+        },
+        {
+          "id": "garage_barrier_return",
+          "axis": "y",
+          "at": 24.75,
+          "start": 36.25,
+          "end": 41.25,
+          "intended_height": 10,
+          "label": "SEALED AIRLOCK RETURN"
+        },
+        {
+          "id": "garage_barrier_core",
+          "axis": "x",
+          "at": 41.25,
+          "start": 24.75,
+          "end": 43.75,
+          "intended_height": 10,
+          "label": "SEALED AIRLOCK BOUNDARY"
+        }
+      ],
+      "air_zones": {
+        "clean": [
+          "gym",
+          "tech_cave",
+          "general_storage",
+          "food_storage",
+          "basement_toilet",
+          "stairs",
+          "front_passage",
+          "clean_spine",
+          "clean_lobby",
+          "laundry",
+          "laundry_passage",
+          "lift"
+        ],
+        "buffer": [
+          "garage_airlock"
+        ],
+        "garage": [
+          "garage_access",
+          "garage_side_walk",
+          "drive_aisle",
+          "ramp_landing",
+          "vehicle_parking",
+          "two_wheelers"
+        ]
+      },
+      "openings": [
+        {
+          "axis": "x",
+          "at": 16.25,
+          "start": 14,
+          "width": 3.5,
+          "connects": [
+            "gym",
+            "front_passage"
+          ]
+        },
+        {
+          "axis": "x",
+          "at": 16.25,
+          "start": 26,
+          "width": 4,
+          "connects": [
+            "tech_cave",
+            "front_passage"
+          ]
+        },
+        {
+          "axis": "x",
+          "at": 20.75,
+          "start": 7,
+          "width": 3,
+          "connects": [
+            "general_storage",
+            "front_passage"
+          ]
+        },
+        {
+          "axis": "x",
+          "at": 20.75,
+          "start": 18,
+          "width": 3,
+          "connects": [
+            "food_storage",
+            "front_passage"
+          ]
+        },
+        {
+          "id": "stair_landing_door",
+          "axis": "y",
+          "at": 34.25,
+          "start": 17,
+          "width": 3,
+          "connects": [
+            "stairs",
+            "front_passage"
+          ]
+        },
+        {
+          "axis": "y",
+          "at": 24.75,
+          "start": 32,
+          "width": 3,
+          "connects": [
+            "basement_toilet",
+            "clean_spine"
+          ]
+        },
+        {
+          "axis": "x",
+          "at": 30.75,
+          "start": 13,
+          "width": 3,
+          "connects": [
+            "laundry",
+            "laundry_passage"
+          ]
+        },
+        {
+          "id": "lift_landing_door",
+          "axis": "x",
+          "at": 16.25,
+          "start": 38,
+          "width": 3,
+          "connects": [
+            "lift",
+            "stairs"
+          ],
+          "kind": "lift_door"
+        },
+        {
+          "id": "airlock_clean_door",
+          "axis": "y",
+          "at": 34.25,
+          "start": 35.5,
+          "width": 3.5,
+          "connects": [
+            "clean_lobby",
+            "garage_airlock"
+          ],
+          "self_closing": true
+        },
+        {
+          "id": "airlock_garage_door",
+          "axis": "x",
+          "at": 41.25,
+          "start": 36.5,
+          "width": 3.5,
+          "connects": [
+            "garage_airlock",
+            "garage_access"
+          ],
+          "self_closing": true
+        },
+        {
+          "id": "garage_ramp_portal",
+          "axis": "y",
+          "at": 43.75,
+          "start": 57,
+          "width": 24,
+          "connects": [
+            "ramp_landing",
+            "outside"
+          ]
+        }
+      ],
+      "furniture": [
+        {
+          "id": "suv_1",
+          "room": "vehicle_parking",
+          "kind": "car",
+          "rect": [
+            4.75,
+            42.5,
+            7.3818897638,
+            17.2244094488
+          ],
+          "height_ft": 7.217847769
+        },
+        {
+          "id": "suv_2",
+          "room": "vehicle_parking",
+          "kind": "car",
+          "rect": [
+            14.75,
+            42.5,
+            7.3818897638,
+            17.2244094488
+          ],
+          "height_ft": 7.217847769
+        },
+        {
+          "id": "suv_3",
+          "room": "vehicle_parking",
+          "kind": "car",
+          "rect": [
+            24.75,
+            42.5,
+            7.3818897638,
+            17.2244094488
+          ],
+          "height_ft": 7.217847769
+        },
+        {
+          "id": "bike_1",
+          "room": "two_wheelers",
+          "kind": "bike",
+          "rect": [
+            35,
+            46.5,
+            2,
+            6
+          ]
+        },
+        {
+          "id": "bike_2",
+          "room": "two_wheelers",
+          "kind": "bike",
+          "rect": [
+            37.5,
+            46.5,
+            2,
+            6
+          ]
+        },
+        {
+          "id": "scooter",
+          "room": "two_wheelers",
+          "kind": "bike",
+          "rect": [
+            34.75,
+            53,
+            5,
+            2.5
+          ],
+          "back_edge": "left"
+        },
+        {
+          "id": "cycle_rack",
+          "room": "two_wheelers",
+          "kind": "shelf",
+          "rect": [
+            34.75,
+            55.5,
+            5,
+            0.5
+          ]
+        },
+        {
+          "id": "ev_charger",
+          "room": "vehicle_parking",
+          "kind": "equipment",
+          "rect": [
+            4.1,
+            42.5,
+            0.5,
+            1
+          ]
+        },
+        {
+          "id": "food_shelves",
+          "room": "food_storage",
+          "kind": "shelf",
+          "rect": [
+            15,
+            21.5,
+            1.5,
+            5
+          ]
+        },
+        {
+          "id": "food_shelves_2",
+          "room": "food_storage",
+          "kind": "shelf",
+          "rect": [
+            22.5,
+            21.5,
+            1.5,
+            5
+          ]
+        },
+        {
+          "id": "storage_shelves",
+          "room": "general_storage",
+          "kind": "shelf",
+          "rect": [
+            4.5,
+            21.5,
+            1.5,
+            5
+          ]
+        },
+        {
+          "id": "storage_shelves_2",
+          "room": "general_storage",
+          "kind": "shelf",
+          "rect": [
+            12,
+            21.5,
+            1.5,
+            5
+          ]
+        },
+        {
+          "id": "washer_dryer",
+          "room": "laundry",
+          "kind": "equipment",
+          "rect": [
+            4.5,
+            31.25,
+            2.5,
+            2.5
+          ]
+        },
+        {
+          "id": "laundry_sink",
+          "room": "laundry",
+          "kind": "basin",
+          "rect": [
+            7.5,
+            31.25,
+            2.5,
+            2
+          ]
+        },
+        {
+          "id": "laundry_folding",
+          "room": "laundry",
+          "kind": "counter",
+          "rect": [
+            10.5,
+            31.25,
+            4,
+            2
+          ]
+        },
+        {
+          "id": "laundry_cleaning_store",
+          "room": "laundry",
+          "kind": "shelf",
+          "rect": [
+            15,
+            31.25,
+            2,
+            1.5
+          ]
+        },
+        {
+          "id": "basement_wc",
+          "room": "basement_toilet",
+          "kind": "toilet",
+          "rect": [
+            18.75,
+            31,
+            2,
+            3
+          ],
+          "back_edge": "front"
+        },
+        {
+          "id": "basement_basin",
+          "room": "basement_toilet",
+          "kind": "basin",
+          "rect": [
+            21.5,
+            31.25,
+            2.5,
+            1.5
+          ]
+        },
+        {
+          "id": "treadmill",
+          "room": "gym",
+          "kind": "equipment",
+          "rect": [
+            4.5,
+            4,
+            3,
+            6
+          ]
+        },
+        {
+          "id": "exercise_cycle",
+          "room": "gym",
+          "kind": "equipment",
+          "rect": [
+            8,
+            4,
+            2.5,
+            4
+          ]
+        },
+        {
+          "id": "weights_bench",
+          "room": "gym",
+          "kind": "equipment",
+          "rect": [
+            12,
+            4,
+            3,
+            6
+          ]
+        },
+        {
+          "id": "weights_rack",
+          "room": "gym",
+          "kind": "shelf",
+          "rect": [
+            16,
+            4,
+            5,
+            2
+          ]
+        },
+        {
+          "id": "yoga_mat",
+          "room": "gym",
+          "kind": "rug",
+          "rect": [
+            5,
+            11,
+            6,
+            3
+          ]
+        },
+        {
+          "id": "gaming_couch",
+          "room": "tech_cave",
+          "kind": "sofa",
+          "rect": [
+            23,
+            4,
+            7,
+            3
+          ]
+        },
+        {
+          "id": "gaming_tv",
+          "room": "tech_cave",
+          "kind": "tv",
+          "rect": [
+            23,
+            14.5,
+            7,
+            0.4
+          ]
+        },
+        {
+          "id": "foosball",
+          "room": "tech_cave",
+          "kind": "game_table",
+          "rect": [
+            31,
+            11,
+            4,
+            2.5
+          ]
+        },
+        {
+          "id": "table_tennis",
+          "room": "tech_cave",
+          "kind": "table_tennis",
+          "rect": [
+            34,
+            3.5,
+            9,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ground",
+      "elevation": 1.5,
+      "rise": 11,
+      "envelope": [
+        3.5,
+        16,
+        40.5,
+        48
+      ],
+      "stair_entry_edge": "front",
+      "annexes": [
+        {
+          "id": "front_lawn_lift",
+          "rect": [
+            36,
+            8.5,
+            8,
+            7.5
+          ]
+        }
+      ],
+      "privacy_observers": [
+        [
+          18,
+          17
+        ],
+        [
+          20.5,
+          20
+        ],
+        [
+          23,
+          24
+        ],
+        [
+          20.5,
+          28
+        ],
+        [
+          23,
+          33
+        ],
+        [
+          23,
+          35.25
+        ]
+      ],
+      "rooms": [
+        {
+          "id": "receiving",
+          "name": "Compact drawing / visitor reception",
+          "short_label": "Drawing",
+          "rect": [
+            4,
+            16.5,
+            13,
+            13
+          ],
+          "kind": "living"
+        },
+        {
+          "id": "entrance_gallery",
+          "name": "Entrance Gallery / single controlled front entry",
+          "short_label": "Entrance gallery",
+          "rect": [
+            17.5,
+            16.5,
+            6,
+            27
+          ],
+          "kind": "circulation",
+          "open": true,
+          "label": true
+        },
+        {
+          "id": "guest_bedroom",
+          "name": "Compact guest bedroom / private ensuite",
+          "short_label": "Guest bedroom",
+          "rect": [
+            4,
+            30,
+            13,
+            12.5
+          ],
+          "kind": "bedroom"
+        },
+        {
+          "id": "guest_bathroom",
+          "name": "Guest private shower ensuite",
+          "short_label": "Guest ensuite",
+          "rect": [
+            11.5,
+            35.5,
+            5.5,
+            7
+          ],
+          "kind": "bathroom",
+          "parent": "guest_bedroom",
+          "exclude_from_parent": true
+        },
+        {
+          "id": "family_toilet",
+          "name": "Shared ground WC / left gallery end",
+          "short_label": "Common WC",
+          "rect": [
+            4,
+            43,
+            5,
+            6
+          ],
+          "kind": "bathroom"
+        },
+        {
+          "id": "cross_passage",
+          "name": "House Gallery / master and common WC",
+          "short_label": "House gallery",
+          "rect": [
+            9.5,
+            44,
+            14,
+            5
+          ],
+          "kind": "circulation",
+          "open": true,
+          "label": true
+        },
+        {
+          "id": "lift_lobby",
+          "name": "Internal Front Gallery / stair landing access",
+          "short_label": "Front gallery",
+          "rect": [
+            24,
+            16.5,
+            10,
+            4
+          ],
+          "kind": "circulation",
+          "open": true,
+          "label": true
+        },
+        {
+          "id": "stairs",
+          "name": "Internal U-stair / front full-floor landing",
+          "short_label": "Stairs",
+          "rect": [
+            34.5,
+            16.5,
+            9,
+            17
+          ],
+          "kind": "stairs"
+        },
+        {
+          "id": "lift",
+          "name": "Front-lawn lift / internal stair landing",
+          "short_label": "Front lift",
+          "rect": [
+            36.5,
+            9,
+            7,
+            7
+          ],
+          "kind": "lift"
+        },
+        {
+          "id": "dining",
+          "name": "Open eight-seat dining / screened from entry",
+          "short_label": "Dining",
+          "rect": [
+            24,
+            21,
+            10,
+            12.5
+          ],
+          "kind": "living",
+          "open": true
+        },
+        {
+          "id": "utility_store",
+          "name": "Household cupboard / right Front Gallery",
+          "short_label": "Utility cupboard",
+          "rect": [
+            28,
+            21,
+            6,
+            2
+          ],
+          "kind": "storage",
+          "parent": "dining",
+          "exclude_from_parent": true
+        },
+        {
+          "id": "family_living",
+          "name": "Open compact family living",
+          "short_label": "Family living",
+          "rect": [
+            24,
+            34,
+            19.5,
+            15
+          ],
+          "kind": "living",
+          "open": true
+        },
+        {
+          "id": "prayer_alcove",
+          "name": "Open prayer corner / clear of entry and WCs",
+          "short_label": "Prayer",
+          "rect": [
+            37.5,
+            34,
+            6,
+            6
+          ],
+          "kind": "prayer",
+          "open": true,
+          "parent": "family_living"
+        },
+        {
+          "id": "master_bedroom",
+          "name": "Compact master / private garden access",
+          "short_label": "Master bedroom",
+          "rect": [
+            4,
+            49.5,
+            14,
+            14
+          ],
+          "kind": "bedroom"
+        },
+        {
+          "id": "master_wardrobe",
+          "name": "Master walk-in dressing",
+          "short_label": "Master dressing",
+          "rect": [
+            18.5,
+            49.5,
+            9.5,
+            6
+          ],
+          "kind": "storage"
+        },
+        {
+          "id": "master_bathroom",
+          "name": "Master bath / single basin and wall-backed WC",
+          "short_label": "Master bath",
+          "rect": [
+            18.5,
+            56,
+            9.5,
+            7.5
+          ],
+          "kind": "bathroom"
+        },
+        {
+          "id": "kitchen",
+          "name": "Open garden kitchen / pantry refrigerator",
+          "short_label": "Kitchen",
+          "rect": [
+            28.5,
+            49.5,
+            15,
+            14
+          ],
+          "kind": "kitchen",
+          "open": true
+        },
+        {
+          "id": "pantry",
+          "name": "Food pantry / refrigerator",
+          "short_label": "Pantry + fridge",
+          "rect": [
+            37.5,
+            56.5,
+            6,
+            7
+          ],
+          "kind": "storage",
+          "parent": "kitchen",
+          "exclude_from_parent": true
+        }
+      ],
+      "partitions": [
+        {
+          "id": "public_dining_screen",
+          "role": "privacy_wall",
+          "axis": "x",
+          "at": 20.75,
+          "start": 23.75,
+          "end": 34.25,
+          "intended_height": 9.5,
+          "label": "PUBLIC / DINING PRIVACY WALL"
+        },
+        {
+          "id": "public_family_screen",
+          "role": "privacy_wall",
+          "axis": "y",
+          "at": 23.75,
+          "start": 20.75,
+          "end": 49.25,
+          "intended_height": 9.5,
+          "label": "PUBLIC / FAMILY PRIVACY"
+        },
+        {
+          "id": "family_entry_return",
+          "role": "privacy_wall",
+          "axis": "y",
+          "at": 27.75,
+          "start": 33.75,
+          "end": 45,
+          "intended_height": 9.5,
+          "label": "OFFSET FAMILY ENTRY"
+        },
+        {
+          "id": "family_entry_head",
+          "role": "privacy_wall",
+          "axis": "x",
+          "at": 33.75,
+          "start": 23.75,
+          "end": 27.75,
+          "intended_height": 9.5,
+          "label": "ENTRY PRIVACY RETURN"
+        }
+      ],
+      "openings": [
+        {
+          "id": "main_front_entrance",
+          "axis": "x",
+          "at": 16.25,
+          "start": 18.5,
+          "width": 4,
+          "connects": [
+            "entrance_gallery",
+            "outside"
+          ]
+        },
+        {
+          "axis": "y",
+          "at": 17.25,
+          "start": 26,
+          "width": 3,
+          "connects": [
+            "receiving",
+            "entrance_gallery"
+          ]
+        },
+        {
+          "axis": "y",
+          "at": 17.25,
+          "start": 30.5,
+          "width": 3,
+          "connects": [
+            "guest_bedroom",
+            "entrance_gallery"
+          ]
+        },
+        {
+          "axis": "y",
+          "at": 11.25,
+          "start": 38,
+          "width": 3,
+          "connects": [
+            "guest_bathroom",
+            "guest_bedroom"
+          ],
+          "operation": "pocket_sliding_intent"
+        },
+        {
+          "axis": "y",
+          "at": 9.25,
+          "start": 45,
+          "width": 3,
+          "connects": [
+            "family_toilet",
+            "cross_passage"
+          ]
+        },
+        {
+          "id": "utility_cupboard",
+          "axis": "x",
+          "at": 20.75,
+          "start": 28.5,
+          "width": 5,
+          "kind": "cupboard_doors",
+          "operation": "bypass_sliding_intent",
+          "connects": [
+            "utility_store",
+            "lift_lobby"
+          ]
+        },
+        {
+          "id": "family_entry",
+          "axis": "y",
+          "at": 23.75,
+          "start": 35,
+          "width": 6.5,
+          "kind": "open_archway",
+          "curtain_intent": true,
+          "connects": [
+            "entrance_gallery",
+            "family_living"
+          ]
+        },
+        {
+          "id": "stair_landing_door",
+          "axis": "y",
+          "at": 34.25,
+          "start": 17,
+          "width": 3,
+          "connects": [
+            "stairs",
+            "lift_lobby"
+          ]
+        },
+        {
+          "id": "lift_landing_door",
+          "axis": "x",
+          "at": 16.25,
+          "start": 38,
+          "width": 3,
+          "connects": [
+            "lift",
+            "stairs"
+          ],
+          "kind": "lift_door"
+        },
+        {
+          "axis": "x",
+          "at": 49.25,
+          "start": 14,
+          "width": 3,
+          "connects": [
+            "master_bedroom",
+            "cross_passage"
+          ]
+        },
+        {
+          "axis": "y",
+          "at": 18.25,
+          "start": 50,
+          "width": 3,
+          "connects": [
+            "master_wardrobe",
+            "master_bedroom"
+          ]
+        },
+        {
+          "axis": "x",
+          "at": 55.75,
+          "start": 22,
+          "width": 3,
+          "connects": [
+            "master_bathroom",
+            "master_wardrobe"
+          ]
+        },
+        {
+          "axis": "x",
+          "at": 56.25,
+          "start": 40,
+          "width": 3,
+          "connects": [
+            "pantry",
+            "kitchen"
+          ]
+        },
+        {
+          "axis": "x",
+          "at": 16.25,
+          "start": 6,
+          "width": 8,
+          "connects": [
+            "receiving",
+            "outside"
+          ],
+          "kind": "window",
+          "sill": 2,
+          "height": 6.5,
+          "operable": true
+        },
+        {
+          "axis": "y",
+          "at": 3.75,
+          "start": 21,
+          "width": 6.5,
+          "connects": [
+            "receiving",
+            "outside"
+          ],
+          "kind": "window",
+          "sill": 2,
+          "height": 6.5,
+          "operable": true
+        },
+        {
+          "axis": "y",
+          "at": 3.75,
+          "start": 32,
+          "width": 9,
+          "connects": [
+            "guest_bedroom",
+            "outside"
+          ],
+          "kind": "window",
+          "sill": 1.5,
+          "height": 7,
+          "operable": true
+        },
+        {
+          "axis": "y",
+          "at": 3.75,
+          "start": 52,
+          "width": 9,
+          "connects": [
+            "master_bedroom",
+            "outside"
+          ],
+          "kind": "window",
+          "sill": 1.5,
+          "height": 7,
+          "operable": true
+        },
+        {
+          "axis": "x",
+          "at": 63.75,
+          "start": 5,
+          "width": 11,
+          "connects": [
+            "master_bedroom",
+            "outside"
+          ],
+          "kind": "slider",
+          "height": 8,
+          "operable": true
+        },
+        {
+          "axis": "y",
+          "at": 43.75,
+          "start": 34.5,
+          "width": 7,
+          "connects": [
+            "family_living",
+            "outside"
+          ],
+          "kind": "window",
+          "sill": 1.5,
+          "height": 7,
+          "operable": true
+        },
+        {
+          "id": "family_garden_exit",
+          "axis": "x",
+          "at": 63.75,
+          "start": 31.5,
+          "width": 5.5,
+          "connects": [
+            "kitchen",
+            "outside"
+          ],
+          "kind": "slider",
+          "height": 8,
+          "operable": true
+        }
+      ],
+      "furniture": [
+        {
+          "id": "receiving_sofa",
+          "room": "receiving",
+          "kind": "sofa",
+          "rect": [
+            5,
+            17.5,
+            9,
+            3
+          ]
+        },
+        {
+          "id": "receiving_table",
+          "room": "receiving",
+          "kind": "table",
+          "rect": [
+            7.5,
+            22.5,
+            4,
+            2.5
+          ]
+        },
+        {
+          "id": "receiving_chair",
+          "room": "receiving",
+          "kind": "chair",
+          "rect": [
+            4.5,
+            26,
+            2.5,
+            2.5
+          ]
+        },
+        {
+          "id": "guest_bed",
+          "room": "guest_bedroom",
+          "kind": "bed",
+          "rect": [
+            5.5,
+            30,
+            5,
+            6.7
+          ],
+          "back_edge": "front"
+        },
+        {
+          "id": "guest_bedside_1",
+          "room": "guest_bedroom",
+          "kind": "bedside_table",
+          "rect": [
+            4,
+            30,
+            1.5,
+            1.75
+          ],
+          "back_edge": "front",
+          "bed_id": "guest_bed"
+        },
+        {
+          "id": "guest_bedside_2",
+          "room": "guest_bedroom",
+          "kind": "bedside_table",
+          "rect": [
+            10.5,
+            30,
+            1.5,
+            1.75
+          ],
+          "back_edge": "front",
+          "bed_id": "guest_bed"
+        },
+        {
+          "id": "guest_wardrobe",
+          "room": "guest_bedroom",
+          "kind": "shelf",
+          "rect": [
+            14.5,
+            33.5,
+            2.5,
+            1.5
+          ]
+        },
+        {
+          "id": "guest_reading",
+          "room": "guest_bedroom",
+          "kind": "chair",
+          "rect": [
+            7,
+            39.5,
+            2.5,
+            2.5
+          ]
+        },
+        {
+          "id": "guest_wc",
+          "room": "guest_bathroom",
+          "kind": "toilet",
+          "rect": [
+            14.5,
+            36,
+            2.5,
+            1.8
+          ],
+          "back_edge": "right"
+        },
+        {
+          "id": "guest_basin",
+          "room": "guest_bathroom",
+          "kind": "basin",
+          "rect": [
+            12,
+            36,
+            2,
+            1.5
+          ]
+        },
+        {
+          "id": "guest_shower",
+          "room": "guest_bathroom",
+          "kind": "shower",
+          "rect": [
+            14,
+            39.5,
+            3,
+            3
+          ],
+          "enclosed": true,
+          "entry_side": "west"
+        },
+        {
+          "id": "household_utility_shelves",
+          "room": "utility_store",
+          "kind": "shelf",
+          "rect": [
+            28.5,
+            21.25,
+            2,
+            1.5
+          ]
+        },
+        {
+          "id": "master_bed",
+          "room": "master_bedroom",
+          "kind": "bed",
+          "rect": [
+            11,
+            54.75,
+            7,
+            6.5
+          ],
+          "back_edge": "right"
+        },
+        {
+          "id": "master_bedside_1",
+          "room": "master_bedroom",
+          "kind": "bedside_table",
+          "rect": [
+            16.25,
+            53,
+            1.75,
+            1.75
+          ],
+          "back_edge": "right",
+          "bed_id": "master_bed"
+        },
+        {
+          "id": "master_bedside_2",
+          "room": "master_bedroom",
+          "kind": "bedside_table",
+          "rect": [
+            16.25,
+            61.25,
+            1.75,
+            1.75
+          ],
+          "back_edge": "right",
+          "bed_id": "master_bed"
+        },
+        {
+          "id": "master_reading",
+          "room": "master_bedroom",
+          "kind": "chair",
+          "rect": [
+            5,
+            50.5,
+            3,
+            3
+          ]
+        },
+        {
+          "id": "master_reading_table",
+          "room": "master_bedroom",
+          "kind": "table",
+          "rect": [
+            8.5,
+            51,
+            2,
+            2
+          ]
+        },
+        {
+          "id": "wardrobe_left",
+          "room": "master_wardrobe",
+          "kind": "shelf",
+          "rect": [
+            19,
+            53.5,
+            2,
+            2
+          ]
+        },
+        {
+          "id": "wardrobe_right",
+          "room": "master_wardrobe",
+          "kind": "shelf",
+          "rect": [
+            26,
+            50,
+            2,
+            5
+          ]
+        },
+        {
+          "id": "master_wc_1",
+          "room": "master_bathroom",
+          "kind": "wc_cubicle",
+          "rect": [
+            18.5,
+            56,
+            3.5,
+            4.5
+          ],
+          "back_edge": "front",
+          "reuse_back_wall": true
+        },
+        {
+          "id": "master_basin",
+          "room": "master_bathroom",
+          "kind": "basin",
+          "rect": [
+            22,
+            61.5,
+            2.5,
+            2
+          ],
+          "back_edge": "back"
+        },
+        {
+          "id": "master_bath",
+          "room": "master_bathroom",
+          "kind": "bathtub",
+          "rect": [
+            25,
+            57,
+            3,
+            6
+          ]
+        },
+        {
+          "id": "master_shower",
+          "room": "master_bathroom",
+          "kind": "shower",
+          "rect": [
+            18.5,
+            60.5,
+            3,
+            3
+          ]
+        },
+        {
+          "id": "cooking_counter",
+          "room": "kitchen",
+          "kind": "counter",
+          "rect": [
+            29,
+            50,
+            3,
+            2.5
+          ],
+          "appliance": "cooktop_with_hood"
+        },
+        {
+          "id": "kitchen_counter",
+          "room": "kitchen",
+          "kind": "counter",
+          "rect": [
+            28.5,
+            56.5,
+            2.5,
+            7
+          ],
+          "back_edge": "left",
+          "appliance": "sink"
+        },
+        {
+          "id": "kitchen_fridge",
+          "room": "pantry",
+          "kind": "equipment",
+          "rect": [
+            40,
+            61,
+            3,
+            2.5
+          ],
+          "back_edge": "back"
+        },
+        {
+          "id": "island",
+          "room": "kitchen",
+          "kind": "counter",
+          "rect": [
+            33.5,
+            53,
+            6,
+            3
+          ]
+        },
+        {
+          "id": "island_stool_1",
+          "room": "kitchen",
+          "kind": "stool",
+          "rect": [
+            33.75,
+            51,
+            1.5,
+            1.5
+          ]
+        },
+        {
+          "id": "island_stool_2",
+          "room": "kitchen",
+          "kind": "stool",
+          "rect": [
+            35.75,
+            51,
+            1.5,
+            1.5
+          ]
+        },
+        {
+          "id": "island_stool_3",
+          "room": "kitchen",
+          "kind": "stool",
+          "rect": [
+            37.75,
+            51,
+            1.5,
+            1.5
+          ]
+        },
+        {
+          "id": "pantry_shelves",
+          "room": "pantry",
+          "kind": "shelf",
+          "rect": [
+            38,
+            57,
+            1.5,
+            3.5
+          ]
+        },
+        {
+          "id": "family_wc",
+          "room": "family_toilet",
+          "kind": "toilet",
+          "rect": [
+            4.25,
+            43,
+            2,
+            3
+          ],
+          "back_edge": "front"
+        },
+        {
+          "id": "family_basin",
+          "room": "family_toilet",
+          "kind": "basin",
+          "rect": [
+            6.5,
+            43.5,
+            2,
+            1.5
+          ]
+        },
+        {
+          "id": "dining_table",
+          "room": "dining",
+          "kind": "dining_table",
+          "rect": [
+            27,
+            25.5,
+            3.5,
+            6
+          ]
+        },
+        {
+          "id": "family_sofa",
+          "room": "family_living",
+          "kind": "sofa",
+          "rect": [
+            40.5,
+            42,
+            3,
+            7
+          ],
+          "back_edge": "right"
+        },
+        {
+          "id": "family_tv",
+          "room": "family_living",
+          "kind": "tv",
+          "rect": [
+            28.05,
+            36.5,
+            0.4,
+            7
+          ]
+        },
+        {
+          "id": "family_coffee_table",
+          "room": "family_living",
+          "kind": "table",
+          "rect": [
+            34,
+            43,
+            4,
+            2.5
+          ]
+        },
+        {
+          "id": "garden_reading_chair",
+          "room": "family_living",
+          "kind": "chair",
+          "rect": [
+            29,
+            34.5,
+            2.5,
+            2.5
+          ]
+        },
+        {
+          "id": "prayer_shelf",
+          "room": "prayer_alcove",
+          "kind": "prayer",
+          "rect": [
+            39,
+            34.5,
+            4,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "id": "first",
+      "elevation": 12.5,
+      "rise": 11,
+      "envelope": [
+        3.5,
+        16,
+        40.5,
+        48
+      ],
+      "stair_entry_edge": "front",
+      "annexes": [
+        {
+          "id": "front_lawn_lift",
+          "rect": [
+            36,
+            8.5,
+            8,
+            7.5
+          ]
+        }
+      ],
+      "rooms": [
+        {
+          "id": "office",
+          "name": "Compact front-left office / piano",
+          "short_label": "Office",
+          "rect": [
+            4,
+            16.5,
+            14,
+            12.5
+          ],
+          "kind": "office"
+        },
+        {
+          "id": "core_lobby",
+          "name": "Internal Front Gallery / common stair landing",
+          "short_label": "Front gallery",
+          "rect": [
+            18.5,
+            16.5,
+            15.5,
+            4
+          ],
+          "kind": "circulation",
+          "open": true,
+          "label": true
+        },
+        {
+          "id": "front_landing",
+          "name": "First-floor shared gallery",
+          "short_label": "First-floor gallery",
+          "rect": [
+            25,
+            21,
+            9,
+            14
+          ],
+          "kind": "circulation",
+          "open": true,
+          "label": true
+        },
+        {
+          "id": "east_gallery",
+          "name": "East shared gallery / stair approach",
+          "short_label": "East gallery",
+          "rect": [
+            25,
+            27.5,
+            9,
+            6
+          ],
+          "kind": "circulation",
+          "open": true,
+          "label": true
+        },
+        {
+          "id": "child1_entry",
+          "name": "Child 1 common-side approach",
+          "rect": [
+            18.5,
+            29.5,
+            6,
+            3
+          ],
+          "kind": "circulation",
+          "open": true
+        },
+        {
+          "id": "first_common_toilet",
+          "name": "Common first-floor WC",
+          "short_label": "Shared WC",
+          "rect": [
+            18.5,
+            21,
+            6,
+            6
+          ],
+          "kind": "bathroom"
+        },
+        {
+          "id": "stairs",
+          "name": "Internal U-stair / front full-floor landing",
+          "short_label": "Stairs",
+          "rect": [
+            34.5,
+            16.5,
+            9,
+            17
+          ],
+          "kind": "stairs"
+        },
+        {
+          "id": "lift",
+          "name": "Front-lawn lift / internal stair landing",
+          "short_label": "Front lift",
+          "rect": [
+            36.5,
+            9,
+            7,
+            7
+          ],
+          "kind": "lift"
+        },
+        {
+          "id": "child_bedroom_1",
+          "name": "Child 1 / side garden / equal room",
+          "short_label": "Child 1",
+          "rect": [
+            4,
+            29.5,
+            14,
+            15
+          ],
+          "kind": "bedroom"
+        },
+        {
+          "id": "child_bathroom_1",
+          "name": "Child 1 private shower bathroom",
+          "short_label": "Child 1 bath",
+          "rect": [
+            18.5,
+            33,
+            6,
+            5.5
+          ],
+          "kind": "bathroom"
+        },
+        {
+          "id": "child_wardrobe_1",
+          "name": "Child 1 private walk-in dressing",
+          "short_label": "Child 1 dressing",
+          "rect": [
+            18.5,
+            39,
+            6,
+            5.5
+          ],
+          "kind": "storage"
+        },
+        {
+          "id": "bedroom_gallery",
+          "name": "Internal Bedroom Gallery / Child 3 approach",
+          "short_label": "Bedroom gallery",
+          "rect": [
+            4,
+            45,
+            20.5,
+            3
+          ],
+          "kind": "circulation",
+          "open": true,
+          "label": true
+        },
+        {
+          "id": "upstairs_lounge",
+          "name": "Compact shared family lounge",
+          "short_label": "Family lounge",
+          "rect": [
+            25,
+            35.5,
+            12.5,
+            12.5
+          ],
+          "kind": "living",
+          "open": true
+        },
+        {
+          "id": "child_bedroom_2",
+          "name": "Child 2 / rear garden / equal room",
+          "short_label": "Child 2",
+          "rect": [
+            29.5,
+            48.5,
+            14,
+            15
+          ],
+          "kind": "bedroom"
+        },
+        {
+          "id": "child_bathroom_2",
+          "name": "Child 2 private shower bathroom",
+          "short_label": "Child 2 bath",
+          "rect": [
+            38,
+            34,
+            5.5,
+            8
+          ],
+          "kind": "bathroom"
+        },
+        {
+          "id": "child_wardrobe_2",
+          "name": "Child 2 private walk-in dressing",
+          "short_label": "Child 2 dressing",
+          "rect": [
+            38,
+            42.5,
+            5.5,
+            5.5
+          ],
+          "kind": "storage"
+        },
+        {
+          "id": "child_bedroom_3",
+          "name": "Child 3 / rear garden / equal room",
+          "short_label": "Child 3",
+          "rect": [
+            4,
+            48.5,
+            14,
+            15
+          ],
+          "kind": "bedroom"
+        },
+        {
+          "id": "child_bathroom_3",
+          "name": "Child 3 private shower bathroom",
+          "short_label": "Child 3 bath",
+          "rect": [
+            18.5,
+            48.5,
+            5.5,
+            8
+          ],
+          "kind": "bathroom"
+        },
+        {
+          "id": "child_wardrobe_3",
+          "name": "Child 3 private walk-in dressing",
+          "short_label": "Child 3 dressing",
+          "rect": [
+            18.5,
+            57,
+            5.5,
+            6.5
+          ],
+          "kind": "storage"
+        },
+        {
+          "id": "rear_gallery",
+          "name": "Common rear balcony route / 4 ft clear",
+          "short_label": "Rear gallery",
+          "rect": [
+            24.5,
+            48.5,
+            4,
+            15
+          ],
+          "kind": "circulation",
+          "open": true,
+          "label": true
+        }
+      ],
+      "openings": [
+        {
+          "axis": "y",
+          "at": 18.25,
+          "start": 17,
+          "width": 3,
+          "connects": [
+            "office",
+            "core_lobby"
+          ]
+        },
+        {
+          "axis": "x",
+          "at": 20.75,
+          "start": 19.5,
+          "width": 3,
+          "connects": [
+            "first_common_toilet",
+            "core_lobby"
+          ]
+        },
+        {
+          "id": "stair_landing_door",
+          "axis": "y",
+          "at": 34.25,
+          "start": 17,
+          "width": 3,
+          "connects": [
+            "stairs",
+            "core_lobby"
+          ]
+        },
+        {
+          "id": "lift_landing_door",
+          "axis": "x",
+          "at": 16.25,
+          "start": 38,
+          "width": 3,
+          "connects": [
+            "lift",
+            "stairs"
+          ],
+          "kind": "lift_door"
+        },
+        {
+          "axis": "y",
+          "at": 18.25,
+          "start": 29.5,
+          "width": 3,
+          "connects": [
+            "child_bedroom_1",
+            "child1_entry"
+          ]
+        },
+        {
+          "axis": "y",
+          "at": 18.25,
+          "start": 41.25,
+          "width": 3,
+          "connects": [
+            "child_bedroom_1",
+            "child_wardrobe_1"
+          ]
+        },
+        {
+          "id": "child1_bath_dressing",
+          "axis": "x",
+          "at": 38.75,
+          "start": 18.5,
+          "width": 6,
+          "connects": [
+            "child_bathroom_1",
+            "child_wardrobe_1"
+          ],
+          "kind": "soft_divider"
+        },
+        {
+          "axis": "x",
+          "at": 48.25,
+          "start": 34,
+          "width": 3,
+          "connects": [
+            "child_bedroom_2",
+            "upstairs_lounge"
+          ]
+        },
+        {
+          "axis": "x",
+          "at": 48.25,
+          "start": 38.25,
+          "width": 3,
+          "connects": [
+            "child_bedroom_2",
+            "child_wardrobe_2"
+          ]
+        },
+        {
+          "id": "child2_bath_dressing",
+          "axis": "x",
+          "at": 42.25,
+          "start": 38,
+          "width": 5.5,
+          "connects": [
+            "child_bathroom_2",
+            "child_wardrobe_2"
+          ],
+          "kind": "soft_divider"
+        },
+        {
+          "axis": "y",
+          "at": 18.25,
+          "start": 58,
+          "width": 3,
+          "connects": [
+            "child_bedroom_3",
+            "child_wardrobe_3"
+          ]
+        },
+        {
+          "id": "child3_bath_dressing",
+          "axis": "x",
+          "at": 56.75,
+          "start": 18.5,
+          "width": 5.5,
+          "connects": [
+            "child_bathroom_3",
+            "child_wardrobe_3"
+          ],
+          "kind": "soft_divider"
+        },
+        {
+          "axis": "x",
+          "at": 48.25,
+          "start": 14,
+          "width": 3,
+          "connects": [
+            "child_bedroom_3",
+            "bedroom_gallery"
+          ]
+        },
+        {
+          "axis": "x",
+          "at": 16.25,
+          "start": 7,
+          "width": 9,
+          "connects": [
+            "office",
+            "outside"
+          ],
+          "kind": "slider",
+          "operable": true,
+          "height": 8
+        },
+        {
+          "axis": "x",
+          "at": 16.25,
+          "start": 20,
+          "width": 4,
+          "connects": [
+            "core_lobby",
+            "outside"
+          ],
+          "kind": "slider"
+        },
+        {
+          "axis": "y",
+          "at": 3.75,
+          "start": 20,
+          "width": 7,
+          "connects": [
+            "office",
+            "outside"
+          ],
+          "kind": "window",
+          "sill": 2,
+          "height": 6.5,
+          "operable": true
+        },
+        {
+          "axis": "y",
+          "at": 3.75,
+          "start": 31,
+          "width": 9,
+          "connects": [
+            "child_bedroom_1",
+            "outside"
+          ],
+          "kind": "window",
+          "sill": 1.5,
+          "height": 7,
+          "operable": true
+        },
+        {
+          "axis": "x",
+          "at": 63.75,
+          "start": 30.5,
+          "width": 11,
+          "connects": [
+            "child_bedroom_2",
+            "outside"
+          ],
+          "kind": "slider",
+          "height": 8,
+          "operable": true
+        },
+        {
+          "axis": "x",
+          "at": 63.75,
+          "start": 5,
+          "width": 11,
+          "connects": [
+            "child_bedroom_3",
+            "outside"
+          ],
+          "kind": "slider",
+          "height": 8,
+          "operable": true
+        },
+        {
+          "axis": "x",
+          "at": 63.75,
+          "start": 25,
+          "width": 3,
+          "connects": [
+            "rear_gallery",
+            "outside"
+          ],
+          "kind": "slider"
+        },
+        {
+          "axis": "y",
+          "at": 43.75,
+          "start": 51,
+          "width": 9,
+          "connects": [
+            "child_bedroom_2",
+            "outside"
+          ],
+          "kind": "window",
+          "sill": 1.5,
+          "height": 7,
+          "operable": true
+        },
+        {
+          "axis": "y",
+          "at": 3.75,
+          "start": 51,
+          "width": 9,
+          "connects": [
+            "child_bedroom_3",
+            "outside"
+          ],
+          "kind": "window",
+          "sill": 1.5,
+          "height": 7,
+          "operable": true
+        }
+      ],
+      "furniture": [
+        {
+          "id": "child1_bed",
+          "room": "child_bedroom_1",
+          "kind": "bed",
+          "rect": [
+            11.3,
+            34.5,
+            6.7,
+            5
+          ],
+          "back_edge": "right"
+        },
+        {
+          "id": "child1_bedside_1",
+          "room": "child_bedroom_1",
+          "kind": "bedside_table",
+          "rect": [
+            16.25,
+            32.75,
+            1.75,
+            1.75
+          ],
+          "back_edge": "right",
+          "bed_id": "child1_bed"
+        },
+        {
+          "id": "child1_bedside_2",
+          "room": "child_bedroom_1",
+          "kind": "bedside_table",
+          "rect": [
+            16.25,
+            39.5,
+            1.75,
+            1.5
+          ],
+          "back_edge": "right",
+          "bed_id": "child1_bed"
+        },
+        {
+          "id": "child1_wardrobe",
+          "room": "child_wardrobe_1",
+          "kind": "shelf",
+          "rect": [
+            22.5,
+            39,
+            2,
+            5.5
+          ]
+        },
+        {
+          "id": "child1_desk",
+          "room": "child_bedroom_1",
+          "kind": "desk",
+          "rect": [
+            5,
+            30,
+            4,
+            2
+          ]
+        },
+        {
+          "id": "child1_reading",
+          "room": "child_bedroom_1",
+          "kind": "chair",
+          "rect": [
+            5,
+            41,
+            2.5,
+            2.5
+          ]
+        },
+        {
+          "id": "child2_bed",
+          "room": "child_bedroom_2",
+          "kind": "bed",
+          "rect": [
+            29.5,
+            53,
+            6.7,
+            5
+          ],
+          "back_edge": "left"
+        },
+        {
+          "id": "child2_bedside_1",
+          "room": "child_bedroom_2",
+          "kind": "bedside_table",
+          "rect": [
+            29.5,
+            51.25,
+            1.75,
+            1.75
+          ],
+          "back_edge": "left",
+          "bed_id": "child2_bed"
+        },
+        {
+          "id": "child2_bedside_2",
+          "room": "child_bedroom_2",
+          "kind": "bedside_table",
+          "rect": [
+            29.5,
+            58,
+            1.75,
+            1.75
+          ],
+          "back_edge": "left",
+          "bed_id": "child2_bed"
+        },
+        {
+          "id": "child2_wardrobe",
+          "room": "child_wardrobe_2",
+          "kind": "shelf",
+          "rect": [
+            41.5,
+            42.5,
+            2,
+            5.5
+          ]
+        },
+        {
+          "id": "child2_desk",
+          "room": "child_bedroom_2",
+          "kind": "desk",
+          "rect": [
+            39,
+            49,
+            4,
+            2
+          ]
+        },
+        {
+          "id": "child2_reading",
+          "room": "child_bedroom_2",
+          "kind": "chair",
+          "rect": [
+            40,
+            59.5,
+            2.5,
+            2.5
+          ]
+        },
+        {
+          "id": "child3_bed",
+          "room": "child_bedroom_3",
+          "kind": "bed",
+          "rect": [
+            11.3,
+            53,
+            6.7,
+            5
+          ],
+          "back_edge": "right"
+        },
+        {
+          "id": "child3_bedside_1",
+          "room": "child_bedroom_3",
+          "kind": "bedside_table",
+          "rect": [
+            16.25,
+            51.25,
+            1.75,
+            1.75
+          ],
+          "back_edge": "right",
+          "bed_id": "child3_bed"
+        },
+        {
+          "id": "child3_bedside_2",
+          "room": "child_bedroom_3",
+          "kind": "bedside_table",
+          "rect": [
+            16.25,
+            58,
+            1.75,
+            1.75
+          ],
+          "back_edge": "right",
+          "bed_id": "child3_bed"
+        },
+        {
+          "id": "child3_wardrobe",
+          "room": "child_wardrobe_3",
+          "kind": "shelf",
+          "rect": [
+            22,
+            57.5,
+            2,
+            5.5
+          ]
+        },
+        {
+          "id": "child3_desk",
+          "room": "child_bedroom_3",
+          "kind": "desk",
+          "rect": [
+            5,
+            49,
+            4,
+            2
+          ]
+        },
+        {
+          "id": "child3_reading",
+          "room": "child_bedroom_3",
+          "kind": "chair",
+          "rect": [
+            5,
+            59.5,
+            2.5,
+            2.5
+          ]
+        },
+        {
+          "id": "child1_wc",
+          "room": "child_bathroom_1",
+          "kind": "toilet",
+          "rect": [
+            18.5,
+            33,
+            2,
+            2.5
+          ]
+        },
+        {
+          "id": "child1_basin",
+          "room": "child_bathroom_1",
+          "kind": "basin",
+          "rect": [
+            21.5,
+            33,
+            2.5,
+            1.5
+          ]
+        },
+        {
+          "id": "child1_shower",
+          "room": "child_bathroom_1",
+          "kind": "shower",
+          "rect": [
+            21.5,
+            35.5,
+            3,
+            3
+          ],
+          "enclosed": true,
+          "entry_side": "west"
+        },
+        {
+          "id": "child2_wc",
+          "room": "child_bathroom_2",
+          "kind": "toilet",
+          "rect": [
+            41,
+            34.5,
+            2.5,
+            1.8
+          ],
+          "back_edge": "right"
+        },
+        {
+          "id": "child2_basin",
+          "room": "child_bathroom_2",
+          "kind": "basin",
+          "rect": [
+            38.5,
+            34.5,
+            2,
+            1.5
+          ]
+        },
+        {
+          "id": "child2_shower",
+          "room": "child_bathroom_2",
+          "kind": "shower",
+          "rect": [
+            40.5,
+            39,
+            3,
+            3
+          ],
+          "enclosed": true,
+          "entry_side": "west"
+        },
+        {
+          "id": "child3_wc",
+          "room": "child_bathroom_3",
+          "kind": "toilet",
+          "rect": [
+            18.5,
+            49,
+            2.5,
+            1.8
+          ],
+          "back_edge": "left"
+        },
+        {
+          "id": "child3_basin",
+          "room": "child_bathroom_3",
+          "kind": "basin",
+          "rect": [
+            21.5,
+            49,
+            2,
+            1.5
+          ]
+        },
+        {
+          "id": "child3_shower",
+          "room": "child_bathroom_3",
+          "kind": "shower",
+          "rect": [
+            18.5,
+            53.5,
+            3,
+            3
+          ],
+          "enclosed": true,
+          "entry_side": "east"
+        },
+        {
+          "id": "first_common_wc",
+          "room": "first_common_toilet",
+          "kind": "toilet",
+          "rect": [
+            18.75,
+            24,
+            2,
+            3
+          ],
+          "back_edge": "back"
+        },
+        {
+          "id": "first_common_basin",
+          "room": "first_common_toilet",
+          "kind": "basin",
+          "rect": [
+            22,
+            24.5,
+            2,
+            1.5
+          ]
+        },
+        {
+          "id": "upstairs_sofa",
+          "room": "upstairs_lounge",
+          "kind": "sofa",
+          "rect": [
+            26,
+            36,
+            8,
+            3
+          ]
+        },
+        {
+          "id": "upstairs_table",
+          "room": "upstairs_lounge",
+          "kind": "table",
+          "rect": [
+            29,
+            42,
+            4,
+            2
+          ]
+        },
+        {
+          "id": "office_workstation",
+          "room": "office",
+          "kind": "desk",
+          "rect": [
+            5,
+            17,
+            7,
+            2.5
+          ]
+        },
+        {
+          "id": "office_shared_table",
+          "room": "office",
+          "kind": "table",
+          "rect": [
+            8,
+            23,
+            7,
+            3.5
+          ]
+        },
+        {
+          "id": "office_bookshelf",
+          "room": "office",
+          "kind": "shelf",
+          "rect": [
+            16,
+            20.5,
+            1.5,
+            8
+          ]
+        },
+        {
+          "id": "office_piano",
+          "room": "office",
+          "kind": "piano",
+          "rect": [
+            5,
+            27,
+            4.5,
+            2
+          ]
+        },
+        {
+          "id": "office_chair",
+          "room": "office",
+          "kind": "chair",
+          "rect": [
+            7,
+            20,
+            2,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "id": "roof",
+      "elevation": 23.5,
+      "rise": 0,
+      "envelope": [
+        3.5,
+        16,
+        40.5,
+        48
+      ],
+      "stair_entry_edge": "front",
+      "annexes": [
+        {
+          "id": "front_lawn_lift",
+          "rect": [
+            36,
+            8.5,
+            8,
+            7.5
+          ]
+        }
+      ],
+      "rooms": [
+        {
+          "id": "stairs",
+          "name": "Weather-protected roof stair head",
+          "short_label": "Stairs",
+          "rect": [
+            34.5,
+            16.5,
+            9,
+            17
+          ],
+          "kind": "stairs"
+        },
+        {
+          "id": "lift_lobby",
+          "name": "Internal roof stair / lift landing gallery",
+          "short_label": "Roof gallery",
+          "rect": [
+            24,
+            16.5,
+            10,
+            4
+          ],
+          "kind": "circulation",
+          "open": true,
+          "label": true
+        },
+        {
+          "id": "lift",
+          "name": "Front-lawn lift / roof stair landing",
+          "short_label": "Front lift",
+          "rect": [
+            36.5,
+            9,
+            7,
+            7
+          ],
+          "kind": "lift"
+        },
+        {
+          "id": "roof_solar",
+          "name": "Solar reserve / service access",
+          "rect": [
+            4,
+            21,
+            30,
+            12.5
+          ],
+          "kind": "service",
+          "open": true
+        },
+        {
+          "id": "roof_gathering",
+          "name": "Compact gathering terrace",
+          "rect": [
+            4,
+            34,
+            39.5,
+            14
+          ],
+          "kind": "living",
+          "open": true
+        },
+        {
+          "id": "roof_shade",
+          "name": "Shaded family seating / pergola",
+          "rect": [
+            4,
+            49,
+            23,
+            14.5
+          ],
+          "kind": "living",
+          "open": true
+        },
+        {
+          "id": "roof_planters",
+          "name": "Roof planters / no soil lawn",
+          "rect": [
+            28,
+            49,
+            15.5,
+            14.5
+          ],
+          "kind": "garden",
+          "open": true
+        }
+      ],
+      "openings": [
+        {
+          "id": "stair_landing_door",
+          "axis": "y",
+          "at": 34.25,
+          "start": 17,
+          "width": 3,
+          "connects": [
+            "stairs",
+            "lift_lobby"
+          ]
+        },
+        {
+          "id": "lift_landing_door",
+          "axis": "x",
+          "at": 16.25,
+          "start": 38,
+          "width": 3,
+          "connects": [
+            "lift",
+            "stairs"
+          ],
+          "kind": "lift_door"
+        }
+      ],
+      "furniture": [
+        {
+          "id": "roof_sofa",
+          "room": "roof_shade",
+          "kind": "sofa",
+          "rect": [
+            6,
+            51,
+            8,
+            3
+          ]
+        },
+        {
+          "id": "roof_table",
+          "room": "roof_shade",
+          "kind": "table",
+          "rect": [
+            10,
+            57,
+            4,
+            2.5
+          ]
+        },
+        {
+          "id": "roof_chair",
+          "room": "roof_shade",
+          "kind": "chair",
+          "rect": [
+            21,
+            56,
+            3,
+            3
+          ]
+        },
+        {
+          "id": "solar_1",
+          "room": "roof_solar",
+          "kind": "solar",
+          "rect": [
+            6,
+            21.5,
+            10,
+            5
+          ]
+        },
+        {
+          "id": "solar_2",
+          "room": "roof_solar",
+          "kind": "solar",
+          "rect": [
+            20,
+            21.5,
+            10,
+            5
+          ]
+        },
+        {
+          "id": "solar_3",
+          "room": "roof_solar",
+          "kind": "solar",
+          "rect": [
+            6,
+            28,
+            10,
+            5
+          ]
+        },
+        {
+          "id": "solar_4",
+          "room": "roof_solar",
+          "kind": "solar",
+          "rect": [
+            20,
+            28,
+            10,
+            5
+          ]
+        },
+        {
+          "id": "planter_1",
+          "room": "roof_planters",
+          "kind": "planter",
+          "rect": [
+            29,
+            50,
+            5,
+            3
+          ]
+        },
+        {
+          "id": "planter_2",
+          "room": "roof_planters",
+          "kind": "planter",
+          "rect": [
+            37,
+            50,
+            5,
+            3
+          ]
+        },
+        {
+          "id": "planter_3",
+          "room": "roof_planters",
+          "kind": "planter",
+          "rect": [
+            29,
+            60,
+            5,
+            3
+          ]
+        },
+        {
+          "id": "planter_4",
+          "room": "roof_planters",
+          "kind": "planter",
+          "rect": [
+            37,
+            60,
+            5,
+            3
+          ]
+        }
+      ]
+    }
+  ],
+  "structure": {
+    "status": "illustrative_only_not_engineered",
+    "disclaimer": "STRUCTURAL INTENT ONLY - NOT ENGINEERED. Display proxies are not member sizes. Clear-span living/parking is unproven; an engineer may require internal supports or a different layout.",
+    "display_proxy_ft": {
+      "column_width": 0.5,
+      "beam_width": 0.5,
+      "beam_depth": 0.5
+    },
+    "perimeter_rows_ft": {
+      "basement": [
+        2.75,
+        16.25,
+        36.25,
+        56.25,
+        82.58333333333333
+      ],
+      "ground": [
+        16.25,
+        33.75,
+        49.25,
+        63.75
+      ],
+      "first": [
+        16.25,
+        33.75,
+        48.25,
+        63.75
+      ],
+      "roof": [
+        16.25,
+        33.75,
+        48.25,
+        63.75
+      ]
+    },
+    "clear_span_rooms": {
+      "basement": [
+        "drive_aisle",
+        "garage_access",
+        "garage_side_walk",
+        "ramp_landing",
+        "vehicle_parking",
+        "two_wheelers"
+      ],
+      "ground": [
+        "family_living"
+      ]
+    },
+    "review": [
+      "Approximately 40 ft transverse proxies are not engineered or priced.",
+      "Foundations, retaining structure, garden loads, headroom, lift product/pit/overrun and all wind/seismic/fire/structural questions require specialists."
+    ]
+  },
+  "ramp": {
+    "rect": [
+      19,
+      0,
+      40.5,
+      82
+    ],
+    "start": [
+      50.5,
+      0
+    ],
+    "straight_ft": 54,
+    "radius_ft": 19,
+    "exit_ft": 12.5,
+    "clear_width_ft": 12,
+    "bend_outer_ft": 9,
+    "flare_ft": 10,
+    "grade_stations": [
+      [
+        0,
+        0
+      ],
+      [
+        4,
+        0
+      ],
+      [
+        12,
+        -0.14
+      ],
+      [
+        46,
+        -0.14
+      ],
+      [
+        54,
+        -0.1
+      ],
+      [
+        72.2,
+        -0.1
+      ],
+      [
+        80.2,
+        0
+      ]
+    ],
+    "basement_elevation_ft": -8.5,
+    "surface_finish_ft": 0.035,
+    "design_vehicle": {
+      "length_m": 5.25,
+      "width_m": 2.25,
+      "height_m": 2.2,
+      "wheelbase_m": 3.15,
+      "front_overhang_m": 1.05,
+      "rear_overhang_m": 1.05,
+      "clearance_m": 0.3,
+      "ground_clearance_m": 0.2,
+      "minimum_rear_radius_m": 5
+    },
+    "status": "Sampled low-speed arrival geometry only; independent stall manoeuvres, street approach, traction, drainage, structures and code compliance remain unverified."
+  },
+  "weather_protection": {
+    "ramp_roof_clear_height_ft": 9,
+    "ramp_roof_thickness_ft": 0.25,
+    "ramp_roof_overhang_ft": 0.3,
+    "roof_stair_clear_height_ft": 9,
+    "roof_lift_display_height_ft": 13,
+    "roof_thickness_ft": 0.25,
+    "status": "Open-sided weather shelter, not flood proofing or windblown-dust exclusion. Drainage, sump backup, wind, fire, ventilation and lift/structural design require specialists."
+  },
+  "balconies": [
+    {
+      "id": "front_balcony",
+      "name": "Shared front balcony / no dividers",
+      "rect": [
+        4,
+        10.5,
+        32,
+        5.5
+      ]
+    },
+    {
+      "id": "rear_balcony",
+      "name": "Continuous shared rear balcony / no dividers",
+      "rect": [
+        4,
+        64,
+        39.5,
+        5.5
+      ]
+    }
+  ],
+  "outdoor": [
+    {
+      "id": "front_lawn",
+      "name": "Compact front garden / front-lawn lift",
+      "rect": [
+        3.5,
+        0,
+        40.5,
+        10
+      ],
+      "kind": "garden"
+    },
+    {
+      "id": "front_veranda",
+      "name": "Front tea veranda / raised entrance",
+      "rect": [
+        3.5,
+        10.5,
+        32,
+        5.5
+      ],
+      "kind": "veranda"
+    },
+    {
+      "id": "back_veranda",
+      "name": "Covered rear veranda / swing",
+      "rect": [
+        3.5,
+        64.5,
+        40.5,
+        5.5
+      ],
+      "kind": "veranda"
+    },
+    {
+      "id": "play_lawn",
+      "name": "Compact rear play lawn / above basement",
+      "rect": [
+        3.5,
+        70.5,
+        22,
+        8
+      ],
+      "kind": "garden"
+    },
+    {
+      "id": "tree_buffer",
+      "name": "Rear planting / engineered planters needed",
+      "rect": [
+        3.5,
+        79,
+        17,
+        3.5
+      ],
+      "kind": "garden"
+    },
+    {
+      "id": "drying",
+      "name": "Compact screened drying court",
+      "rect": [
+        28,
+        10.5,
+        7,
+        5
+      ],
+      "kind": "service"
+    },
+    {
+      "id": "left_path",
+      "name": "Single side garden connection / no right-side corridor",
+      "rect": [
+        0.25,
+        0,
+        3,
+        83.33333333333333
+      ],
+      "kind": "path"
+    },
+    {
+      "id": "entry_path",
+      "name": "Front path aligned with Entrance Gallery",
+      "rect": [
+        18,
+        0,
+        5,
+        16
+      ],
+      "kind": "path"
+    }
+  ],
+  "deferred_outdoor": [
+    {
+      "id": "pool",
+      "status": "deferred_for_compact_site",
+      "reason": "No safe separate pool/structure/headroom reserve has been established on the 5,000 sq ft candidate; no hidden pool over the garage turning aisle."
+    },
+    {
+      "id": "fishpond",
+      "status": "optional_deferred"
+    }
+  ],
+  "review_items": [
+    "User-approved direction is a compact approximately 5,000 sq ft house site, not approval of these particular dimensions or engineering. The 60 x 83 1/3 ft candidate is exactly 5,000 sq ft; the 8,856 sq ft study is superseded, not a requirement.",
+    "There is NO external covered stair link and NO extra strip between the main house and driveway. The only above-ground annex is the 60 sq ft front-lawn shaft reserve. Internal Front Galleries meet full-floor front stair landings; the lift never opens at a half-turn or through a bedroom.",
+    "Main ground/first plates are 40.5 x 48 ft = 1,944 sq ft, 22.24% smaller than the former 2,500. Each has a 60 sq ft front lift annex, 2,004 sq ft total. Basement is 3,253.5 sq ft excluding driveway; approximate three-level total is 7,261.5 sq ft before detailed deductions/balconies/roof enclosure.",
+    "Ground is proposed 1.5 ft above road, basement -8.5 ft, first +12.5 ft and roof +23.5 ft. Basement-to-ground rise stays 10 ft. The slightly raised house helps the sampled ramp roof clearance; entry steps, drainage, accessible arrival and legal levels require design.",
+    "Size tradeoffs are deliberate: three children each 14 x 15 ft = 210 sq ft; master sleeping room 196 sq ft, dressing 57 and bath 71.25. Drawing 169, guest 162.5 gross minus 38.5 ensuite = 124 net; upstairs lounge 156.25. Office is 175 sq ft to retain a real 3 ft internal bedroom gallery. These are compact candidate zones, not approved clearances.",
+    "Basement recreation is 229 sq ft net EACH, reduced from 365.25 with permission to compact. A front shaft corner is subtracted from gaming, not double-counted. Gym equipment and movable game tables remain, but full simultaneous operating/play clearances and six-month storage capacity need review.",
+    "Family living is 292.5 sq ft including open prayer/circulation and the internal privacy baffle footprint. Dining is 125 gross minus a 12 sq ft utility cupboard = 113; eight chair footprints are modeled. Kitchen is 210 gross minus a 42 sq ft pantry = 168 net. These areas must not be added twice.",
+    "All five beds have headboards against solid walls and two bedside tables/lamps. Master has one wall-backed WC, one basin, bathtub and separate shower. Guest ensuite is 5.5 x 7 ft with a 3 x 3 ft enclosed shower; pocket-door operation and all plumbing/accessibility need review.",
+    "Public gallery/dining screens and an offset 6.5 ft doorless entry protect the family suite. Living, dining and kitchen share open routes, not internal doors. Sampled entrance sightlines are checked against full-height wall intent, not the low display cutaway; all-position privacy/acoustics are not certified.",
+    "The utility cupboard is off the right Internal Front Gallery beside stairs, not drawing or an external corridor. Refrigerator is inside pantry. Food/storage appliance clearances, child-safe cleaning storage and moisture/ventilation need specialist review.",
+    "Three SUV bays are at the front of the GARAGE compartment only. A rear arrival aisle and widened 24 ft portal serve the tangent curve. Sampled 5.25 x 2.25 x 2.2 m body/overhang sweep plus 0.3 m buffer, eased grades, roof and underside margins are checked. Independent bay exit/reversing, mirror clearance, road approach, dynamics and engineering remain unverified.",
+    "Driveway straight lane is 12 ft, widening to 15 ft around a 19 ft rear-axle radius. Candidate maximum grades are 14% straight and 10% curved. No legal-grade, flood, retaining-wall, slip-resistance or drainage certification is implied.",
+    "The garage remains separated by intended sealed full-height construction, two self-closing airlock doors and protected clean routes. Independent exhaust/makeup air, negative pressure, CO/NO2 monitoring, fire/egress and commissioning are unresolved.",
+    "Garage and kitchen exhaust outlets are UNLOCATED and must avoid windows, play lawn/veranda, neighbouring land and fresh-air intakes. A window or fan location is not proof of air quality.",
+    "Pool is explicitly DEFERRED for this compact candidate with the user's conditional permission. It is not silently fitted above the garage where its depth would compromise headroom. Fishpond and double-height atrium remain deferred.",
+    "Gardens are smaller: front/back bands are about 19.2% and 23.2% of plot depth, versus the earlier rough 20%/30% aspirations. The ramp and paths are not counted as play lawn. Rear planting sits above basement and needs engineered planters, soil-depth, waterproofing and root/load review; a mature mini-forest is not established.",
+    "Roof stair headhouse, front lift-head display reserve and open-sided ramp canopy are separate inspection geometry. Covers reduce rain/sun exposure, not flooding or windblown dust. Inlet/interceptor drains, sump/backup pumps, waterproofing, wind, ventilation and fire require specialists.",
+    "The 9 x 17 ft front-entry U-stair retains 4 ft flights/landings, 12 in goings and twenty risers; actual slab voids follow its direction. Headroom, handrail/guard projections, lift product/pit/overrun and code/fire/accessibility remain unverified. Lift is not evacuation egress.",
+    "Shared balconies have no internal dividers. The front deck ends before the shaft and has a shared gallery door; rear common access is retained. Guards, insect screens, privacy/shading and daylight/fresh-air performance need detailed design.",
+    "Structural view is a non-engineered proxy diagram, not member sizes or a proven load path. Roughly 40 ft spans remain substantial; an engineer may require internal columns, transfer systems or layout/budget changes.",
+    "No site is purchased. Setbacks, legal plot/buildable envelope, road, neighbours, jurisdiction, groundwater/soil, structural/seismic design, service equipment/LPG/batteries and cost remain unresolved. A geometry PASS is not construction approval."
+  ]
+}

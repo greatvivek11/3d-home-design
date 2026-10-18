@@ -1,0 +1,77 @@
+{
+  "blender": "5.2.2 LTS",
+  "blend": "dream-home-study.blend",
+  "blend_bytes": 5024427,
+  "visual_quality": "refined-01",
+  "layout_sha256": "50493e7ab11c1cb0969f46df82f956f74c45fcf6aff4bd84be6f4be24b3f6a8f",
+  "brief_sha256": "bc24c127a727e8d331c8e8cd902e6acc88bafb73604364d7173e9db8c5aa4da3",
+  "locked_fixtures_checked": 113,
+  "packed_finish_maps": 20,
+  "structural_status": "illustrative_only_not_engineered",
+  "mesh_objects": 4583,
+  "scenes": [
+    "01 - Garden and ground overview",
+    "02 - Ground plan",
+    "03 - Basement plan",
+    "04 - First-floor plan",
+    "05 - Roof terrace plan",
+    "06 - Stacked physical levels",
+    "07 - All four plans side by side",
+    "08 - Living and kitchen detail",
+    "09 - Office detail",
+    "10 - Bedroom detail",
+    "11 - Structural intent NOT ENGINEERED",
+    "12 - Basement frame NOT ENGINEERED",
+    "13 - Ground frame NOT ENGINEERED",
+    "14 - First frame NOT ENGINEERED",
+    "15 - Roof frame NOT ENGINEERED"
+  ],
+  "opening_scene": "07 - All four plans side by side",
+  "render_scenes": {
+    "overview": "01 - Garden and ground overview",
+    "ground": "02 - Ground plan",
+    "basement": "03 - Basement plan",
+    "first": "04 - First-floor plan",
+    "roof": "05 - Roof terrace plan",
+    "all-floors": "07 - All four plans side by side",
+    "living-detail": "08 - Living and kitchen detail",
+    "office-detail": "09 - Office detail",
+    "bedroom-detail": "10 - Bedroom detail",
+    "structural-stack": "11 - Structural intent NOT ENGINEERED",
+    "structural-basement": "12 - Basement frame NOT ENGINEERED",
+    "structural-ground": "13 - Ground frame NOT ENGINEERED",
+    "structural-first": "14 - First frame NOT ENGINEERED",
+    "structural-roof": "15 - Roof frame NOT ENGINEERED"
+  },
+  "renders": [],
+  "geometry_status": "PASS",
+  "overall_status": "NEEDS REVIEW",
+  "driveway_assessment": {
+    "status": "PASS",
+    "errors": [],
+    "samples": 218,
+    "path_length_ft": 104.41592653589794,
+    "straight_max_grade": 0.14,
+    "curve_max_grade": 0.1,
+    "minimum_rear_axle_radius_m": 6.096,
+    "body_clearance_m": 0.3,
+    "portal_span_ft": [
+      73.97720859863253,
+      89.51886770514247
+    ],
+    "scope": "Sampled low-speed design-vehicle geometry only; street approach, traction, drainage, structures and legal compliance are not certified",
+    "minimum_roof_clearance_m": 0.4282079611437766,
+    "minimum_underbody_clearance_m": 0.12653448955601027,
+    "overhead_assumptions": {
+      "canopy_under_ft": 9,
+      "basement_cover_rect": [
+        4,
+        3,
+        50,
+        89
+      ],
+      "slab_under_ft": -0.5,
+      "finish_ft": 0.035
+    }
+  }
+}

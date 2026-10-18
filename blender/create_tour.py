@@ -145,7 +145,19 @@ def create_title(bpy, shot, output):
     assert_png(Path(scene.render.filepath))
 
 
-def prepare(bpy, source, generation, output, samples):
+def configure_renderer(scene, engine, samples):
+    if engine not in {"CYCLES", "EEVEE"} or samples <= 0:
+        raise ValueError("Choose CYCLES or EEVEE and a positive sample count")
+    scene.render.engine = "CYCLES" if engine == "CYCLES" else "BLENDER_EEVEE"
+    if engine == "CYCLES":
+        scene.cycles.samples = samples
+    else:
+        scene.eevee.taa_render_samples = samples
+        scene.eevee.use_raytracing = True
+        scene.eevee.use_fast_gi = True
+
+
+def prepare(bpy, source, generation, output, samples, engine="CYCLES"):
     from mathutils import Vector
 
     bpy.ops.wm.open_mainfile(filepath=str(source))
@@ -180,7 +192,7 @@ def prepare(bpy, source, generation, output, samples):
         scene.render.image_settings.color_mode = "RGB"
         scene.render.image_settings.color_depth = "8"
         scene.render.use_persistent_data = True
-        scene.cycles.samples = samples
+        configure_renderer(scene, engine, samples)
         scene.cycles.adaptive_threshold = .025
         scene.cycles.use_animated_seed = False
         scene.cycles.seed = 31
@@ -297,6 +309,8 @@ def main():
     parser.add_argument("--blend", type=Path, required=True)
     parser.add_argument("--output", type=Path, default=ROOT / "output/study-003-tour-preview")
     parser.add_argument("--device", choices=["CPU", "METAL"], default="CPU")
+    parser.add_argument("--engine", choices=["CYCLES", "EEVEE"], default="CYCLES",
+                        help="Eevee uses Blender's GPU backend; --device selects the Cycles device only")
     parser.add_argument("--samples", type=int, default=48)
     parser.add_argument("--stills", action="store_true", help="Render first/middle/last frames for visual review only")
     parser.add_argument("--resume", action="store_true", help="Reuse a matching prepared tour and complete PNG frames")
@@ -313,7 +327,7 @@ def main():
             locked["house-spec/layout-study.json"] != generation["layout_sha256"]):
         raise ValueError("The source study does not match the current brief/layout")
     config = {"source": str(source), "source_sha256": digest(source), "locked_sources": locked,
-              "script_sha256": digest(Path(__file__)), "samples": args.samples,
+              "script_sha256": digest(Path(__file__)), "engine": args.engine, "samples": args.samples,
               "fps": FPS, "shot_frames": SHOT_FRAMES, "dissolve_frames": DISSOLVE_FRAMES,
               "shots": [asdict(shot) for shot in SHOTS]}
     signature = hashlib.sha256(json.dumps(config, sort_keys=True).encode()).hexdigest()
@@ -325,14 +339,21 @@ def main():
         bpy.ops.wm.open_mainfile(filepath=str(output / "dream-home-tour.blend"))
     else:
         output.mkdir(parents=True, exist_ok=False)
-        names = prepare(bpy, source, generation, output, args.samples)
+        names = prepare(bpy, source, generation, output, args.samples, args.engine)
         result = {"signature": signature, "config": config, "scenes": names,
                   "animation_sha256": digest(output / "dream-home-tour.blend"), "status": "prepared"}
         write_result(result_path, result)
         bpy.ops.wm.open_mainfile(filepath=str(output / "dream-home-tour.blend"))
     verify_animation(bpy, result["scenes"])
-    enable_device(bpy, args.device)
+    device = args.device if args.engine == "CYCLES" else bpy.context.preferences.system.gpu_backend
+    if args.engine == "CYCLES":
+        enable_device(bpy, args.device)
+    else:
+        print("TOUR_EEVEE_GPU_BACKEND", device, flush=True)
     started = time.monotonic()
+    frame_timings = []
+    shot_timings = []
+    frames_rendered = 0
     for shot in SHOTS:
         scene = bpy.data.scenes[result["scenes"][shot.stem]]
         bpy.context.window.scene = scene
@@ -340,21 +361,29 @@ def main():
         folder = output / "frames" / shot.stem
         folder.mkdir(parents=True, exist_ok=True)
         frames = SAMPLE_FRAMES if args.stills else range(1, SHOT_FRAMES + 1)
+        missing = sum(not (folder / f"frame_{frame:04}.png").exists() for frame in frames)
         for frame in frames:
             path = folder / f"frame_{frame:04}.png"
             if path.exists():
                 assert_png(path)
+        shot_started = time.monotonic()
         if args.stills:
             for frame in frames:
                 path = folder / f"frame_{frame:04}.png"
                 if not path.exists():
                     scene.frame_set(frame)
                     scene.render.filepath = str(path)
+                    frame_started = time.monotonic()
                     bpy.ops.render.render(write_still=True, scene=scene.name)
+                    frame_timings.append({"shot": shot.stem, "frame": frame,
+                                          "seconds": round(time.monotonic() - frame_started, 4)})
         else:
             scene.render.filepath = str(folder / "frame_")
             scene.render.use_overwrite = False
             bpy.ops.render.render(animation=True, scene=scene.name)
+        shot_timings.append({"shot": shot.stem, "frames_rendered": missing,
+                             "seconds": round(time.monotonic() - shot_started, 4)})
+        frames_rendered += missing
         for frame in frames:
             assert_png(folder / f"frame_{frame:04}.png")
     composite_checks(ffmpeg, output)
@@ -363,7 +392,9 @@ def main():
     if digest(source) != config["source_sha256"] or any(digest(ROOT / path) != value for path, value in locked.items()):
         raise ValueError("Source model, layout or brief changed during the render")
     result.update(status="stills_ready" if args.stills else "complete",
-                  saved_animation_checks="PASS", last_render_device=args.device,
+                  saved_animation_checks="PASS", last_render_device=device, last_render_engine=args.engine,
+                  last_run_frames_rendered=frames_rendered, last_run_frame_timings=frame_timings,
+                  last_run_shot_timings=shot_timings,
                   last_run_seconds=round(time.monotonic() - started, 2))
     write_result(result_path, result)
     print("TOUR_SUCCESS", json.dumps({"output": str(output), "status": result["status"],

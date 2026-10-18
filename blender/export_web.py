@@ -12,7 +12,7 @@ import bpy
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from scripts.layout import feet, load_json, plan_svg, room_area, room_footprints, validate
+from scripts.layout import feet, floor_bounds, floor_footprints, load_json, plan_svg, room_area, room_footprints, stair_profile, validate
 
 
 TITLES = {"site": "Garden & site", "basement": "Basement", "ground": "Ground floor", "first": "First floor", "roof": "Roof terrace"}
@@ -72,15 +72,31 @@ def main():
         group["status"] = "unapproved_concept"
         export_scene.collection.objects.link(group)
         counts[fid] = 0
-        for obj in source.objects:
-            if obj.type != "MESH":
-                continue
-            duplicate = obj.copy()
-            duplicate.name = f"web.{obj.name}"
-            duplicate.parent = group
-            duplicate["floor_id"] = fid
-            export_scene.collection.objects.link(duplicate)
-            counts[fid] += 1
+        sources = [("architecture", source)]
+        if fid != "site":
+            structural = bpy.data.collections.get(fid.upper() + " STRUCTURE")
+            if structural is None:
+                raise ValueError(f"Missing structural intent collection: {fid}")
+            sources.append(("structure", structural))
+        for layer, collection in sources:
+            layer_root = bpy.data.objects.new(f"{layer}_{fid}", None)
+            layer_root.parent = group
+            layer_root["inspection_layer"] = layer
+            export_scene.collection.objects.link(layer_root)
+            objects = list(collection.objects)
+            for child in collection.children:
+                if child.get("export_architecture"):
+                    objects.extend(child.all_objects)
+            for obj in objects:
+                if obj.type != "MESH":
+                    continue
+                duplicate = obj.copy()
+                duplicate.name = f"web.{obj.name}"
+                duplicate.parent = layer_root
+                duplicate["floor_id"] = fid
+                duplicate["inspection_layer"] = layer
+                export_scene.collection.objects.link(duplicate)
+                counts[fid] += 1
         if counts[fid] == 0:
             raise ValueError(f"Empty export floor: {fid}")
     bpy.context.view_layer.update()
@@ -115,6 +131,7 @@ def main():
     manifest = {
         "schema_version": 2, "study_id": layout["id"], "revision": revision,
         "visual_quality": "refined-01", "layout_sha256": hashlib.sha256(args.layout.read_bytes()).hexdigest(),
+        "brief_sha256": hashlib.sha256((ROOT / "house-spec/house.json").read_bytes()).hexdigest(),
         "compression": "lossless_meshopt", "uncompressed_model_bytes": uncompressed_bytes,
         "status": "unapproved_concept", "model_bytes": length, "mesh_counts": counts,
         "site": {"width_ft": layout["site"]["width"], "depth_ft": layout["site"]["depth"], "area_sq_ft": report["plot_area_sq_ft"]},
@@ -122,9 +139,12 @@ def main():
             {
                 "id": floor["id"], "title": TITLES[floor["id"]],
                 "elevation_m": feet(floor["elevation"]), "elevation_ft": floor["elevation"],
-                "bounds": bounds(floor["envelope"]),
+                "bounds": bounds(floor_bounds(floor)),
+                "footprints": [bounds(rect) for rect in floor_footprints(floor)],
+                "area_sq_ft": sum(rect[2] * rect[3] for rect in floor_footprints(floor)),
+                "stair": {**stair_profile(floor), "units": "ft", "status": "unapproved_concept"},
                 "rooms": [
-                    {"id": room["id"], "name": room["name"], "kind": room["kind"],
+                    {"id": room["id"], "name": room["name"], "label": room.get("short_label", room["id"].replace("_", " ").capitalize()), "kind": room["kind"],
                      "width_ft": room["rect"][2], "depth_ft": room["rect"][3],
                      "area_sq_ft": room_area(floor, room),
                      "footprints": [bounds(rect) for rect in room_footprints(floor, room)],
@@ -133,6 +153,18 @@ def main():
                 ],
             } for floor in layout["floors"]
         ],
+        "structure": {
+            "status": layout["structure"]["status"], "disclaimer": layout["structure"]["disclaimer"],
+            "display_proxy_ft": layout["structure"]["display_proxy_ft"],
+            "clear_span_zones": [
+                {"floor_id": floor["id"], "room_id": rid, "footprints": [bounds(rect) for rect in room_footprints(floor, next(r for r in floor["rooms"] if r["id"] == rid))]}
+                for floor in layout["floors"] for rid in layout["structure"]["clear_span_rooms"].get(floor["id"], [])
+            ],
+            "review": layout["structure"]["review"],
+        },
+        "driveway": {**report["driveway"], "design_vehicle": layout["ramp"]["design_vehicle"],
+                     "clear_width_ft": layout["ramp"]["clear_width_ft"], "status": "unapproved_concept"},
+        "weather_protection": layout["weather_protection"],
         "review_items": report["review"],
     }
     pending_manifest = args.manifest.with_suffix(".pending.json")
