@@ -1,8 +1,9 @@
 import math
 import unittest
+from types import SimpleNamespace
 
 from blender.create_tour import (
-    DISSOLVE_FRAMES, FPS, SHOT_FRAMES, SHOTS, TOTAL_FRAMES, camera_pose,
+    DISSOLVE_FRAMES, FPS, SHOT_FRAMES, SHOTS, TOTAL_FRAMES, camera_pose, configure_renderer,
 )
 
 
@@ -43,6 +44,28 @@ class TourTests(unittest.TestCase):
         for frame in [0, -1, SHOT_FRAMES + 1]:
             with self.assertRaises(ValueError):
                 camera_pose(SHOTS[0], frame)
+
+    def test_cycles_renderer_only_changes_cycles_samples(self):
+        scene = SimpleNamespace(render=SimpleNamespace(), cycles=SimpleNamespace(samples=48),
+                                eevee=SimpleNamespace(taa_render_samples=64))
+        configure_renderer(scene, "CYCLES", 16)
+        self.assertEqual(scene.render.engine, "CYCLES")
+        self.assertEqual(scene.cycles.samples, 16)
+        self.assertEqual(scene.eevee.taa_render_samples, 64)
+
+    def test_eevee_enables_indirect_lighting_without_changing_cycles(self):
+        scene = SimpleNamespace(render=SimpleNamespace(), cycles=SimpleNamespace(samples=48),
+                                eevee=SimpleNamespace())
+        configure_renderer(scene, "EEVEE", 32)
+        self.assertEqual(scene.render.engine, "BLENDER_EEVEE")
+        self.assertEqual(scene.eevee.taa_render_samples, 32)
+        self.assertTrue(scene.eevee.use_raytracing and scene.eevee.use_fast_gi)
+        self.assertEqual(scene.cycles.samples, 48)
+
+    def test_invalid_render_settings_are_rejected(self):
+        for engine, samples in [("UNKNOWN", 32), ("CYCLES", 0), ("EEVEE", -1)]:
+            with self.assertRaises(ValueError):
+                configure_renderer(SimpleNamespace(), engine, samples)
 
 
 if __name__ == "__main__":

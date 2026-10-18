@@ -1,0 +1,751 @@
+{
+  "project": {
+    "name": "Dream Home",
+    "version": 2,
+    "status": "user_approved_brief",
+    "brief_approved_on": "2026-10-17",
+    "latest_brief_revision_on": "2026-10-18",
+    "layout_approved": false,
+    "input_units": "ft",
+    "internal_units": "m",
+    "architectural_style": "warm_nature_connected_modern_minimalist",
+    "primary_goal": "complete_dream_home_visualization",
+    "design_type": "independent_family_house",
+    "construction_compliance_verified": false
+  },
+  "household": {
+    "current": "Unmarried; currently living with parents",
+    "future_adults": 2,
+    "future_children_range": [
+      2,
+      3
+    ],
+    "occasional_guests": "Visiting parents and other overnight guests",
+    "resident_staff_room_required": false,
+    "work_from_home": true
+  },
+  "priorities": {
+    "experience": [
+      "peace",
+      "quiet",
+      "privacy",
+      "daylight",
+      "thermal_comfort",
+      "greenery",
+      "holiday_at_home"
+    ],
+    "protect": [
+      "five_bedrooms",
+      "usable_gardens",
+      "basement_parking",
+      "construction_quality"
+    ],
+    "defer_or_cut_first": [
+      "double_height_space",
+      "premium_finishes",
+      "pool_for_compact_study"
+    ],
+    "space_planning_basis": "Furniture, storage, seating and clear movement; no approved room dimensions",
+    "conflict_policy": "Latest approval supersedes earlier plot expansion: target approximately 5,000 sq ft, accept explicitly reported smaller rooms/gardens and pool deferral if needed; no automatic plot growth or external stair-side link"
+  },
+  "site": {
+    "user_allowed_study_cap_ft": {
+      "width": 60,
+      "depth": 83.33333333333333
+    },
+    "study_area_cap_sq_ft": 5000,
+    "compact_rebuild_approved_in_principle": true,
+    "purchase_status": "not_purchased",
+    "preferred_setting": "Quiet, cooler, nature-connected location near mountains, potentially around Dehradun",
+    "area_target_sq_ft": {
+      "min": 4000,
+      "max": 5000,
+      "flexible_upward": false
+    },
+    "reference_area_sq_yd": 500,
+    "reference_area_sq_ft": 4500,
+    "width": null,
+    "depth": null,
+    "dimensions_confirmed": false,
+    "front_orientation": null,
+    "north_direction": null,
+    "road_width": null,
+    "jurisdiction": null,
+    "setbacks": {
+      "front": null,
+      "rear": null,
+      "left": null,
+      "right": null,
+      "status": "requires_verification"
+    },
+    "buildable_envelope_status": "unresolved",
+    "study_assumptions": {
+      "terrain": "flat",
+      "context": "standalone_building",
+      "road": "at_the_designated_front",
+      "status": "illustrative_only_not_surveyed_site_facts"
+    },
+    "outdoor_allocation": {
+      "front_fraction_target": 0.2,
+      "back_fraction_target": 0.3,
+      "basis": "Fractions of total plot area, including associated planting, play space, paths, driveway and ramp",
+      "side_connections_required": true,
+      "exact_allocation_and_footprint": "requires_layout_review"
+    },
+    "amenities": {
+      "general_access_minutes_target": 30,
+      "school_access_minutes_preferred": 15,
+      "status": "future_site_search_preferences_not_visualization_constraints"
+    }
+  },
+  "budget_and_phasing": {
+    "currency": "INR",
+    "land_target": 5000000,
+    "land_target_is_hard_ceiling": false,
+    "build_target_range": [
+      5000000,
+      7000000
+    ],
+    "build_preferred_below": 10000000,
+    "cost_feasibility": "unverified",
+    "included_cost_breakdown": null,
+    "visualization_scope": "Complete finished house including first-floor furnishing",
+    "possible_real_world_phasing": "Build structure together; first-floor furnishing may wait",
+    "construction_duration_years_target": [
+      1,
+      2
+    ],
+    "construction_start_date": null,
+    "land_purchase_does_not_set_construction_start": true
+  },
+  "building": {
+    "storeys": 2,
+    "basement_levels": 1,
+    "floor_names": [
+      "basement",
+      "ground",
+      "first"
+    ],
+    "bedroom_count": 5,
+    "floor_to_floor_height": null,
+    "exterior_wall_thickness": null,
+    "interior_wall_thickness": null,
+    "dimensions_status": "candidate_dimensions_proposed_separately_not_approved",
+    "structural_design": "Engineering not in scope; show a separate explicitly non-engineered perimeter/core frame concept and clear-span living/parking design intent",
+    "circulation": {
+      "internal_stairs_connect": [
+        "basement",
+        "ground",
+        "first",
+        "roof"
+      ],
+      "external_basement_access_required": true,
+      "external_basement_access_purpose": "Maintenance access without crossing family interiors",
+      "lift_required": true,
+      "lift_connects": [
+        "basement",
+        "ground",
+        "first",
+        "roof"
+      ],
+      "lift_purpose": "Passenger and household-load movement, including laundry; shared clean-side landings beside stair core",
+      "lift_location_direction": "External shaft in the FRONT LAWN directly ahead of INTERNAL stairs, never in the driveway; gate opens into a full-floor front stair landing served directly by an INTERNAL front gallery. No external covered stair link or spare strip between house and driveway",
+      "lift_dimensions_and_product": "Unapproved shaft reserve only; usable cab, doors, pit, overrun, fire safety and accessibility require specialist design",
+      "primary_front_entry_room_id": "entrance_gallery",
+      "front_entry_direction": "One controlled front door to a labelled Entrance Gallery; drawing and guest have internal gallery doors only. Preserve garden access and required emergency escape routes; single front entry is not a single-egress instruction",
+      "gallery_direction": "Labelled Entrance, House and internal Front Galleries. Ground common WC at left House Gallery end; shared circulation meets the front stair landing from inside the plate. Label first-floor bedroom galleries and landings",
+      "stair_direction": "Efficient U-stair replan with comfortable flights and landings; actual geometry, headroom, guards and compliance must be verified before construction",
+      "step_free_ground_access": "where_feasible",
+      "double_height": "Optional modest stair atrium; removable before protected priorities"
+    },
+    "vastu": {
+      "preference": "where_practical_not_mandatory",
+      "specific_rules": null
+    },
+    "layout_relationships": [
+      "Receiving zone near front entrance and formal front tea terrace",
+      "Receiving and family zones connected, but no direct view into family living or kitchen",
+      "Build a public/family privacy boundary behind the entrance galleries and in front of dining; wide offset family opening at the former prayer position, no door, optional curtain. No internal walls between living, dining and kitchen except pantry",
+      "Kitchen faces backyard with a garden view; family living retains garden access",
+      "Dining moves inward and may be smaller while retaining eight seats and usable clearances",
+      "Enlarge the pantry adjacent to the kitchen and place the refrigerator inside it, retaining appliance ventilation and usable access",
+      "Children reach backyard without crossing master bedroom or office",
+      "Master bedroom has private direct garden access",
+      "Covered verandas provide garden connection, rain protection and shade",
+      "Laundry exclusively on the clean side of the basement, with acoustic isolation and a practical lift route to discreet outdoor drying; no ground-floor laundry",
+      "Compact first-floor replan: office front-left, Child 1 behind it on the side frontage, Children 2 and 3 at rear; all three retain equal sleeping rooms and private connected bath/dressing",
+      "Former private office WC becomes a common indoor first-floor WC with shared-circulation-only access",
+      "Child 2 entrance is near its bathroom side, mirroring the other bedroom approaches",
+      "Large operable glass windows or balcony sliders on every bedroom's outward-facing frontage; provide privacy, shading, insect screens and fall protection as needed",
+      "Keep open prayer in the family living corner clear of garden exit and toilets; lift in front lawn, with smaller but equal basement recreation areas",
+      "Replace the front guest/receiving wet core with the sole front Entrance Gallery and internal drawing/guest doors; widen the House Gallery connecting the family rooms",
+      "Guest bathroom becomes a private corner ensuite; common WC moves to the left end of House Gallery, analogous to the first-floor shared WC",
+      "Move the flush household utility cupboard out of drawing to the right gallery edge beside the stairs, without narrowing the passage; keep cleaning supplies separate from pantry food",
+      "Compact rebuild permits smaller drawing, guest, master, office and gardens; explicitly deduct guest ensuite, pantry and utility cupboard from their parent-room areas",
+      "Master retains one wall-backed toilet cubicle, bathtub, separate shower and one basin with a compact walk-in closet",
+      "All five bed headboards belong against solid walls, not glazing or the middle of rooms; provide two usable bedside tables with lamps for every bed",
+      "Add operable side-wall windows to drawing, family living and the upstairs office; coordinate with furniture, shading and ramp/exhaust locations",
+      "Provide weather protection over roof stairs and the driveway ramp, with drainage intent but no unsupported flood-proof or dust-proof claims",
+      "Gym and gaming rooms have equal usable areas",
+      "Three equal compact upstairs sleeping rooms approximately 14 x 15 ft, each with private directly interconnected bathroom and walk-in dressing",
+      "Front and rear balconies are each continuous shared family spaces without internal privacy dividers; retain perimeter guarding"
+    ]
+  },
+  "style": {
+    "palette": [
+      "warm_white",
+      "wood_or_light_oak_tones",
+      "light_stone",
+      "restrained_charcoal_accents"
+    ],
+    "character": "Comfortable, nature-connected, uncluttered; not flashy",
+    "roof_style": "Accessible terrace with planters and shaded seating",
+    "rendering": {
+      "preview_engine": "BLENDER_EEVEE",
+      "final_engine": "CYCLES"
+    }
+  },
+  "comfort": {
+    "goals": [
+      "shaded_cool_summers",
+      "sunny_warm_winters",
+      "daylight",
+      "cross_ventilation",
+      "quiet",
+      "low_dust_pollen_and_insects"
+    ],
+    "passive_measures": [
+      "insulation",
+      "orientation_specific_shading",
+      "appropriate_glazing",
+      "operable_openings"
+    ],
+    "large_sliding_garden_openings": true,
+    "insect_screens": true,
+    "reduce_glazing_for_comfort_or_privacy": true,
+    "bedroom_privacy": [
+      "curtains",
+      "layout_and_landscape_screening"
+    ],
+    "bedroom_glazing": "Large outward-facing operable glazing in all five bedrooms; daylight/ventilation performance is unverified",
+    "ac_and_heating": "Allowed as needed; reduce demand rather than promise elimination"
+  },
+  "parking": {
+    "floor_id": "basement",
+    "car_count": 3,
+    "design_vehicle": "Explicit large-SUV proxy: 5.25 m long, 2.25 m including mirrors, 2.2 m high; overhang/body sweep and ramp grade/headroom require checking",
+    "independent_car_exit_required": true,
+    "motorbike_count": 2,
+    "scooter_count": 1,
+    "children_bicycle_storage": true,
+    "ev_charging_required": true,
+    "side_front_ramp_acceptable": true,
+    "car_washing": "Desirable subject to drainage and feasibility",
+    "workbench_required": false,
+    "bay_and_ramp_dimensions": null
+  },
+  "floors": [
+    {
+      "id": "basement",
+      "level": -1,
+      "rooms": [
+        {
+          "id": "vehicle_parking",
+          "type": "garage",
+          "required": true,
+          "finish": "hard_floor"
+        },
+        {
+          "id": "gym",
+          "type": "recreation",
+          "required": true,
+          "equipment": [
+            "treadmill",
+            "exercise_cycle",
+            "rack_and_weights",
+            "yoga_space"
+          ]
+        },
+        {
+          "id": "tech_cave",
+          "type": "recreation",
+          "required": true,
+          "furniture": [
+            "gaming_couch",
+            "tv",
+            "console_setup",
+            "movable_table_tennis",
+            "movable_foosball"
+          ]
+        },
+        {
+          "id": "food_storage",
+          "type": "storage",
+          "required": true,
+          "supply_months": 6
+        },
+        {
+          "id": "general_storage",
+          "type": "storage",
+          "required": true,
+          "contents": [
+            "luggage",
+            "tools",
+            "emergency_supplies"
+          ]
+        },
+        {
+          "id": "basement_toilet",
+          "type": "toilet",
+          "required": true,
+          "toilet_count": 1
+        }
+      ],
+      "planning": {
+        "extent": "Smallest workable basement; user permits expansion where needed for garage separation, circulation and the retained program",
+        "arrangement": "SUVs toward front of garage compartment only, behind sealed barrier; rear turning aisle and curved ramp arrival. Compact equal recreation and smaller protected stores/laundry permitted by latest approval",
+        "equal_recreation_areas_required": true,
+        "openness": "Garage compartment separated from occupied/food areas by full-height sealed construction and a protected two-door connection",
+        "protected_clean_route": "Stairs to recreation, food/general stores and WC without crossing the garage",
+        "glass_separation": "Desired where suitable; not a substitute for ventilation/fire design",
+        "daylight_and_fresh_air": "Desired from front, back and sides where feasible",
+        "mechanical_ventilation_and_artificial_lighting": "acceptable",
+        "typical_recreation_visit_hours_range": [
+          2,
+          4
+        ],
+        "finish": "Furnish gym/gaming; utilitarian finishes elsewhere"
+      }
+    },
+    {
+      "id": "ground",
+      "level": 0,
+      "rooms": [
+        {
+          "id": "receiving",
+          "type": "drawing_zone",
+          "required": true,
+          "access_from": [
+            "entrance_gallery"
+          ]
+        },
+        {
+          "id": "entrance_gallery",
+          "type": "circulation",
+          "required": true,
+          "front_entry_only": true,
+          "label_required": true
+        },
+        {
+          "id": "cross_passage",
+          "type": "circulation",
+          "required": true,
+          "label_required": true
+        },
+        {
+          "id": "lift_lobby",
+          "type": "circulation",
+          "required": true,
+          "label_required": true
+        },
+        {
+          "id": "family_living",
+          "type": "living",
+          "required": true
+        },
+        {
+          "id": "dining",
+          "type": "dining",
+          "required": true,
+          "seat_count": 8
+        },
+        {
+          "id": "kitchen",
+          "type": "kitchen",
+          "required": true,
+          "layout": "fully_open_to_family_living_and_dining",
+          "garden_view_required": true,
+          "extraction": "Ducted source extraction to a professionally located outdoor discharge; opening a garden window is not a substitute",
+          "cooking": "Vegetarian Indian cooking including frying/tadka",
+          "equipment": [
+            "island_breakfast_counter",
+            "dishwasher",
+            "induction",
+            "lpg_cooking",
+            "effective_stove_extraction"
+          ]
+        },
+        {
+          "id": "pantry",
+          "type": "food_storage_room",
+          "required": true,
+          "adjacent_to": "kitchen",
+          "equipment": [
+            "refrigerator",
+            "food_shelving"
+          ],
+          "direction": "Slightly enlarge for refrigerator, door operation and ventilation"
+        },
+        {
+          "id": "master_bedroom",
+          "type": "bedroom",
+          "required": true,
+          "bed": "king",
+          "reading_seating_corner": true,
+          "direct_garden_access": true,
+          "attached_bathroom_id": "master_bathroom",
+          "wardrobe_room_id": "master_wardrobe"
+        },
+        {
+          "id": "master_wardrobe",
+          "type": "walk_in_closet",
+          "required": true,
+          "capacity_people": 2,
+          "closable": true
+        },
+        {
+          "id": "master_bathroom",
+          "type": "bathroom_suite",
+          "required": true,
+          "separate_toilet_cubicles": 1,
+          "basin_count": 1,
+          "bathtub_count": 1,
+          "shower_count": 1,
+          "bath_and_shower_share_space": true,
+          "area_direction": "Retain enlarged closet; toilet against a real room wall, single basin"
+        },
+        {
+          "id": "guest_bedroom",
+          "type": "bedroom",
+          "required": true,
+          "bed": "queen",
+          "reading_seating_corner": true,
+          "wardrobe": "freestanding",
+          "attached_bathroom_id": "guest_bathroom",
+          "access_from": [
+            "entrance_gallery",
+            "guest_bathroom"
+          ]
+        },
+        {
+          "id": "guest_bathroom",
+          "type": "bathroom",
+          "required": true,
+          "toilet_count": 1,
+          "access_from": [
+            "guest_bedroom"
+          ],
+          "location_direction": "Private corner inside guest room, excluded from sleeping-zone area",
+          "fixture_details": "Shower, toilet and basin; detailed clearances and plumbing require review"
+        },
+        {
+          "id": "family_toilet",
+          "type": "toilet",
+          "required": true,
+          "toilet_count": 1,
+          "access_from": [
+            "cross_passage"
+          ],
+          "location_direction": "Left end of House Gallery, separate from guest ensuite",
+          "away_from": [
+            "family_living",
+            "prayer_alcove"
+          ]
+        },
+        {
+          "id": "utility_store",
+          "type": "household_utility_cupboard",
+          "required": true,
+          "access_from": [
+            "lift_lobby"
+          ],
+          "form": "Recessed reach-in cupboard at right gallery edge beside stairs, not an under-stair room or passage obstruction",
+          "contents": [
+            "vacuum_cleaner",
+            "mop",
+            "broom",
+            "occasional_household_supplies"
+          ],
+          "separate_from_food": true,
+          "ventilation_and_child_safe_storage_required": true
+        },
+        {
+          "id": "prayer_alcove",
+          "type": "open_alcove",
+          "required": true,
+          "adjacent_to": "family_living",
+          "seating": "floor",
+          "gathering_people_range": [
+            5,
+            10
+          ],
+          "overflow_into_living": true,
+          "daily_diya": true,
+          "screen_required": false,
+          "location_direction": "Same-sized open alcove in the former lift position; no obstruction of backyard entrance/exit and no adjacent WC"
+        }
+      ]
+    },
+    {
+      "id": "first",
+      "level": 1,
+      "rooms": [
+        {
+          "id": "child_bedroom_1",
+          "type": "bedroom",
+          "required": true,
+          "bed": "queen",
+          "reading_seating_corner": true,
+          "study_desk": true,
+          "wardrobe_room_id": "child_wardrobe_1",
+          "attached_bathroom_id": "child_bathroom_1"
+        },
+        {
+          "id": "child_bedroom_2",
+          "type": "bedroom",
+          "required": true,
+          "bed": "queen",
+          "reading_seating_corner": true,
+          "study_desk": true,
+          "wardrobe_room_id": "child_wardrobe_2",
+          "attached_bathroom_id": "child_bathroom_2"
+        },
+        {
+          "id": "child_bedroom_3",
+          "type": "bedroom",
+          "required": true,
+          "bed": "queen",
+          "reading_seating_corner": true,
+          "study_desk": true,
+          "wardrobe_room_id": "child_wardrobe_3",
+          "attached_bathroom_id": "child_bathroom_3"
+        },
+        {
+          "id": "child_bathroom_1",
+          "type": "bathroom",
+          "required": true,
+          "toilet_count": 1,
+          "shower_count": 1,
+          "bathtub_count": 0,
+          "wardrobe_room_id": "child_wardrobe_1"
+        },
+        {
+          "id": "child_bathroom_2",
+          "type": "bathroom",
+          "required": true,
+          "toilet_count": 1,
+          "shower_count": 1,
+          "bathtub_count": 0,
+          "wardrobe_room_id": "child_wardrobe_2"
+        },
+        {
+          "id": "child_bathroom_3",
+          "type": "bathroom",
+          "required": true,
+          "toilet_count": 1,
+          "shower_count": 1,
+          "bathtub_count": 0,
+          "wardrobe_room_id": "child_wardrobe_3"
+        },
+        {
+          "id": "child_wardrobe_1",
+          "type": "walk_in_closet",
+          "required": true
+        },
+        {
+          "id": "child_wardrobe_2",
+          "type": "walk_in_closet",
+          "required": true
+        },
+        {
+          "id": "child_wardrobe_3",
+          "type": "walk_in_closet",
+          "required": true
+        },
+        {
+          "id": "first_common_toilet",
+          "type": "toilet",
+          "required": true,
+          "toilet_count": 1,
+          "access_from": [
+            "core_lobby"
+          ],
+          "private_office_access": false
+        },
+        {
+          "id": "upstairs_lounge",
+          "type": "living",
+          "required": true
+        }
+      ],
+      "equal_bedroom_sizes_required": true,
+      "bedroom_size_direction": "Enlarge all three sleeping rooms equally relative to Study 002; exact dimensions unapproved",
+      "suite_circulation": "Bedroom to private walk-in dressing to bathroom; bathing/dressing interconnected without returning to bedroom; no shared access between children's private suites",
+      "wet_dry_separation": "Soft bath/dressing divider permitted; enclosed showers, extraction and moisture protection still required",
+      "balconies": {
+        "front_and_back_required": true,
+        "access": "Continuous shared front and shared rear balconies, without internal privacy dividers; rear also accessible from lounge without crossing private suites",
+        "furniture": [
+          "chairs",
+          "plants"
+        ],
+        "fall_protection_required": true
+      }
+    }
+  ],
+  "flexible_spaces": [
+    {
+      "id": "office",
+      "type": "study_office",
+      "required": true,
+      "assigned_floor": "first",
+      "allowed_floors": [
+        "ground",
+        "first"
+      ],
+      "preferred_floor": "first",
+      "selection_basis": "Quiet, focus, daylight, garden view and sufficient furniture clearances",
+      "closed_door_required": true,
+      "furniture": [
+        "dedicated_pc_and_monitor_workstation",
+        "separate_rectangular_shared_study_table",
+        "bookshelf",
+        "digital_piano"
+      ],
+      "shared_table_people_range": [
+        2,
+        3
+      ],
+      "separate_from": "tech_cave",
+      "normal_visitor_use": false,
+      "common_toilet_id": "first_common_toilet"
+    },
+    {
+      "id": "laundry",
+      "type": "utility",
+      "required": true,
+      "assigned_floor": "basement",
+      "allowed_floors": [
+        "basement"
+      ],
+      "preferred_floor": "basement",
+      "outdoor_drying": "Discreet area reached using the lift and a shared route; not through bedrooms",
+      "basement_is_fallback": false,
+      "noise_isolation_required": true,
+      "separate_from_food_and_garage_air": true
+    }
+  ],
+  "outdoor": {
+    "front_yard": [
+      "formal_garden_lawn",
+      "morning_tea_breakfast",
+      "outdoor_guest_receiving"
+    ],
+    "backyard": [
+      "children_play_lawn",
+      "trees_mini_forest_edge",
+      "shrubs",
+      "private_seating"
+    ],
+    "covered_verandas_required": true,
+    "back_veranda_swing_required": true,
+    "vegetable_garden_required": false,
+    "pool": {
+      "required": true,
+      "deferred_for_compact_study": true,
+      "deferral_reason": "User accepts deferring pool if needed to fit a workable approximately 5,000 sq ft site; no unverified pool over garage arrival/headroom",
+      "use": "Family cooling, relaxation and children's play; not lap swimming",
+      "max_depth_ft_requested": 4,
+      "dimensions": null,
+      "child_safety_barriers_required": true,
+      "cover_desired": true,
+      "cover_or_shallow_depth_is_not_sufficient_safety": true
+    },
+    "fishpond": {
+      "required": false,
+      "priority": "Below pool, play space and trees"
+    },
+    "roof_terrace": {
+      "id": "roof",
+      "stair_access_required": true,
+      "uses": [
+        "pots_planters",
+        "shaded_seating",
+        "family_gatherings",
+        "solar_panels"
+      ],
+      "extensive_soil_lawn_required": false,
+      "guarding_structure_drainage_and_service_clearances": "requires_professional_review"
+    },
+    "maintenance": "Hired help; frequency and pool automation/service to suit actual needs, not fixed to fortnightly visits"
+  },
+  "services": {
+    "requirements": [
+      "water_storage",
+      "solar_generation",
+      "backup_power",
+      "inverter_batteries",
+      "electrical_equipment",
+      "rainwater_collection",
+      "water_filtration"
+    ],
+    "generator_diesel_and_lpg": "If retained, specialist-reviewed appropriate locations; not general basement storage",
+    "spare_vehicle_fuel_storage_required": false,
+    "service_equipment_locations": "unresolved_pending_safety_and_feasibility_review",
+    "food_and_chemical_storage_separate": true,
+    "occupied_basement_air_separate_from_vehicle_exhaust": true,
+    "garage_compartmentation_required": true,
+    "garage_ventilation_intent": "Independent garage exhaust/makeup air and lower pressure than occupied areas; clean areas independently ventilated; MEP-designed monitoring, controls and commissioning",
+    "exhaust_outlet_constraints": "Garage and kitchen discharges must avoid play lawn, pool/veranda, windows, neighbours and fresh-air intakes; exact routes/outlets unapproved",
+    "basement_drainage_and_waterproofing_required": true,
+    "fire_egress_ventilation_and_diya_safety": "requires_professional_review"
+  },
+  "structural_visualization": {
+    "required": true,
+    "status": "concept_only_not_engineered",
+    "show": [
+      "perimeter_and_core_support_proxies",
+      "beam_proxies",
+      "clear_span_intent_zones"
+    ],
+    "avoid_internal_columns_in": [
+      "family_living",
+      "garage_bays_and_manoeuvring"
+    ],
+    "feasibility": "Unverified; engineering may require internal supports, transfer systems, larger members or plan changes",
+    "display_proxy_dimensions_are_not_structural_sizes": true
+  },
+  "unresolved": [
+    "Actual site, plot area and proportions, orientation, road and neighbouring context",
+    "Jurisdiction, setbacks, permitted coverage/FAR, basement permissions and buildable envelope",
+    "Soil, groundwater, drainage, structural and retaining design, seismic requirements",
+    "Candidate room sizes, furniture dimensions, floor heights, wall thicknesses and reviewed layout",
+    "Basement footprint, SUV swept paths, ramp geometry, access and safe occupied-area separation",
+    "Basement laundry equipment, acoustic isolation, utility ventilation, drainage/pumping and lift route to discreet drying",
+    "Four-stop lift product, cab/door/landing clearances, pit, roof overrun, fire protection and accessibility",
+    "Clear-span living/parking structural feasibility, transfer systems, member sizes, load paths and foundations; display proxies are not engineering",
+    "Pool dimensions/depth profile, barriers and optional fishpond feasibility",
+    "Private guest ensuite, common WC and utility-cupboard clearances, door operation, ventilation and plumbing",
+    "Compact U-stair geometry, slab openings, headroom, landings, guards, fire/escape and accessible gallery/lift approaches",
+    "Service, LPG, generator/diesel, battery and water-storage locations",
+    "Cost breakdown, cost feasibility, approvals and construction start date"
+  ],
+  "web": {
+    "export_format": "glb",
+    "frontend": "react",
+    "language": "typescript",
+    "bundler": "vite",
+    "renderer": "react-three-fiber",
+    "walkthrough": true,
+    "collision_detection": true,
+    "floor_visibility_controls": true,
+    "inspection_layers": [
+      "site",
+      "basement",
+      "ground",
+      "first",
+      "roof"
+    ],
+    "scope": "Complete finished visualization, not a construction or cost certification"
+  }
+}

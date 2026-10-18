@@ -92,6 +92,12 @@ select { width: 100%; border: 1px solid #d5dace; border-radius: 5px; padding: 12
 .canvas-shell > div { touch-action: none; }
 .viewer-toolbar { position: absolute; z-index: 30; display: flex; align-items: center; gap: 10px; bottom: 73px; left: 50%; transform: translateX(-50%); padding: 6px; border-radius: 8px; background: #fffef9ed; border: 1px solid #dce1d3; box-shadow: 0 6px 25px #3d4f3d0a; white-space: nowrap; }
 .camera-switch { display: flex; gap: 2px; }
+.inspection-switch { display: flex; gap: 3px; padding: 4px; margin-top: 12px; border: 1px solid #dce1d3; border-radius: 6px; }
+.inspection-switch button { flex: 1; padding: 9px 6px; border-radius: 4px; background: transparent; color: #7e8973; font-size: 10px; }
+.inspection-switch button.is-active { background: #e9efdf; color: #3b5d3f; }
+.structural-warning { position: absolute; top: 3px; left: 10px; right: 10px; z-index: 20; padding: 9px 12px; border: 1px solid #cbb586; border-radius: 5px; background: #fff6dfed; color: #71582d; pointer-events: none; }
+.structural-warning strong { display: block; font-size: 10px; letter-spacing: .6px; margin-bottom: 4px; }
+.structural-warning span { display: block; font-size: 10px; line-height: 1.5; }
 .camera-switch button, .toolbar-button { display: flex; align-items: center; justify-content: center; gap: 7px; padding: 9px 12px; background: transparent; border-radius: 5px; font-size: 10px; color: #89907e; }
 .camera-switch button.is-active { background: #e9efdf; color: #3b5d3f; }
 .toolbar-button.is-active { color: #3b5d3f; }
@@ -108,6 +114,12 @@ select { width: 100%; border: 1px solid #d5dace; border-radius: 5px; padding: 12
 .floor-tag { position: absolute; top: 0; left: 0; display: flex; align-items: center; gap: 7px; font-size: 10px; font-weight: 500; color: #54674c; white-space: nowrap; padding: 6px 10px; border: 1px solid #d2dbc9; border-radius: 4px; background: #fafbf2e8; box-shadow: 0 3px 10px #3d4f3d08; }
 .floor-tag[hidden] { display: none; }
 .floor-tag > span { color: #91a17e; font-size: 8px; }
+.room-labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.room-tag { position: absolute; left: 0; top: 0; padding: 4px 6px; text-align: center; color: #304e40; background: #fffdf1de; border: 1px solid #cbd5c29c; border-radius: 3px; box-shadow: 0 1px 4px #243d2912; }
+.room-tag strong { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: 10px; line-height: 12px; font-weight: 600; }
+.room-tag span { display: block; font-size: 9px; line-height: 12px; white-space: nowrap; }
+.room-tag[hidden], .room-tag strong[hidden], .room-tag span[hidden] { display: none; }
+.room-tag.is-selected { border-color: #a67b3e; background: #fff7dfed; }
 .dimension-overlay { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; }
 .dimension-overlay path { fill: none; stroke: #526b60; stroke-width: 1; vector-effect: non-scaling-stroke; opacity: .75; }
 .dimension-overlay text { fill: #3e594d; stroke: #f5f5ee; stroke-width: 4px; paint-order: stroke; stroke-linejoin: round; font-size: 10px; font-weight: 600; letter-spacing: .2px; text-anchor: middle; }

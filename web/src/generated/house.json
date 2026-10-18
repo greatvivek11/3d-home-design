@@ -1,19 +1,20 @@
 {
   "schema_version": 2,
-  "study_id": "study-003",
-  "revision": "94b6b775bb58",
+  "study_id": "study-010",
+  "revision": "f895f816d397",
   "visual_quality": "refined-01",
-  "layout_sha256": "784ae6fe54e51c9d338fd7c2275b38cdc8e5f7ae961ff85c4815026e12f3f098",
+  "layout_sha256": "da0938440ab3b9d3e0235d65de1c2d9adf206e4a093f3faf389230420d8019b1",
+  "brief_sha256": "af3a5010000be6a7b1e2db139013aa587d376ea0b5e76a88cc78e62a6d1033f9",
   "compression": "lossless_meshopt",
-  "uncompressed_model_bytes": 30053112,
+  "uncompressed_model_bytes": 32299548,
   "status": "unapproved_concept",
-  "model_bytes": 20622588,
+  "model_bytes": 22876916,
   "mesh_counts": {
-    "site": 22,
-    "basement": 124,
-    "ground": 162,
-    "first": 173,
-    "roof": 41
+    "site": 72,
+    "basement": 259,
+    "ground": 319,
+    "first": 308,
+    "roof": 79
   },
   "site": {
     "width_ft": 70,
@@ -24,62 +25,120 @@
     {
       "id": "basement",
       "title": "Basement",
-      "elevation_m": -3.048,
-      "elevation_ft": -10,
+      "elevation_m": -2.5908,
+      "elevation_ft": -8.5,
       "bounds": {
         "x": 1.2192,
-        "z": -28.041600000000003,
+        "z": -25.2476,
         "width": 15.24,
-        "depth": 26.822400000000002
+        "depth": 24.485599999999998
+      },
+      "footprints": [
+        {
+          "x": 1.2192,
+          "z": -25.2476,
+          "width": 15.24,
+          "depth": 24.485599999999998
+        }
+      ],
+      "area_sq_ft": 4016.6666666666665,
+      "stair": {
+        "rect": [
+          44.5,
+          20.5,
+          9,
+          17
+        ],
+        "flight_width": 4.0,
+        "landing_depth": 4.0,
+        "going": 1.0,
+        "riser_height": 0.5,
+        "risers_per_flight": 10,
+        "entry_edge": "front",
+        "turn": [
+          44.5,
+          33.5,
+          9,
+          4.0
+        ],
+        "landing": [
+          44.5,
+          20.5,
+          9,
+          4.0
+        ],
+        "opening": [
+          44.5,
+          24.5,
+          9,
+          13.0
+        ],
+        "units": "ft",
+        "status": "unapproved_concept"
       },
       "rooms": [
         {
           "id": "gym",
-          "name": "Front gym / clean-air zone",
+          "name": "Gym / equal net recreation",
+          "label": "Gym",
           "kind": "recreation",
-          "width_ft": 16,
-          "depth_ft": 15,
-          "area_sq_ft": 240.0,
+          "width_ft": 22.808823529411764,
+          "depth_ft": 17,
+          "area_sq_ft": 387.75,
           "footprints": [
             {
               "x": 1.3716000000000002,
-              "z": -5.9436,
-              "width": 4.8768,
-              "depth": 4.572
+              "z": -6.096,
+              "width": 6.952129411764706,
+              "depth": 5.1816
             }
           ],
           "bounds": {
             "x": 1.3716000000000002,
-            "z": -5.9436,
-            "width": 4.8768,
-            "depth": 4.572
+            "z": -6.096,
+            "width": 6.952129411764706,
+            "depth": 5.1816
           }
         },
         {
           "id": "tech_cave",
-          "name": "Front gaming / movable table games",
+          "name": "Gaming / equal net recreation",
+          "label": "Gaming",
           "kind": "recreation",
-          "width_ft": 32.5,
-          "depth_ft": 15,
-          "area_sq_ft": 487.5,
+          "width_ft": 25.691176470588236,
+          "depth_ft": 17,
+          "area_sq_ft": 387.75,
           "footprints": [
             {
-              "x": 6.4008,
-              "z": -5.9436,
-              "width": 9.906,
-              "depth": 4.572
+              "x": 8.476129411764706,
+              "z": -3.9624,
+              "width": 5.697070588235294,
+              "depth": 3.048
+            },
+            {
+              "x": 8.476129411764706,
+              "z": -6.096,
+              "width": 5.697070588235294,
+              "depth": 2.1336
+            },
+            {
+              "x": 14.173200000000001,
+              "z": -3.9624,
+              "width": 2.1336,
+              "depth": 3.048
             }
           ],
           "bounds": {
-            "x": 6.4008,
-            "z": -5.9436,
-            "width": 9.906,
-            "depth": 4.572
+            "x": 8.476129411764706,
+            "z": -6.096,
+            "width": 7.830670588235295,
+            "depth": 5.1816
           }
         },
         {
           "id": "front_passage",
-          "name": "Protected recreation / storage passage",
+          "name": "Internal recreation and stair gallery",
+          "label": "Recreation gallery",
           "kind": "circulation",
           "width_ft": 39.5,
           "depth_ft": 4,
@@ -87,14 +146,14 @@
           "footprints": [
             {
               "x": 1.3716000000000002,
-              "z": -7.315200000000001,
+              "z": -7.4676,
               "width": 12.0396,
               "depth": 1.2192
             }
           ],
           "bounds": {
             "x": 1.3716000000000002,
-            "z": -7.315200000000001,
+            "z": -7.4676,
             "width": 12.0396,
             "depth": 1.2192
           }
@@ -102,243 +161,277 @@
         {
           "id": "general_storage",
           "name": "General / emergency store",
+          "label": "General storage",
           "kind": "storage",
-          "width_ft": 15,
-          "depth_ft": 14,
-          "area_sq_ft": 210.0,
+          "width_ft": 14.75,
+          "depth_ft": 6,
+          "area_sq_ft": 88.5,
           "footprints": [
             {
               "x": 1.3716000000000002,
-              "z": -11.7348,
-              "width": 4.572,
-              "depth": 4.2672
+              "z": -9.4488,
+              "width": 4.4958,
+              "depth": 1.8288000000000002
             }
           ],
           "bounds": {
             "x": 1.3716000000000002,
-            "z": -11.7348,
-            "width": 4.572,
-            "depth": 4.2672
+            "z": -9.4488,
+            "width": 4.4958,
+            "depth": 1.8288000000000002
           }
         },
         {
           "id": "food_storage",
-          "name": "Six-month food / grain store",
+          "name": "Food / grain reserve / capacity to review",
+          "label": "Food storage",
           "kind": "storage",
-          "width_ft": 14,
-          "depth_ft": 14,
-          "area_sq_ft": 196.0,
+          "width_ft": 14.75,
+          "depth_ft": 6,
+          "area_sq_ft": 88.5,
           "footprints": [
             {
-              "x": 6.096,
-              "z": -11.7348,
-              "width": 4.2672,
-              "depth": 4.2672
+              "x": 6.0198,
+              "z": -9.4488,
+              "width": 4.4958,
+              "depth": 1.8288000000000002
             }
           ],
           "bounds": {
-            "x": 6.096,
-            "z": -11.7348,
-            "width": 4.2672,
-            "depth": 4.2672
+            "x": 6.0198,
+            "z": -9.4488,
+            "width": 4.4958,
+            "depth": 1.8288000000000002
           }
         },
         {
           "id": "clean_spine",
-          "name": "Protected route / stairs to recreation",
+          "name": "Protected basement gallery",
+          "label": "Basement gallery",
           "kind": "circulation",
-          "width_ft": 9.5,
-          "depth_ft": 16,
-          "area_sq_ft": 152.0,
-          "footprints": [
-            {
-              "x": 10.515600000000001,
-              "z": -12.3444,
-              "width": 2.8956,
-              "depth": 4.8768
-            }
-          ],
-          "bounds": {
-            "x": 10.515600000000001,
-            "z": -12.3444,
-            "width": 2.8956,
-            "depth": 4.8768
-          }
-        },
-        {
-          "id": "stairs",
-          "name": "Internal U-stair",
-          "kind": "stairs",
           "width_ft": 9,
           "depth_ft": 20,
-          "area_sq_ft": 180.0,
+          "area_sq_ft": 180,
           "footprints": [
             {
-              "x": 13.563600000000001,
-              "z": -12.3444,
+              "x": 10.668000000000001,
+              "z": -13.716000000000001,
               "width": 2.7432000000000003,
               "depth": 6.096
             }
           ],
           "bounds": {
-            "x": 13.563600000000001,
-            "z": -12.3444,
+            "x": 10.668000000000001,
+            "z": -13.716000000000001,
             "width": 2.7432000000000003,
             "depth": 6.096
           }
         },
         {
-          "id": "service_reserve",
-          "name": "Garage plant reserve / no fuel storage",
-          "kind": "service",
-          "width_ft": 19,
-          "depth_ft": 7,
-          "area_sq_ft": 133.0,
-          "footprints": [
-            {
-              "x": 1.3716000000000002,
-              "z": -14.020800000000001,
-              "width": 5.7912,
-              "depth": 2.1336
-            }
-          ],
-          "bounds": {
-            "x": 1.3716000000000002,
-            "z": -14.020800000000001,
-            "width": 5.7912,
-            "depth": 2.1336
-          }
-        },
-        {
-          "id": "basement_toilet",
-          "name": "Clean-side basement toilet",
-          "kind": "bathroom",
-          "width_ft": 9.5,
-          "depth_ft": 7,
-          "area_sq_ft": 66.5,
-          "footprints": [
-            {
-              "x": 7.315200000000001,
-              "z": -14.020800000000001,
-              "width": 2.8956,
-              "depth": 2.1336
-            }
-          ],
-          "bounds": {
-            "x": 7.315200000000001,
-            "z": -14.020800000000001,
-            "width": 2.8956,
-            "depth": 2.1336
-          }
-        },
-        {
-          "id": "clean_lobby",
-          "name": "Protected clean-side lobby",
-          "kind": "circulation",
-          "width_ft": 10,
-          "depth_ft": 5,
-          "area_sq_ft": 50,
-          "footprints": [
-            {
-              "x": 10.3632,
-              "z": -14.020800000000001,
-              "width": 3.048,
-              "depth": 1.524
-            }
-          ],
-          "bounds": {
-            "x": 10.3632,
-            "z": -14.020800000000001,
-            "width": 3.048,
-            "depth": 1.524
-          }
-        },
-        {
-          "id": "garage_airlock",
-          "name": "Garage airlock / two closing doors",
-          "kind": "service",
+          "id": "stairs",
+          "name": "Internal U-stair / front full-floor landing",
+          "label": "Stairs",
+          "kind": "stairs",
           "width_ft": 9,
-          "depth_ft": 5,
-          "area_sq_ft": 45.0,
+          "depth_ft": 17,
+          "area_sq_ft": 153.0,
           "footprints": [
             {
               "x": 13.563600000000001,
-              "z": -14.020800000000001,
+              "z": -11.43,
               "width": 2.7432000000000003,
-              "depth": 1.524
+              "depth": 5.1816
             }
           ],
           "bounds": {
             "x": 13.563600000000001,
-            "z": -14.020800000000001,
+            "z": -11.43,
             "width": 2.7432000000000003,
+            "depth": 5.1816
+          }
+        },
+        {
+          "id": "laundry",
+          "name": "Clean-side basement laundry",
+          "label": "Laundry",
+          "kind": "service",
+          "width_ft": 23.5,
+          "depth_ft": 5,
+          "area_sq_ft": 117.5,
+          "footprints": [
+            {
+              "x": 1.3716000000000002,
+              "z": -12.192,
+              "width": 7.162800000000001,
+              "depth": 1.524
+            }
+          ],
+          "bounds": {
+            "x": 1.3716000000000002,
+            "z": -12.192,
+            "width": 7.162800000000001,
             "depth": 1.524
           }
         },
         {
+          "id": "basement_toilet",
+          "name": "Clean-side basement WC",
+          "label": "Basement toilet",
+          "kind": "bathroom",
+          "width_ft": 6,
+          "depth_ft": 5,
+          "area_sq_ft": 30.0,
+          "footprints": [
+            {
+              "x": 8.6868,
+              "z": -12.192,
+              "width": 1.8288000000000002,
+              "depth": 1.524
+            }
+          ],
+          "bounds": {
+            "x": 8.6868,
+            "z": -12.192,
+            "width": 1.8288000000000002,
+            "depth": 1.524
+          }
+        },
+        {
+          "id": "clean_lobby",
+          "name": "Clean-side garage airlock lobby",
+          "label": "Airlock lobby",
+          "kind": "circulation",
+          "width_ft": 9,
+          "depth_ft": 7,
+          "area_sq_ft": 63,
+          "footprints": [
+            {
+              "x": 10.668000000000001,
+              "z": -13.716000000000001,
+              "width": 2.7432000000000003,
+              "depth": 2.1336
+            }
+          ],
+          "bounds": {
+            "x": 10.668000000000001,
+            "z": -13.716000000000001,
+            "width": 2.7432000000000003,
+            "depth": 2.1336
+          }
+        },
+        {
+          "id": "lift",
+          "name": "Front-lawn lift / internal stair landing",
+          "label": "Front lift",
+          "kind": "lift",
+          "width_ft": 7,
+          "depth_ft": 7,
+          "area_sq_ft": 49.0,
+          "footprints": [
+            {
+              "x": 14.173200000000001,
+              "z": -6.096,
+              "width": 2.1336,
+              "depth": 2.1336
+            }
+          ],
+          "bounds": {
+            "x": 14.173200000000001,
+            "z": -6.096,
+            "width": 2.1336,
+            "depth": 2.1336
+          }
+        },
+        {
+          "id": "garage_airlock",
+          "name": "Protected two-door garage airlock",
+          "label": "Garage airlock",
+          "kind": "service",
+          "width_ft": 9,
+          "depth_ft": 7,
+          "area_sq_ft": 63.0,
+          "footprints": [
+            {
+              "x": 13.563600000000001,
+              "z": -13.716000000000001,
+              "width": 2.7432000000000003,
+              "depth": 2.1336
+            }
+          ],
+          "bounds": {
+            "x": 13.563600000000001,
+            "z": -13.716000000000001,
+            "width": 2.7432000000000003,
+            "depth": 2.1336
+          }
+        },
+        {
           "id": "drive_aisle",
-          "name": "Garage manoeuvring aisle / swept paths pending",
+          "name": "Rear SUV arrival / manoeuvring reserve",
+          "label": "Turning aisle",
           "kind": "circulation",
           "width_ft": 49,
-          "depth_ft": 25.5,
-          "area_sq_ft": 1249.5,
+          "depth_ft": 16.83333333333333,
+          "area_sq_ft": 824.8333333333331,
           "footprints": [
             {
               "x": 1.3716000000000002,
-              "z": -21.945600000000002,
+              "z": -25.0952,
               "width": 14.9352,
-              "depth": 7.7724
+              "depth": 5.130799999999999
             }
           ],
           "bounds": {
             "x": 1.3716000000000002,
-            "z": -21.945600000000002,
+            "z": -25.0952,
             "width": 14.9352,
-            "depth": 7.7724
+            "depth": 5.130799999999999
           }
         },
         {
           "id": "vehicle_parking",
-          "name": "Rear SUV bays / beside ramp entry",
+          "name": "Three SUV bays / front of garage only",
+          "label": "SUV bays",
           "kind": "garage",
-          "width_ft": 36,
-          "depth_ft": 19,
-          "area_sq_ft": 684.0,
+          "width_ft": 33,
+          "depth_ft": 19.5,
+          "area_sq_ft": 643.5,
           "footprints": [
             {
               "x": 1.3716000000000002,
-              "z": -27.889200000000002,
-              "width": 10.972800000000001,
-              "depth": 5.7912
+              "z": -19.812,
+              "width": 10.0584,
+              "depth": 5.9436
             }
           ],
           "bounds": {
             "x": 1.3716000000000002,
-            "z": -27.889200000000002,
-            "width": 10.972800000000001,
-            "depth": 5.7912
+            "z": -19.812,
+            "width": 10.0584,
+            "depth": 5.9436
           }
         },
         {
           "id": "two_wheelers",
-          "name": "Garage bikes / scooter / cycles",
+          "name": "Bikes / scooter / cycles",
+          "label": "Two-wheelers",
           "kind": "garage",
-          "width_ft": 12.5,
-          "depth_ft": 9,
-          "area_sq_ft": 112.5,
+          "width_ft": 6,
+          "depth_ft": 19.5,
+          "area_sq_ft": 117.0,
           "footprints": [
             {
-              "x": 12.4968,
-              "z": -27.889200000000002,
-              "width": 3.81,
-              "depth": 2.7432000000000003
+              "x": 11.5824,
+              "z": -19.812,
+              "width": 1.8288000000000002,
+              "depth": 5.9436
             }
           ],
           "bounds": {
-            "x": 12.4968,
-            "z": -27.889200000000002,
-            "width": 3.81,
-            "depth": 2.7432000000000003
+            "x": 11.5824,
+            "z": -19.812,
+            "width": 1.8288000000000002,
+            "depth": 5.9436
           }
         }
       ]
@@ -346,238 +439,483 @@
     {
       "id": "ground",
       "title": "Ground floor",
-      "elevation_m": 0.0,
-      "elevation_ft": 0,
+      "elevation_m": 0.45720000000000005,
+      "elevation_ft": 1.5,
       "bounds": {
         "x": 1.2192,
         "z": -21.336000000000002,
         "width": 15.24,
-        "depth": 15.24
+        "depth": 17.526
+      },
+      "footprints": [
+        {
+          "x": 1.2192,
+          "z": -21.336000000000002,
+          "width": 15.24,
+          "depth": 15.24
+        },
+        {
+          "x": 14.020800000000001,
+          "z": -6.096,
+          "width": 2.4384,
+          "depth": 2.286
+        }
+      ],
+      "area_sq_ft": 2560.0,
+      "stair": {
+        "rect": [
+          44.5,
+          20.5,
+          9,
+          17
+        ],
+        "flight_width": 4.0,
+        "landing_depth": 4.0,
+        "going": 1.0,
+        "riser_height": 0.55,
+        "risers_per_flight": 10,
+        "entry_edge": "front",
+        "turn": [
+          44.5,
+          33.5,
+          9,
+          4.0
+        ],
+        "landing": [
+          44.5,
+          20.5,
+          9,
+          4.0
+        ],
+        "opening": [
+          44.5,
+          24.5,
+          9,
+          13.0
+        ],
+        "units": "ft",
+        "status": "unapproved_concept"
       },
       "rooms": [
         {
           "id": "receiving",
-          "name": "Drawing / receiving",
+          "name": "Front drawing / visitor reception",
+          "label": "Drawing",
           "kind": "living",
-          "width_ft": 16,
-          "depth_ft": 16,
-          "area_sq_ft": 256.0,
+          "width_ft": 18.5,
+          "depth_ft": 17,
+          "area_sq_ft": 314.5,
           "footprints": [
             {
               "x": 1.3716000000000002,
-              "z": -11.125200000000001,
-              "width": 4.8768,
-              "depth": 4.8768
+              "z": -11.43,
+              "width": 5.638800000000001,
+              "depth": 5.1816
             }
           ],
           "bounds": {
             "x": 1.3716000000000002,
-            "z": -11.125200000000001,
-            "width": 4.8768,
-            "depth": 4.8768
+            "z": -11.43,
+            "width": 5.638800000000001,
+            "depth": 5.1816
           }
         },
         {
-          "id": "guest_shared_bathroom",
-          "name": "Guest / visitor bath",
-          "kind": "bathroom",
-          "width_ft": 6.5,
-          "depth_ft": 8,
-          "area_sq_ft": 52.0,
+          "id": "entrance_gallery",
+          "name": "Entrance Gallery / 4 ft controlled front entry",
+          "label": "Entrance gallery",
+          "kind": "circulation",
+          "width_ft": 4,
+          "depth_ft": 17,
+          "area_sq_ft": 68.0,
           "footprints": [
             {
-              "x": 6.4008,
-              "z": -8.6868,
-              "width": 1.9812,
-              "depth": 2.4384
+              "x": 7.162800000000001,
+              "z": -11.43,
+              "width": 1.2192,
+              "depth": 5.1816
             }
           ],
           "bounds": {
-            "x": 6.4008,
-            "z": -8.6868,
-            "width": 1.9812,
-            "depth": 2.4384
+            "x": 7.162800000000001,
+            "z": -11.43,
+            "width": 1.2192,
+            "depth": 5.1816
           }
         },
         {
           "id": "guest_bedroom",
-          "name": "Guest bedroom",
+          "name": "Enlarged front guest bedroom / private ensuite",
+          "label": "Guest bedroom",
           "kind": "bedroom",
-          "width_ft": 16,
-          "depth_ft": 16,
-          "area_sq_ft": 256.0,
+          "width_ft": 11.5,
+          "depth_ft": 17,
+          "area_sq_ft": 157.0,
           "footprints": [
             {
               "x": 8.5344,
-              "z": -11.125200000000001,
-              "width": 4.8768,
-              "depth": 4.8768
+              "z": -9.2964,
+              "width": 1.8288000000000002,
+              "depth": 3.048
+            },
+            {
+              "x": 8.5344,
+              "z": -11.43,
+              "width": 1.8288000000000002,
+              "depth": 2.1336
+            },
+            {
+              "x": 10.3632,
+              "z": -9.2964,
+              "width": 1.6764000000000001,
+              "depth": 3.048
             }
           ],
           "bounds": {
             "x": 8.5344,
-            "z": -11.125200000000001,
-            "width": 4.8768,
-            "depth": 4.8768
+            "z": -11.43,
+            "width": 3.5052000000000003,
+            "depth": 5.1816
           }
         },
         {
-          "id": "stairs",
-          "name": "Internal U-stair",
-          "kind": "stairs",
-          "width_ft": 9,
-          "depth_ft": 20,
-          "area_sq_ft": 180.0,
+          "id": "guest_bathroom",
+          "name": "Guest private shower ensuite",
+          "label": "Guest ensuite",
+          "kind": "bathroom",
+          "width_ft": 5.5,
+          "depth_ft": 7,
+          "area_sq_ft": 38.5,
           "footprints": [
             {
-              "x": 13.563600000000001,
-              "z": -12.3444,
-              "width": 2.7432000000000003,
-              "depth": 6.096
+              "x": 10.3632,
+              "z": -11.43,
+              "width": 1.6764000000000001,
+              "depth": 2.1336
             }
           ],
           "bounds": {
-            "x": 13.563600000000001,
-            "z": -12.3444,
-            "width": 2.7432000000000003,
-            "depth": 6.096
+            "x": 10.3632,
+            "z": -11.43,
+            "width": 1.6764000000000001,
+            "depth": 2.1336
           }
         },
         {
-          "id": "master_wardrobe",
-          "name": "Walk-in wardrobe for two",
-          "kind": "storage",
+          "id": "family_toilet",
+          "name": "Shared ground WC / left House Gallery end",
+          "label": "Common WC",
+          "kind": "bathroom",
           "width_ft": 8,
-          "depth_ft": 10,
-          "area_sq_ft": 80.0,
+          "depth_ft": 5,
+          "area_sq_ft": 40.0,
           "footprints": [
             {
               "x": 1.3716000000000002,
-              "z": -15.6972,
+              "z": -13.1064,
               "width": 2.4384,
-              "depth": 3.048
+              "depth": 1.524
             }
           ],
           "bounds": {
             "x": 1.3716000000000002,
-            "z": -15.6972,
+            "z": -13.1064,
             "width": 2.4384,
-            "depth": 3.048
+            "depth": 1.524
           }
         },
         {
-          "id": "master_bathroom",
-          "name": "Master bath / two WCs",
-          "kind": "bathroom",
-          "width_ft": 13,
-          "depth_ft": 10,
-          "area_sq_ft": 130.0,
+          "id": "cross_passage",
+          "name": "Transverse House Gallery / 4 ft clear to end cupboard",
+          "label": "House gallery",
+          "kind": "circulation",
+          "width_ft": 38,
+          "depth_ft": 4,
+          "area_sq_ft": 152,
           "footprints": [
             {
               "x": 3.9624,
-              "z": -15.6972,
-              "width": 3.9624,
-              "depth": 3.048
+              "z": -12.8016,
+              "width": 11.5824,
+              "depth": 1.2192
             }
           ],
           "bounds": {
             "x": 3.9624,
-            "z": -15.6972,
-            "width": 3.9624,
-            "depth": 3.048
+            "z": -12.8016,
+            "width": 11.5824,
+            "depth": 1.2192
           }
         },
         {
-          "id": "master_bedroom",
-          "name": "Master suite / garden access",
-          "kind": "bedroom",
-          "width_ft": 21.5,
-          "depth_ft": 17.5,
-          "area_sq_ft": 376.25,
+          "id": "lift_lobby",
+          "name": "Internal stair gallery / no external link",
+          "label": "Stair gallery",
+          "kind": "circulation",
+          "width_ft": 4,
+          "depth_ft": 17,
+          "area_sq_ft": 68.0,
           "footprints": [
             {
-              "x": 1.3716000000000002,
-              "z": -21.183600000000002,
-              "width": 6.5532,
-              "depth": 5.3340000000000005
+              "x": 12.192,
+              "z": -11.43,
+              "width": 1.2192,
+              "depth": 5.1816
             }
           ],
           "bounds": {
-            "x": 1.3716000000000002,
-            "z": -21.183600000000002,
-            "width": 6.5532,
-            "depth": 5.3340000000000005
+            "x": 12.192,
+            "z": -11.43,
+            "width": 1.2192,
+            "depth": 5.1816
+          }
+        },
+        {
+          "id": "stairs",
+          "name": "Internal U-stair / front full-floor landing",
+          "label": "Stairs",
+          "kind": "stairs",
+          "width_ft": 9,
+          "depth_ft": 17,
+          "area_sq_ft": 153.0,
+          "footprints": [
+            {
+              "x": 13.563600000000001,
+              "z": -11.43,
+              "width": 2.7432000000000003,
+              "depth": 5.1816
+            }
+          ],
+          "bounds": {
+            "x": 13.563600000000001,
+            "z": -11.43,
+            "width": 2.7432000000000003,
+            "depth": 5.1816
+          }
+        },
+        {
+          "id": "lift",
+          "name": "Front-lawn lift / internal stair landing",
+          "label": "Front lift",
+          "kind": "lift",
+          "width_ft": 7,
+          "depth_ft": 7,
+          "area_sq_ft": 49.0,
+          "footprints": [
+            {
+              "x": 14.173200000000001,
+              "z": -6.096,
+              "width": 2.1336,
+              "depth": 2.1336
+            }
+          ],
+          "bounds": {
+            "x": 14.173200000000001,
+            "z": -6.096,
+            "width": 2.1336,
+            "depth": 2.1336
           }
         },
         {
           "id": "dining",
-          "name": "Compact eight-seat dining",
+          "name": "Open eight-seat dining / screened from House Gallery",
+          "label": "Dining",
           "kind": "living",
           "width_ft": 12,
-          "depth_ft": 13.5,
-          "area_sq_ft": 162.0,
+          "depth_ft": 12.5,
+          "area_sq_ft": 150.0,
           "footprints": [
             {
               "x": 8.077200000000001,
               "z": -16.764,
               "width": 3.6576000000000004,
-              "depth": 4.1148
+              "depth": 3.81
             }
           ],
           "bounds": {
             "x": 8.077200000000001,
             "z": -16.764,
             "width": 3.6576000000000004,
-            "depth": 4.1148
+            "depth": 3.81
           }
         },
         {
-          "id": "family_toilet",
-          "name": "Family WC",
-          "kind": "bathroom",
-          "width_ft": 5,
-          "depth_ft": 6,
-          "area_sq_ft": 30.0,
+          "id": "utility_store",
+          "name": "Household cupboard / gallery end / outside living",
+          "label": "Utility cupboard",
+          "kind": "storage",
+          "width_ft": 2,
+          "depth_ft": 4,
+          "area_sq_ft": 8.0,
+          "footprints": [
+            {
+              "x": 15.6972,
+              "z": -12.8016,
+              "width": 0.6096,
+              "depth": 1.2192
+            }
+          ],
+          "bounds": {
+            "x": 15.6972,
+            "z": -12.8016,
+            "width": 0.6096,
+            "depth": 1.2192
+          }
+        },
+        {
+          "id": "family_living",
+          "name": "Open rear family living",
+          "label": "Family living",
+          "kind": "living",
+          "width_ft": 14.5,
+          "depth_ft": 27,
+          "area_sq_ft": 343.5,
           "footprints": [
             {
               "x": 11.8872,
-              "z": -14.478000000000002,
-              "width": 1.524,
-              "depth": 1.8288000000000002
+              "z": -18.7452,
+              "width": 1.8288000000000002,
+              "depth": 5.7912
+            },
+            {
+              "x": 13.716000000000001,
+              "z": -18.7452,
+              "width": 2.5908,
+              "depth": 5.7912
+            },
+            {
+              "x": 13.716000000000001,
+              "z": -21.183600000000002,
+              "width": 2.5908,
+              "depth": 2.4384
             }
           ],
           "bounds": {
             "x": 11.8872,
-            "z": -14.478000000000002,
-            "width": 1.524,
-            "depth": 1.8288000000000002
+            "z": -21.183600000000002,
+            "width": 4.4196,
+            "depth": 8.2296
           }
         },
         {
-          "id": "laundry",
-          "name": "Laundry / front outdoor route",
-          "kind": "service",
-          "width_ft": 9,
-          "depth_ft": 6,
-          "area_sq_ft": 54.0,
+          "id": "prayer_alcove",
+          "name": "Open prayer corner / clear of entry and WCs",
+          "label": "Prayer",
+          "kind": "prayer",
+          "width_ft": 7,
+          "depth_ft": 6.5,
+          "area_sq_ft": 45.5,
           "footprints": [
             {
-              "x": 13.563600000000001,
-              "z": -14.478000000000002,
-              "width": 2.7432000000000003,
-              "depth": 1.8288000000000002
+              "x": 14.173200000000001,
+              "z": -16.002000000000002,
+              "width": 2.1336,
+              "depth": 1.9812
             }
           ],
           "bounds": {
-            "x": 13.563600000000001,
-            "z": -14.478000000000002,
+            "x": 14.173200000000001,
+            "z": -16.002000000000002,
+            "width": 2.1336,
+            "depth": 1.9812
+          }
+        },
+        {
+          "id": "master_entry",
+          "name": "Private master entrance / approved 3 ft passage",
+          "label": "Master entry",
+          "kind": "circulation",
+          "width_ft": 3,
+          "depth_ft": 9.5,
+          "area_sq_ft": 28.5,
+          "footprints": [
+            {
+              "x": 7.010400000000001,
+              "z": -15.8496,
+              "width": 0.9144000000000001,
+              "depth": 2.8956
+            }
+          ],
+          "bounds": {
+            "x": 7.010400000000001,
+            "z": -15.8496,
+            "width": 0.9144000000000001,
+            "depth": 2.8956
+          }
+        },
+        {
+          "id": "master_bedroom",
+          "name": "Rear master / private garden access",
+          "label": "Master bedroom",
+          "kind": "bedroom",
+          "width_ft": 21.5,
+          "depth_ft": 17,
+          "area_sq_ft": 365.5,
+          "footprints": [
+            {
+              "x": 1.3716000000000002,
+              "z": -21.183600000000002,
+              "width": 6.5532,
+              "depth": 5.1816
+            }
+          ],
+          "bounds": {
+            "x": 1.3716000000000002,
+            "z": -21.183600000000002,
+            "width": 6.5532,
+            "depth": 5.1816
+          }
+        },
+        {
+          "id": "master_wardrobe",
+          "name": "Private master walk-in dressing / bathroom access",
+          "label": "Master dressing",
+          "kind": "storage",
+          "width_ft": 9,
+          "depth_ft": 9.5,
+          "area_sq_ft": 85.5,
+          "footprints": [
+            {
+              "x": 4.1148,
+              "z": -15.8496,
+              "width": 2.7432000000000003,
+              "depth": 2.8956
+            }
+          ],
+          "bounds": {
+            "x": 4.1148,
+            "z": -15.8496,
             "width": 2.7432000000000003,
-            "depth": 1.8288000000000002
+            "depth": 2.8956
+          }
+        },
+        {
+          "id": "master_bathroom",
+          "name": "Left master bath / access through private dressing",
+          "label": "Master bath",
+          "kind": "bathroom",
+          "width_ft": 8.5,
+          "depth_ft": 8.5,
+          "area_sq_ft": 72.25,
+          "footprints": [
+            {
+              "x": 1.3716000000000002,
+              "z": -15.8496,
+              "width": 2.5908,
+              "depth": 2.5908
+            }
+          ],
+          "bounds": {
+            "x": 1.3716000000000002,
+            "z": -15.8496,
+            "width": 2.5908,
+            "depth": 2.5908
           }
         },
         {
           "id": "kitchen",
-          "name": "Backyard kitchen / island / extraction hood",
+          "name": "Open garden kitchen / adjacent pantry refrigerator",
+          "label": "Kitchen",
           "kind": "kitchen",
           "width_ft": 12,
           "depth_ft": 14,
@@ -598,81 +936,26 @@
           }
         },
         {
-          "id": "family_living",
-          "name": "Expanded L-shaped family living / garden",
-          "kind": "living",
-          "width_ft": 14.5,
-          "depth_ft": 21.5,
-          "area_sq_ft": 281.75,
-          "footprints": [
-            {
-              "x": 11.8872,
-              "z": -19.3548,
-              "width": 1.524,
-              "depth": 4.7244
-            },
-            {
-              "x": 13.411200000000001,
-              "z": -19.3548,
-              "width": 2.8956,
-              "depth": 4.7244
-            },
-            {
-              "x": 13.411200000000001,
-              "z": -21.183600000000002,
-              "width": 2.8956,
-              "depth": 1.8288000000000002
-            }
-          ],
-          "bounds": {
-            "x": 11.8872,
-            "z": -21.183600000000002,
-            "width": 4.4196,
-            "depth": 6.5532
-          }
-        },
-        {
           "id": "pantry",
-          "name": "Kitchen-adjacent pantry",
+          "name": "Enlarged food pantry / refrigerator",
+          "label": "Pantry + fridge",
           "kind": "storage",
-          "width_ft": 5,
-          "depth_ft": 6,
-          "area_sq_ft": 30.0,
+          "width_ft": 6,
+          "depth_ft": 8,
+          "area_sq_ft": 48.0,
           "footprints": [
             {
               "x": 11.8872,
               "z": -21.183600000000002,
-              "width": 1.524,
-              "depth": 1.8288000000000002
+              "width": 1.8288000000000002,
+              "depth": 2.4384
             }
           ],
           "bounds": {
             "x": 11.8872,
             "z": -21.183600000000002,
-            "width": 1.524,
-            "depth": 1.8288000000000002
-          }
-        },
-        {
-          "id": "prayer_alcove",
-          "name": "Prayer alcove / living overflow",
-          "kind": "prayer",
-          "width_ft": 4,
-          "depth_ft": 4,
-          "area_sq_ft": 16,
-          "footprints": [
-            {
-              "x": 14.9352,
-              "z": -21.031200000000002,
-              "width": 1.2192,
-              "depth": 1.2192
-            }
-          ],
-          "bounds": {
-            "x": 14.9352,
-            "z": -21.031200000000002,
-            "width": 1.2192,
-            "depth": 1.2192
+            "width": 1.8288000000000002,
+            "depth": 2.4384
           }
         }
       ]
@@ -680,32 +963,197 @@
     {
       "id": "first",
       "title": "First floor",
-      "elevation_m": 3.3528000000000002,
-      "elevation_ft": 11,
+      "elevation_m": 3.81,
+      "elevation_ft": 12.5,
       "bounds": {
         "x": 1.2192,
         "z": -21.336000000000002,
         "width": 15.24,
-        "depth": 15.24
+        "depth": 17.526
+      },
+      "footprints": [
+        {
+          "x": 1.2192,
+          "z": -21.336000000000002,
+          "width": 15.24,
+          "depth": 15.24
+        },
+        {
+          "x": 14.020800000000001,
+          "z": -6.096,
+          "width": 2.4384,
+          "depth": 2.286
+        }
+      ],
+      "area_sq_ft": 2560.0,
+      "stair": {
+        "rect": [
+          44.5,
+          20.5,
+          9,
+          17
+        ],
+        "flight_width": 4.0,
+        "landing_depth": 4.0,
+        "going": 1.0,
+        "riser_height": 0.55,
+        "risers_per_flight": 10,
+        "entry_edge": "front",
+        "turn": [
+          44.5,
+          33.5,
+          9,
+          4.0
+        ],
+        "landing": [
+          44.5,
+          20.5,
+          9,
+          4.0
+        ],
+        "opening": [
+          44.5,
+          24.5,
+          9,
+          13.0
+        ],
+        "units": "ft",
+        "status": "unapproved_concept"
       },
       "rooms": [
         {
+          "id": "office",
+          "name": "Front-left office / piano / reclaimed suite strip",
+          "label": "Office",
+          "kind": "office",
+          "width_ft": 12,
+          "depth_ft": 17,
+          "area_sq_ft": 204.0,
+          "footprints": [
+            {
+              "x": 1.3716000000000002,
+              "z": -11.43,
+              "width": 3.6576000000000004,
+              "depth": 5.1816
+            }
+          ],
+          "bounds": {
+            "x": 1.3716000000000002,
+            "z": -11.43,
+            "width": 3.6576000000000004,
+            "depth": 5.1816
+          }
+        },
+        {
+          "id": "core_lobby",
+          "name": "Internal stair gallery / front shared landing",
+          "label": "Stair gallery",
+          "kind": "circulation",
+          "width_ft": 4,
+          "depth_ft": 17,
+          "area_sq_ft": 68.0,
+          "footprints": [
+            {
+              "x": 12.192,
+              "z": -11.43,
+              "width": 1.2192,
+              "depth": 5.1816
+            }
+          ],
+          "bounds": {
+            "x": 12.192,
+            "z": -11.43,
+            "width": 1.2192,
+            "depth": 5.1816
+          }
+        },
+        {
+          "id": "first_common_toilet",
+          "name": "Compact common first-floor WC / beside stairs",
+          "label": "Shared WC",
+          "kind": "bathroom",
+          "width_ft": 6,
+          "depth_ft": 5.5,
+          "area_sq_ft": 33.0,
+          "footprints": [
+            {
+              "x": 14.478000000000002,
+              "z": -13.2588,
+              "width": 1.8288000000000002,
+              "depth": 1.6764000000000001
+            }
+          ],
+          "bounds": {
+            "x": 14.478000000000002,
+            "z": -13.2588,
+            "width": 1.8288000000000002,
+            "depth": 1.6764000000000001
+          }
+        },
+        {
+          "id": "stairs",
+          "name": "Internal U-stair / front full-floor landing",
+          "label": "Stairs",
+          "kind": "stairs",
+          "width_ft": 9,
+          "depth_ft": 17,
+          "area_sq_ft": 153.0,
+          "footprints": [
+            {
+              "x": 13.563600000000001,
+              "z": -11.43,
+              "width": 2.7432000000000003,
+              "depth": 5.1816
+            }
+          ],
+          "bounds": {
+            "x": 13.563600000000001,
+            "z": -11.43,
+            "width": 2.7432000000000003,
+            "depth": 5.1816
+          }
+        },
+        {
+          "id": "lift",
+          "name": "Front-lawn lift / internal stair landing",
+          "label": "Front lift",
+          "kind": "lift",
+          "width_ft": 7,
+          "depth_ft": 7,
+          "area_sq_ft": 49.0,
+          "footprints": [
+            {
+              "x": 14.173200000000001,
+              "z": -6.096,
+              "width": 2.1336,
+              "depth": 2.1336
+            }
+          ],
+          "bounds": {
+            "x": 14.173200000000001,
+            "z": -6.096,
+            "width": 2.1336,
+            "depth": 2.1336
+          }
+        },
+        {
           "id": "child_bedroom_1",
-          "name": "Larger Child 1 / queen / desk / reading",
+          "name": "Child 1 / front garden / equal spacious room",
+          "label": "Child 1",
           "kind": "bedroom",
           "width_ft": 16,
           "depth_ft": 17,
           "area_sq_ft": 272.0,
           "footprints": [
             {
-              "x": 1.3716000000000002,
+              "x": 7.162800000000001,
               "z": -11.43,
               "width": 4.8768,
               "depth": 5.1816
             }
           ],
           "bounds": {
-            "x": 1.3716000000000002,
+            "x": 7.162800000000001,
             "z": -11.43,
             "width": 4.8768,
             "depth": 5.1816
@@ -713,29 +1161,89 @@
         },
         {
           "id": "child_bathroom_1",
-          "name": "Child 1 private shower bathroom",
+          "name": "Child 1 private shower bathroom / front suite",
+          "label": "Child 1 bath",
           "kind": "bathroom",
-          "width_ft": 6.5,
-          "depth_ft": 8.5,
-          "area_sq_ft": 55.25,
+          "width_ft": 6,
+          "depth_ft": 8.25,
+          "area_sq_ft": 49.5,
           "footprints": [
             {
-              "x": 6.4008,
-              "z": -8.8392,
-              "width": 1.9812,
+              "x": 5.1816,
+              "z": -8.763,
+              "width": 1.8288000000000002,
+              "depth": 2.5146
+            }
+          ],
+          "bounds": {
+            "x": 5.1816,
+            "z": -8.763,
+            "width": 1.8288000000000002,
+            "depth": 2.5146
+          }
+        },
+        {
+          "id": "child_wardrobe_1",
+          "name": "Child 1 private walk-in dressing / front suite",
+          "label": "Child 1 dressing",
+          "kind": "storage",
+          "width_ft": 6,
+          "depth_ft": 8.25,
+          "area_sq_ft": 49.5,
+          "footprints": [
+            {
+              "x": 5.1816,
+              "z": -11.43,
+              "width": 1.8288000000000002,
+              "depth": 2.5146
+            }
+          ],
+          "bounds": {
+            "x": 5.1816,
+            "z": -11.43,
+            "width": 1.8288000000000002,
+            "depth": 2.5146
+          }
+        },
+        {
+          "id": "upstairs_lounge",
+          "name": "Unified family lounge / no east or west galleries",
+          "label": "Family lounge",
+          "kind": "living",
+          "width_ft": 49,
+          "depth_ft": 14,
+          "area_sq_ft": 653.0,
+          "footprints": [
+            {
+              "x": 1.3716000000000002,
+              "z": -13.2588,
+              "width": 13.1064,
+              "depth": 1.6764000000000001
+            },
+            {
+              "x": 1.3716000000000002,
+              "z": -15.8496,
+              "width": 13.1064,
+              "depth": 2.5908
+            },
+            {
+              "x": 14.478000000000002,
+              "z": -15.8496,
+              "width": 1.8288000000000002,
               "depth": 2.5908
             }
           ],
           "bounds": {
-            "x": 6.4008,
-            "z": -8.8392,
-            "width": 1.9812,
-            "depth": 2.5908
+            "x": 1.3716000000000002,
+            "z": -15.8496,
+            "width": 14.9352,
+            "depth": 4.2672
           }
         },
         {
           "id": "child_bedroom_2",
-          "name": "Larger Child 2 / rear garden / queen",
+          "name": "Child 2 / rear garden / equal spacious room",
+          "label": "Child 2",
           "kind": "bedroom",
           "width_ft": 16,
           "depth_ft": 17,
@@ -756,184 +1264,9 @@
           }
         },
         {
-          "id": "stairs",
-          "name": "Internal U-stair",
-          "kind": "stairs",
-          "width_ft": 9,
-          "depth_ft": 20,
-          "area_sq_ft": 180.0,
-          "footprints": [
-            {
-              "x": 13.563600000000001,
-              "z": -12.3444,
-              "width": 2.7432000000000003,
-              "depth": 6.096
-            }
-          ],
-          "bounds": {
-            "x": 13.563600000000001,
-            "z": -12.3444,
-            "width": 2.7432000000000003,
-            "depth": 6.096
-          }
-        },
-        {
-          "id": "child_wardrobe_1",
-          "name": "Child 1 private walk-in dressing",
-          "kind": "storage",
-          "width_ft": 6.5,
-          "depth_ft": 8,
-          "area_sq_ft": 52.0,
-          "footprints": [
-            {
-              "x": 6.4008,
-              "z": -11.43,
-              "width": 1.9812,
-              "depth": 2.4384
-            }
-          ],
-          "bounds": {
-            "x": 6.4008,
-            "z": -11.43,
-            "width": 1.9812,
-            "depth": 2.4384
-          }
-        },
-        {
-          "id": "office",
-          "name": "Front garden office / piano / private WC",
-          "kind": "office",
-          "width_ft": 16,
-          "depth_ft": 16,
-          "area_sq_ft": 256.0,
-          "footprints": [
-            {
-              "x": 8.5344,
-              "z": -11.125200000000001,
-              "width": 4.8768,
-              "depth": 4.8768
-            }
-          ],
-          "bounds": {
-            "x": 8.5344,
-            "z": -11.125200000000001,
-            "width": 4.8768,
-            "depth": 4.8768
-          }
-        },
-        {
-          "id": "office_toilet",
-          "name": "Private office WC / indoor access only",
-          "kind": "bathroom",
-          "width_ft": 8,
-          "depth_ft": 5,
-          "area_sq_ft": 40,
-          "footprints": [
-            {
-              "x": 8.5344,
-              "z": -12.8016,
-              "width": 2.4384,
-              "depth": 1.524
-            }
-          ],
-          "bounds": {
-            "x": 8.5344,
-            "z": -12.8016,
-            "width": 2.4384,
-            "depth": 1.524
-          }
-        },
-        {
-          "id": "upstairs_lounge",
-          "name": "Seamless shared lounge / open gallery",
-          "kind": "living",
-          "width_ft": 49,
-          "depth_ft": 9.5,
-          "area_sq_ft": 465.5,
-          "footprints": [
-            {
-              "x": 1.3716000000000002,
-              "z": -15.8496,
-              "width": 14.9352,
-              "depth": 2.8956
-            }
-          ],
-          "bounds": {
-            "x": 1.3716000000000002,
-            "z": -15.8496,
-            "width": 14.9352,
-            "depth": 2.8956
-          }
-        },
-        {
-          "id": "child_bedroom_3",
-          "name": "Larger Child 3 / rear garden / queen",
-          "kind": "bedroom",
-          "width_ft": 16,
-          "depth_ft": 17,
-          "area_sq_ft": 272.0,
-          "footprints": [
-            {
-              "x": 1.3716000000000002,
-              "z": -21.183600000000002,
-              "width": 4.8768,
-              "depth": 5.1816
-            }
-          ],
-          "bounds": {
-            "x": 1.3716000000000002,
-            "z": -21.183600000000002,
-            "width": 4.8768,
-            "depth": 5.1816
-          }
-        },
-        {
-          "id": "child_bathroom_3",
-          "name": "Child 3 private shower bathroom",
-          "kind": "bathroom",
-          "width_ft": 5.5,
-          "depth_ft": 9.5,
-          "area_sq_ft": 52.25,
-          "footprints": [
-            {
-              "x": 6.4008,
-              "z": -18.8976,
-              "width": 1.6764000000000001,
-              "depth": 2.8956
-            }
-          ],
-          "bounds": {
-            "x": 6.4008,
-            "z": -18.8976,
-            "width": 1.6764000000000001,
-            "depth": 2.8956
-          }
-        },
-        {
-          "id": "child_wardrobe_3",
-          "name": "Child 3 private walk-in dressing",
-          "kind": "storage",
-          "width_ft": 5.5,
-          "depth_ft": 7,
-          "area_sq_ft": 38.5,
-          "footprints": [
-            {
-              "x": 6.4008,
-              "z": -21.183600000000002,
-              "width": 1.6764000000000001,
-              "depth": 2.1336
-            }
-          ],
-          "bounds": {
-            "x": 6.4008,
-            "z": -21.183600000000002,
-            "width": 1.6764000000000001,
-            "depth": 2.1336
-          }
-        },
-        {
           "id": "child_bathroom_2",
           "name": "Child 2 private shower bathroom",
+          "label": "Child 2 bath",
           "kind": "bathroom",
           "width_ft": 5.5,
           "depth_ft": 9.5,
@@ -956,6 +1289,7 @@
         {
           "id": "child_wardrobe_2",
           "name": "Child 2 private walk-in dressing",
+          "label": "Child 2 dressing",
           "kind": "storage",
           "width_ft": 5.5,
           "depth_ft": 7,
@@ -976,8 +1310,78 @@
           }
         },
         {
+          "id": "child_bedroom_3",
+          "name": "Child 3 / rear garden / equal spacious room",
+          "label": "Child 3",
+          "kind": "bedroom",
+          "width_ft": 16,
+          "depth_ft": 17,
+          "area_sq_ft": 272.0,
+          "footprints": [
+            {
+              "x": 1.3716000000000002,
+              "z": -21.183600000000002,
+              "width": 4.8768,
+              "depth": 5.1816
+            }
+          ],
+          "bounds": {
+            "x": 1.3716000000000002,
+            "z": -21.183600000000002,
+            "width": 4.8768,
+            "depth": 5.1816
+          }
+        },
+        {
+          "id": "child_bathroom_3",
+          "name": "Child 3 private shower bathroom",
+          "label": "Child 3 bath",
+          "kind": "bathroom",
+          "width_ft": 5.5,
+          "depth_ft": 9.5,
+          "area_sq_ft": 52.25,
+          "footprints": [
+            {
+              "x": 6.4008,
+              "z": -18.8976,
+              "width": 1.6764000000000001,
+              "depth": 2.8956
+            }
+          ],
+          "bounds": {
+            "x": 6.4008,
+            "z": -18.8976,
+            "width": 1.6764000000000001,
+            "depth": 2.8956
+          }
+        },
+        {
+          "id": "child_wardrobe_3",
+          "name": "Child 3 private walk-in dressing",
+          "label": "Child 3 dressing",
+          "kind": "storage",
+          "width_ft": 5.5,
+          "depth_ft": 7,
+          "area_sq_ft": 38.5,
+          "footprints": [
+            {
+              "x": 6.4008,
+              "z": -21.183600000000002,
+              "width": 1.6764000000000001,
+              "depth": 2.1336
+            }
+          ],
+          "bounds": {
+            "x": 6.4008,
+            "z": -21.183600000000002,
+            "width": 1.6764000000000001,
+            "depth": 2.1336
+          }
+        },
+        {
           "id": "rear_gallery",
-          "name": "Shared rear balcony route / 4 ft clear",
+          "name": "Common rear balcony route / 4 ft clear",
+          "label": "Rear gallery",
           "kind": "circulation",
           "width_ft": 4,
           "depth_ft": 17,
@@ -1002,154 +1406,410 @@
     {
       "id": "roof",
       "title": "Roof terrace",
-      "elevation_m": 6.7056000000000004,
-      "elevation_ft": 22,
+      "elevation_m": 7.162800000000001,
+      "elevation_ft": 23.5,
       "bounds": {
         "x": 1.2192,
         "z": -21.336000000000002,
         "width": 15.24,
-        "depth": 15.24
+        "depth": 17.526
+      },
+      "footprints": [
+        {
+          "x": 1.2192,
+          "z": -21.336000000000002,
+          "width": 15.24,
+          "depth": 15.24
+        },
+        {
+          "x": 14.020800000000001,
+          "z": -6.096,
+          "width": 2.4384,
+          "depth": 2.286
+        }
+      ],
+      "area_sq_ft": 2560.0,
+      "stair": {
+        "rect": [
+          44.5,
+          20.5,
+          9,
+          17
+        ],
+        "flight_width": 4.0,
+        "landing_depth": 4.0,
+        "going": 1.0,
+        "riser_height": 0.0,
+        "risers_per_flight": 10,
+        "entry_edge": "front",
+        "turn": [
+          44.5,
+          33.5,
+          9,
+          4.0
+        ],
+        "landing": [
+          44.5,
+          20.5,
+          9,
+          4.0
+        ],
+        "opening": [
+          44.5,
+          24.5,
+          9,
+          13.0
+        ],
+        "units": "ft",
+        "status": "unapproved_concept"
       },
       "rooms": [
         {
           "id": "stairs",
-          "name": "Roof stair head / landing",
+          "name": "Weather-protected roof stair head",
+          "label": "Stairs",
           "kind": "stairs",
           "width_ft": 9,
-          "depth_ft": 20,
-          "area_sq_ft": 180.0,
+          "depth_ft": 17,
+          "area_sq_ft": 153.0,
           "footprints": [
             {
               "x": 13.563600000000001,
-              "z": -12.3444,
+              "z": -11.43,
               "width": 2.7432000000000003,
-              "depth": 6.096
+              "depth": 5.1816
             }
           ],
           "bounds": {
             "x": 13.563600000000001,
-            "z": -12.3444,
+            "z": -11.43,
             "width": 2.7432000000000003,
-            "depth": 6.096
+            "depth": 5.1816
+          }
+        },
+        {
+          "id": "lift_lobby",
+          "name": "Internal roof stair / lift landing gallery",
+          "label": "Roof gallery",
+          "kind": "circulation",
+          "width_ft": 10,
+          "depth_ft": 4,
+          "area_sq_ft": 40.0,
+          "footprints": [
+            {
+              "x": 10.3632,
+              "z": -7.4676,
+              "width": 3.048,
+              "depth": 1.2192
+            }
+          ],
+          "bounds": {
+            "x": 10.3632,
+            "z": -7.4676,
+            "width": 3.048,
+            "depth": 1.2192
+          }
+        },
+        {
+          "id": "lift",
+          "name": "Front-lawn lift / roof stair landing",
+          "label": "Front lift",
+          "kind": "lift",
+          "width_ft": 7,
+          "depth_ft": 7,
+          "area_sq_ft": 49.0,
+          "footprints": [
+            {
+              "x": 14.173200000000001,
+              "z": -6.096,
+              "width": 2.1336,
+              "depth": 2.1336
+            }
+          ],
+          "bounds": {
+            "x": 14.173200000000001,
+            "z": -6.096,
+            "width": 2.1336,
+            "depth": 2.1336
           }
         },
         {
           "id": "roof_solar",
           "name": "Solar reserve / service access",
+          "label": "Roof solar",
           "kind": "service",
-          "width_ft": 29,
-          "depth_ft": 17,
-          "area_sq_ft": 493,
+          "width_ft": 39.5,
+          "depth_ft": 12.5,
+          "area_sq_ft": 493.75,
           "footprints": [
             {
-              "x": 1.524,
-              "z": -11.5824,
-              "width": 8.8392,
-              "depth": 5.1816
+              "x": 1.3716000000000002,
+              "z": -11.43,
+              "width": 12.0396,
+              "depth": 3.81
             }
           ],
           "bounds": {
-            "x": 1.524,
-            "z": -11.5824,
-            "width": 8.8392,
-            "depth": 5.1816
+            "x": 1.3716000000000002,
+            "z": -11.43,
+            "width": 12.0396,
+            "depth": 3.81
           }
         },
         {
           "id": "roof_gathering",
-          "name": "Open gathering terrace",
+          "name": "Family gathering terrace",
+          "label": "Roof gathering",
           "kind": "living",
-          "width_ft": 38,
-          "depth_ft": 14,
-          "area_sq_ft": 532,
+          "width_ft": 49,
+          "depth_ft": 17.5,
+          "area_sq_ft": 857.5,
           "footprints": [
             {
-              "x": 1.524,
-              "z": -16.154400000000003,
-              "width": 11.5824,
-              "depth": 4.2672
+              "x": 1.3716000000000002,
+              "z": -16.9164,
+              "width": 14.9352,
+              "depth": 5.3340000000000005
             }
           ],
           "bounds": {
-            "x": 1.524,
-            "z": -16.154400000000003,
-            "width": 11.5824,
-            "depth": 4.2672
+            "x": 1.3716000000000002,
+            "z": -16.9164,
+            "width": 14.9352,
+            "depth": 5.3340000000000005
           }
         },
         {
           "id": "roof_shade",
-          "name": "Shaded seating / pergola",
+          "name": "Shaded family seating / pergola",
+          "label": "Roof shade",
           "kind": "living",
-          "width_ft": 24,
-          "depth_ft": 14,
-          "area_sq_ft": 336,
+          "width_ft": 30,
+          "depth_ft": 13.5,
+          "area_sq_ft": 405.0,
           "footprints": [
             {
-              "x": 1.524,
-              "z": -21.031200000000002,
-              "width": 7.315200000000001,
-              "depth": 4.2672
+              "x": 1.3716000000000002,
+              "z": -21.183600000000002,
+              "width": 9.144,
+              "depth": 4.1148
             }
           ],
           "bounds": {
-            "x": 1.524,
-            "z": -21.031200000000002,
-            "width": 7.315200000000001,
-            "depth": 4.2672
+            "x": 1.3716000000000002,
+            "z": -21.183600000000002,
+            "width": 9.144,
+            "depth": 4.1148
           }
         },
         {
           "id": "roof_planters",
-          "name": "Planters - not a soil lawn",
+          "name": "Roof planters / no soil lawn",
+          "label": "Roof planters",
           "kind": "garden",
-          "width_ft": 21,
-          "depth_ft": 14,
-          "area_sq_ft": 294,
+          "width_ft": 18.5,
+          "depth_ft": 13.5,
+          "area_sq_ft": 249.75,
           "footprints": [
             {
-              "x": 9.7536,
-              "z": -21.031200000000002,
-              "width": 6.4008,
-              "depth": 4.2672
+              "x": 10.668000000000001,
+              "z": -21.183600000000002,
+              "width": 5.638800000000001,
+              "depth": 4.1148
             }
           ],
           "bounds": {
-            "x": 9.7536,
-            "z": -21.031200000000002,
-            "width": 6.4008,
-            "depth": 4.2672
+            "x": 10.668000000000001,
+            "z": -21.183600000000002,
+            "width": 5.638800000000001,
+            "depth": 4.1148
           }
         }
       ]
     }
   ],
+  "structure": {
+    "status": "illustrative_only_not_engineered",
+    "disclaimer": "STRUCTURAL INTENT ONLY - NOT ENGINEERED. Display proxies are not member sizes. Clear-span living/parking is unproven; an engineer may require internal supports or a different layout.",
+    "display_proxy_ft": {
+      "column_width": 0.5,
+      "beam_width": 0.5,
+      "beam_depth": 0.5
+    },
+    "clear_span_zones": [
+      {
+        "floor_id": "basement",
+        "room_id": "drive_aisle",
+        "footprints": [
+          {
+            "x": 1.3716000000000002,
+            "z": -25.0952,
+            "width": 14.9352,
+            "depth": 5.130799999999999
+          }
+        ]
+      },
+      {
+        "floor_id": "basement",
+        "room_id": "garage_access",
+        "footprints": [
+          {
+            "x": 13.563600000000001,
+            "z": -15.0876,
+            "width": 2.7432000000000003,
+            "depth": 1.2192
+          }
+        ]
+      },
+      {
+        "floor_id": "basement",
+        "room_id": "garage_side_walk",
+        "footprints": [
+          {
+            "x": 15.3924,
+            "z": -19.812,
+            "width": 0.9144000000000001,
+            "depth": 5.9436
+          }
+        ]
+      },
+      {
+        "floor_id": "basement",
+        "room_id": "ramp_landing",
+        "footprints": [
+          {
+            "x": 13.563600000000001,
+            "z": -24.8412,
+            "width": 2.7432000000000003,
+            "depth": 7.62
+          }
+        ]
+      },
+      {
+        "floor_id": "basement",
+        "room_id": "vehicle_parking",
+        "footprints": [
+          {
+            "x": 1.3716000000000002,
+            "z": -19.812,
+            "width": 10.0584,
+            "depth": 5.9436
+          }
+        ]
+      },
+      {
+        "floor_id": "basement",
+        "room_id": "two_wheelers",
+        "footprints": [
+          {
+            "x": 11.5824,
+            "z": -19.812,
+            "width": 1.8288000000000002,
+            "depth": 5.9436
+          }
+        ]
+      },
+      {
+        "floor_id": "ground",
+        "room_id": "family_living",
+        "footprints": [
+          {
+            "x": 11.8872,
+            "z": -18.7452,
+            "width": 1.8288000000000002,
+            "depth": 5.7912
+          },
+          {
+            "x": 13.716000000000001,
+            "z": -18.7452,
+            "width": 2.5908,
+            "depth": 5.7912
+          },
+          {
+            "x": 13.716000000000001,
+            "z": -21.183600000000002,
+            "width": 2.5908,
+            "depth": 2.4384
+          }
+        ]
+      }
+    ],
+    "review": [
+      "Approximately 49.5 ft transverse proxies are not engineered or priced.",
+      "Foundations, retaining structure, garden and pool loads, headroom, lift product/pit/overrun and all wind/seismic/fire/structural questions require specialists."
+    ]
+  },
+  "driveway": {
+    "status": "unapproved_concept",
+    "errors": [],
+    "samples": 202,
+    "path_length_ft": 96.34513020910303,
+    "straight_max_grade": 0.14,
+    "curve_max_grade": 0.1,
+    "minimum_rear_axle_radius_m": 5.7912,
+    "body_clearance_m": 0.3,
+    "portal_span_ft": [
+      58.34991910870657,
+      79.17596716458183
+    ],
+    "scope": "Sampled low-speed design-vehicle geometry only; street approach, traction, drainage, structures and legal compliance are not certified",
+    "minimum_roof_clearance_m": 0.3595662102093152,
+    "minimum_underbody_clearance_m": 0.12682742272759223,
+    "overhead_assumptions": {
+      "canopy_under_ft": 9,
+      "basement_cover_rect": [
+        4,
+        2.5,
+        50,
+        80.33333333333333
+      ],
+      "slab_under_ft": 1.0,
+      "finish_ft": 0.035
+    },
+    "design_vehicle": {
+      "length_m": 5.25,
+      "width_m": 2.25,
+      "height_m": 2.2,
+      "wheelbase_m": 3.15,
+      "front_overhang_m": 1.05,
+      "rear_overhang_m": 1.05,
+      "clearance_m": 0.3,
+      "ground_clearance_m": 0.2,
+      "minimum_rear_radius_m": 5
+    },
+    "clear_width_ft": 12
+  },
+  "weather_protection": {
+    "ramp_roof_clear_height_ft": 9,
+    "ramp_roof_thickness_ft": 0.25,
+    "ramp_roof_overhang_ft": 0.3,
+    "roof_stair_clear_height_ft": 9,
+    "roof_lift_display_height_ft": 13,
+    "roof_thickness_ft": 0.25,
+    "status": "Open-sided weather shelter, not flood proofing or windblown-dust exclusion. Drainage, sump backup, wind, fire, ventilation and lift/structural design require specialists."
+  },
   "review_items": [
-    "Study plot is 7,000 sq ft: 40% above the initial 5,000 sq ft upper target, including a separate right-side pedestrian path beside the ramp. No site or layout approval is implied.",
-    "Study 002 expands only the basement from 50 x 80 to 50 x 88 ft: 4,400 sq ft excluding ramp, adding 400 sq ft (10%) toward the front. Above-ground plates remain 2,500 sq ft each; approximately 9,400 sq ft total before detailed deductions.",
-    "The basement extends below part of both yards. Lawn/planters above it need structural, waterproofing and drainage review; trees are shown beyond its rear edge.",
-    "Ramp central grade is approximately 16.7%; clear width, transitions, SUV swept paths, headroom, protection and flood drainage remain unverified.",
-    "Three separate bays and a 25.5 ft aisle are represented, but independent SUV turning has NOT been proven by a swept-path simulation.",
-    "Gym/gaming are at the front; stores, toilet and stairs have a protected clean-side route. Rear SUV/motorbike parking is beside the ramp landing, behind an intended full-height sealed barrier and two-door airlock. Walls/doors are shown cut away, not built or certified.",
-    "Garage air is to be exhausted independently with appropriate makeup air and negative pressure relative to occupied areas. Separate clean-air ventilation, CO/NO2 controls, fire separation, door swings, egress and commissioning require professional design.",
-    "Garage and kitchen exhaust outlets are UNLOCATED: do not discharge into the backyard play lawn, pool/veranda, windows or fresh-air intakes. No fan capacity, duct route or air-quality performance is established.",
-    "Garage plant reserve is accessible only from the garage; capacity/equipment remain unresolved. It does not approve LPG, fuel, generator, battery or water-tank placement.",
-    "Movable table games are shown in a nominal state; full operating clearances and simultaneous gym/game use need review.",
-    "Office swaps with the former front Child 2 room, retains 16 x 16 ft and opens to the shared front balcony. Its private 8 x 5 ft indoor WC has office-only access; nine toilets overall, not a lounge/balcony WC. Laundry stays on ground.",
-    "All three children's sleeping rooms increase equally from 16 x 16 to 16 x 17 ft (272 sq ft, +6.25%) within the unchanged 50 x 50 ft first-floor plate. Wardrobe storage moves out of the sleeping rooms into private walk-in dressing areas.",
-    "Each child has bedroom -> private walk-in dressing <-> bathroom access. Child 1 dressing is 6.5 x 8 ft and bath 6.5 x 8.5 ft; rear dressing rooms are each 5.5 x 7 ft with 5.5 x 9.5 ft baths. The sleeping rooms are equal; dressing/bath sizes are not identical.",
-    "Rear children's bath/dressing zones flank a retained 4 ft common route to the shared rear balcony. The 49 x 9.5 ft seamless lounge/gallery includes shared circulation, not just seating. Front balcony access is through Child 1 or office; rear balcony additionally has common access.",
-    "Front and rear balconies are each continuous shared decks without internal privacy screens; perimeter guards remain. The two decks are not a wraparound connection.",
-    "Purple parked curtains mark soft bath/dressing dividers; enclosed showers are shown cut away. Curtains alone do not protect clothing from moisture: extraction, waterproofing, humidity control, privacy/locking and detailed plumbing require design review.",
-    "Backyard kitchen has a garden-facing sink window, 6 x 3 ft island and indicative cooking hood; mechanical source extraction is required, not replaced by a window. Pantry is directly adjacent.",
-    "Living is L-shaped: 14.5 x 21.5 ft outer extents minus a 30 sq ft enclosed pantry = 281.75 sq ft, 34.65% above Study 001's 209.25 sq ft. Prayer remains shared floor space. Dining is 12 x 13.5 ft with an eight-seat 4 x 7.5 ft table.",
-    "Guest bathroom dual-door privacy/locking, door swings, master toilet partitions and detailed plumbing need design review.",
-    "Pool is outside the main basement rectangle but close to excavation/ramp; structure, access, cover and child-safety barriers need professional review.",
-    "Small rooms and furniture are blockouts, not fully resolved cabinetry, appliance or accessible-clearance designs.",
-    "Front receiving has an offset route into family space; privacy sightlines, acoustics, glazing, shading and climate performance are not simulated.",
-    "Budget feasibility is unverified and the expanded plot, basement and total floor area are significant cost risks.",
-    "No plot orientation, legal setbacks, neighbours, soil, groundwater, local permissions or seismic/structural safety have been established.",
-    "Optional fishpond and double-height atrium are deferred in this first study. The roof stair head and slab openings are indicative.",
-    "This is an M1 low-wall spatial blockout for review, not the final M2 architectural shell or a completed photorealistic M3 model."
+    "The user has restored the spacious 7,000 sq ft direction, allowing local internal-access changes and basement/roof footprint/core alignment while retaining their functions. Study 007 compact direction is superseded and preserved separately. This 70 x 100 ft candidate is not an approved legal plot or engineering design.",
+    "There is NO external covered stair link and NO extra strip between the main house and driveway. The only above-ground annex is the 60 sq ft front-lawn shaft reserve. Internal Front Galleries meet full-floor front stair landings; the lift never opens at a half-turn or through a bedroom.",
+    "Main ground/first plates return to 50 x 50 ft = 2,500 sq ft, plus a 60 sq ft front lift annex each. The basement retains its clean-front / garage-rear arrangement, widened to 50 ft for alignment rather than reverted to an old basement design.",
+    "Ground is proposed 1.5 ft above road, basement -8.5 ft, first +12.5 ft and roof +23.5 ft. Basement-to-ground rise stays 10 ft. The slightly raised house helps the sampled ramp roof clearance; entry steps, drainage, accessible arrival and legal levels require design.",
+    "Entrance Gallery is reduced from 6 to 4 ft and House Gallery from 5 to 4 ft. Guest grows to 11.5 x 17 ft gross / 157 sq ft net after its ensuite. Master sleeping grows to 365.5 sq ft with a separate 3 ft private entry; dressing is 85.5 and left-side bath 72.25 sq ft. Access is House Gallery to private entry to bedroom to dressing to bathroom, never public passage through dressing. Modeled openings do not establish finished clear widths.",
+    "All three child sleeping rooms remain 16 x 17 ft = 272 sq ft. Office remains 12 x 17 ft / 204 sq ft, with Child 1 bath/dressing in the front band. Unified family lounge is 49 x 14 ft gross minus the 33 sq ft stair-side shared WC = 653 sq ft net. WC is reduced to 6 x 5.5 ft, retaining a basin, wall-backed toilet, 3 ft modeled opening and clear inside approach. East/west galleries remain removed; front stair and rear balcony routes remain 4 ft and open to lounge.",
+    "Basement gym and gaming are 387.75 sq ft net EACH. The shaft corner is subtracted from gaming, not double-counted. Existing equipment and recreation functions remain; simultaneous operating/play clearances and six-month storage capacity need review.",
+    "Family living is 391.5 gross minus only the 48 sq ft pantry = 343.5 net, including open prayer/circulation. The cupboard no longer occupies living. Dining remains 150 sq ft with eight chair footprints; kitchen is 168 sq ft. The master bath retains one wall-backed WC, one compact basin, separate shower and a 5.5 ft tub. Areas are not added twice; service and operating clearances need review.",
+    "All five beds have headboards against solid walls and two bedside tables/lamps. Master has one wall-backed WC, one basin, bathtub and separate shower. Guest ensuite is 5.5 x 7 ft with a 3 x 3 ft enclosed shower; pocket-door operation and all plumbing/accessibility need review.",
+    "Public gallery/dining screens and an offset 6.5 ft doorless entry protect the family suite. Living, dining and kitchen share open routes, not internal doors. Sampled entrance sightlines are checked against full-height wall intent, not the low display cutaway; all-position privacy/acoustics are not certified.",
+    "The user approved a 4 ft long x 2 ft deep cupboard at the right terminal end of House Gallery, facing left into the gallery between stairs and living. It is not a child of living and occupies no living floor. Gallery through-route remains 4 ft, ending at the cupboard's sliding front rather than narrowing beside it. Refrigerator stays in pantry. Storage capacity, door operation, ventilation and child safety need review.",
+    "Three SUV bays are at the front of the GARAGE compartment only. A rear arrival aisle and widened 24 ft portal serve the tangent curve. Sampled 5.25 x 2.25 x 2.2 m body/overhang sweep plus 0.3 m buffer, eased grades, roof and underside margins are checked. Independent bay exit/reversing, mirror clearance, road approach, dynamics and engineering remain unverified.",
+    "Driveway straight lane is 12 ft, widening to 15 ft around a 19 ft rear-axle radius. Candidate maximum grades are 14% straight and 10% curved. No legal-grade, flood, retaining-wall, slip-resistance or drainage certification is implied.",
+    "The garage remains separated by intended sealed full-height construction, two self-closing airlock doors and protected clean routes. Independent exhaust/makeup air, negative pressure, CO/NO2 monitoring, fire/egress and commissioning are unresolved.",
+    "Garage and kitchen exhaust outlets are UNLOCATED and must avoid windows, play lawn/veranda, neighbouring land and fresh-air intakes. A window or fan location is not proof of air quality.",
+    "The 8 x 16 ft rear-right pool is restored outside the basement footprint and driveway. Its enclosure/gate is modeled, not child-safety certified. Pool structure, excavation separation, drainage, waterproofing and servicing need engineering. Fishpond and double-height atrium remain deferred.",
+    "Front/back bands return to approximately 20% / 30% of plot depth, with a 48 x 15 ft play lawn and rear planting reserve. Ramp/path areas are not play lawn. The raised rear grade, fill/retaining, basement deck, soil depth, roots and drainage need engineering; no mature mini-forest is established.",
+    "Roof stair headhouse, front lift-head display reserve and open-sided ramp canopy are separate inspection geometry. Covers reduce rain/sun exposure, not flooding or windblown dust. Inlet/interceptor drains, sump/backup pumps, waterproofing, wind, ventilation and fire require specialists.",
+    "The 9 x 17 ft front-entry U-stair retains 4 ft flights/landings, 12 in goings and twenty risers; actual slab voids follow its direction. Headroom, handrail/guard projections, lift product/pit/overrun and code/fire/accessibility remain unverified. Lift is not evacuation egress.",
+    "Shared balconies have no internal dividers. The front deck ends before the shaft and has a shared gallery door; rear common access is retained. Guards, insect screens, privacy/shading and daylight/fresh-air performance need detailed design.",
+    "Structural view is a non-engineered proxy diagram, not member sizes or a proven load path. Roughly 49.5 ft spans remain substantial; an engineer may require internal columns, transfer systems or layout/budget changes.",
+    "No site is purchased. Setbacks, legal plot/buildable envelope, road, neighbours, jurisdiction, groundwater/soil, structural/seismic design, service equipment/LPG/batteries and cost remain unresolved. A geometry PASS is not construction approval."
   ]
 }
