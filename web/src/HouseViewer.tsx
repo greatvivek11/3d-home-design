@@ -3,7 +3,7 @@ import type { ComponentRef, ErrorInfo, ReactNode, RefObject } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import type { ThreeEvent } from '@react-three/fiber'
 import { OrbitControls, useGLTF, useProgress } from '@react-three/drei'
-import { AgXToneMapping, Box3, DirectionalLight, HalfFloatType, Mesh, MeshStandardMaterial, Object3D, OrthographicCamera, PCFShadowMap, PMREMGenerator, SRGBColorSpace, Vector3, WebGLRenderTarget } from 'three'
+import { AgXToneMapping, Box3, DirectionalLight, HalfFloatType, Mesh, MeshStandardMaterial, Object3D, OrthographicCamera, PerspectiveCamera, PCFShadowMap, PMREMGenerator, SRGBColorSpace, Vector3, WebGLRenderTarget } from 'three'
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js'
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js'
 import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js'
@@ -13,6 +13,7 @@ import {
   annotationFloors, dimensionLines, displayedFloors, findRoom, floorPosition, floors, formatFeet, roomLabelAnchor, siteAllowed, sitePosition, study, visibleRoomAnnotations,
 } from './model'
 import type { CameraView, DimensionLine, FloorId, Inspection, LayerId, RoomAnnotation, Selection, ViewMode, Visibility } from './model'
+import type { TourCamera } from './tour'
 
 type Measurement = DimensionLine & { key: string; floorId: FloorId }
 const roomMarkers = floors.flatMap((floor) => floor.rooms.map((room) => ({
@@ -32,6 +33,7 @@ type Props = {
   selection: Selection | null
   resetKey: number
   onSelect: (selection: Selection) => void
+  tourCamera?: TourCamera
 }
 
 function StudioLighting({ controls, sceneKey, studio }: {
@@ -78,8 +80,11 @@ function StudioLighting({ controls, sceneKey, studio }: {
   useFrame(({ camera }) => {
     const light = sun.current
     const focus = controls.current?.target
-    if (!light || !focus || !(camera instanceof OrthographicCamera)) return
-    const span = Math.max(camera.right - camera.left, camera.top - camera.bottom) / camera.zoom * 0.72 + 3
+    if (!light || !focus) return
+    const span = camera instanceof OrthographicCamera
+      ? Math.max(camera.right - camera.left, camera.top - camera.bottom) / camera.zoom * 0.72 + 3
+      : camera instanceof PerspectiveCamera ? camera.position.distanceTo(focus) * Math.tan(camera.fov * Math.PI / 360) * Math.max(1, camera.aspect) * 1.5 + 3 : 0
+    if (!span) return
     if (Math.abs(previous.current.span - span) < 0.005 && previous.current.target.distanceToSquared(focus) < 0.000025) return
     previous.current.span = span
     previous.current.target.copy(focus)
@@ -103,7 +108,7 @@ function StudioLighting({ controls, sceneKey, studio }: {
   </>
 }
 
-function StudioEffects({ enabled }: { enabled: boolean }) {
+export function StudioEffects({ enabled }: { enabled: boolean }) {
   const { gl, scene, camera, size, invalidate, viewport } = useThree()
   const pipeline = useRef<{ composer: EffectComposer; ao: GTAOPass } | null>(null)
   useEffect(() => {
@@ -145,7 +150,7 @@ function StudioEffects({ enabled }: { enabled: boolean }) {
   return null
 }
 
-class ViewerBoundary extends Component<{ children: ReactNode; onRetry: () => void }, { error: Error | null }> {
+export class ViewerBoundary extends Component<{ children: ReactNode; onRetry: () => void }, { error: Error | null }> {
   state: { error: Error | null } = { error: null }
   static getDerivedStateFromError(error: Error) { return { error } }
   componentDidCatch(error: Error, info: ErrorInfo) { console.error('House viewer failed:', error, info.componentStack) }
@@ -163,7 +168,7 @@ class ViewerBoundary extends Component<{ children: ReactNode; onRetry: () => voi
   }
 }
 
-function LoadingModel() {
+export function LoadingModel() {
   const { progress } = useProgress()
   return <div className="loading-card" role="status">
     <div className="loading-line"><span style={{ width: `${Math.max(4, progress)}%` }} /></div>
@@ -180,7 +185,7 @@ function Model(props: Props & {
   measurements: Measurement[]
   onReady: () => void
 }) {
-  const { mode, visible, single, cameraView, inspection, showLabels, showDimensions, showCovers, studioQuality, selection, resetKey, onSelect, attempt, labelRefs, roomRefs, dimensionRefs, measurements, onReady } = props
+  const { mode, visible, single, cameraView, inspection, showLabels, showDimensions, showCovers, studioQuality, selection, resetKey, onSelect, tourCamera, attempt, labelRefs, roomRefs, dimensionRefs, measurements, onReady } = props
   const gltf = useGLTF(`${import.meta.env.BASE_URL}models/house.glb?v=${study.revision}&attempt=${attempt}`)
   const { size, camera, invalidate, gl } = useThree()
   const compact = size.width < 700
@@ -329,7 +334,23 @@ function Model(props: Props & {
 
   useLayoutEffect(() => {
     const orbit = controls.current
-    if (!(camera instanceof OrthographicCamera) || !orbit) return
+    if (!orbit) return
+    if (tourCamera?.focus) {
+      if (!(camera instanceof PerspectiveCamera)) throw new Error('The detailed tour requires a perspective camera')
+      const target = new Vector3(...tourCamera.focus.target)
+      const direction = new Vector3(Math.cos(tourCamera.yaw) * Math.cos(tourCamera.elevation), Math.sin(tourCamera.elevation), Math.sin(tourCamera.yaw) * Math.cos(tourCamera.elevation))
+      camera.position.copy(target).addScaledVector(direction, tourCamera.focus.distance)
+      orbit.target.copy(target)
+      camera.lookAt(target)
+      if (tourCamera.focus.offsetY) camera.setViewOffset(size.width, size.height, 0, size.height * tourCamera.focus.offsetY, size.width, size.height)
+      else camera.clearViewOffset()
+      camera.updateProjectionMatrix()
+      camera.updateMatrixWorld()
+      orbit.update()
+      invalidate()
+      return
+    }
+    if (!(camera instanceof OrthographicCamera)) return
     const bounds = new Box3()
     if (selection && selectedRoom && active.includes(selection.floorId)) {
       const b = selectedRoom.bounds
@@ -358,7 +379,9 @@ function Model(props: Props & {
     }
     if (bounds.isEmpty()) return
     const target = bounds.getCenter(new Vector3())
-    const direction = cameraView === 'plan' ? new Vector3(0, 1, 0.0001) : new Vector3(0.26, 1, 0.72).normalize()
+    const direction = tourCamera
+      ? new Vector3(Math.cos(tourCamera.yaw) * Math.cos(tourCamera.elevation), Math.sin(tourCamera.elevation), Math.sin(tourCamera.yaw) * Math.cos(tourCamera.elevation))
+      : cameraView === 'plan' ? new Vector3(0, 1, 0.0001) : new Vector3(0.26, 1, 0.72).normalize()
     camera.position.copy(target).addScaledVector(direction, 180)
     orbit.target.copy(target)
     camera.lookAt(target)
@@ -372,11 +395,19 @@ function Model(props: Props & {
       }
     }
     const extent = projected.getSize(new Vector3())
-    camera.zoom = Math.max(1, Math.min(size.width / Math.max(extent.x, 1), size.height / Math.max(extent.y, 1)) * 0.79)
+    const fitWidth = size.width * (tourCamera ? 0.9 : 0.79)
+    const fitHeight = size.height * (tourCamera ? 0.51 : 0.79)
+    camera.zoom = Math.max(1, Math.min(fitWidth / Math.max(extent.x, 1), fitHeight / Math.max(extent.y, 1)) * (tourCamera?.scale ?? 1))
+    if (tourCamera) {
+      const up = new Vector3(0, 1, 0).applyQuaternion(camera.quaternion)
+      const shift = -size.height / camera.zoom * 0.035
+      camera.position.addScaledVector(up, shift)
+      orbit.target.addScaledVector(up, shift)
+    }
     camera.updateProjectionMatrix()
     orbit.update()
     invalidate()
-  }, [mode, visible, single, cameraView, inspection, selection, selectedRoom, resetKey, size.width, size.height, compact, camera, invalidate, roots, includeSite, active, driveway, showDriveway, showCovers])
+  }, [mode, visible, single, cameraView, inspection, selection, selectedRoom, resetKey, size.width, size.height, compact, camera, invalidate, roots, includeSite, active, driveway, showDriveway, showCovers, tourCamera])
 
   function pick(event: ThreeEvent<MouseEvent>, floorId: FloorId) {
     if (!active.includes(floorId) || event.delta > 5) return
@@ -388,7 +419,7 @@ function Model(props: Props & {
   }
 
   return <>
-    <OrbitControls ref={controls} makeDefault enableDamping dampingFactor={0.12} minZoom={1} maxZoom={800} maxPolarAngle={Math.PI / 2.02} />
+    <OrbitControls ref={controls} makeDefault enabled={!tourCamera} enableDamping={!tourCamera} dampingFactor={0.12} minZoom={1} maxZoom={800} maxPolarAngle={Math.PI / 2.02} />
     <StudioLighting controls={controls} sceneKey={`${mode}:${inspection}:${active.join(',')}:${includeSite}:${showCovers}:${studio}`} studio={studio} />
     <StudioEffects enabled={studio} />
     {floors.map((floor) => {
@@ -428,7 +459,7 @@ function ViewerScene(props: Props & { attempt: number }) {
     .map((line) => ({ ...line, key: `${source.floorId}-${line.id}`, floorId: source.floorId })))
   const onReady = useCallback(() => setLoaded(true), [])
   return <>
-    <Canvas orthographic camera={{ position: [40, 70, 40], zoom: 12, near: 0.1, far: 800 }} frameloop="demand"
+    <Canvas orthographic={!props.tourCamera?.focus} camera={{ position: [40, 70, 40], zoom: props.tourCamera?.focus ? 1 : 12, fov: 45, near: 0.1, far: 800 }} frameloop="demand"
       onCreated={({ gl }) => { gl.toneMapping = AgXToneMapping; gl.outputColorSpace = SRGBColorSpace; setStarted(true) }}
       shadows={{ type: PCFShadowMap }} dpr={[1, 2]} gl={{ antialias: true, alpha: true }}
       fallback={<div className="viewer-message" role="alert"><h3>Your browser cannot start WebGL.</h3><p>Try hardware acceleration or another browser. You can still open the dimensioned plans from the sidebar.</p></div>}>

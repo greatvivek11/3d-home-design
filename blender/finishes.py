@@ -67,6 +67,29 @@ def create_maps(directory):
             stone * .015 - grout * .22, .62)
     surface("concrete", [173, 175, 168], stone * 2.2 + noise,
             stone * .025, .82)
+    rows = 8
+    row = np.floor(v * rows).astype(int)
+    rng = np.random.default_rng(57)
+    block = np.zeros((n, n), dtype=int)
+    edge = np.ones((n, n))
+    for r in range(rows):
+        cuts = np.cumsum(rng.uniform(.16, .34, 8))
+        cuts = cuts[cuts < 1.0]
+        cuts = np.concatenate([[0], cuts, [1.0001]])
+        index = np.clip(np.searchsorted(cuts, (u + r * .17) % 1.0, side="right") - 1, 0, len(cuts) - 2)
+        position = (u + r * .17) % 1.0
+        mask = row == r
+        block = np.where(mask, index + r * 10, block)
+        edge = np.where(mask, np.minimum(position - cuts[index], cuts[index + 1] - position), edge)
+        local = (v * rows) % 1
+        edge = np.where(mask, np.minimum(edge, np.minimum(local, 1 - local) * .125), edge)
+    tone = rng.normal(0, 11, 100)[block % 100]
+    mortar = edge < .0075
+    rubble = tone + noise * 3.2
+    surface("rubble", [168, 157, 140], np.where(mortar, -34, rubble),
+            np.where(mortar, -.55, .12 + tone / 300 + noise * .02), .82)
+    low = np.sin(u * 6 * np.pi + noise[:1, :1]) * np.cos(v * 5 * np.pi)
+    surface("plaster", [236, 230, 217], low * 1.6 + noise * .9, noise * .02 + low * .01, .88)
     weave = np.sin(u * 128 * np.pi) * np.sin(v * 128 * np.pi)
     surface("linen", [232, 226, 212], weave * 4 + noise * .4, weave * .16, .88)
     save("sage_color", np.array([122, 144, 128])[None, None, :] + (weave * 3 + noise * .4)[:, :, None], True)
@@ -93,6 +116,8 @@ def finish_material(name, color, maps):
         "slab": "concrete", "garage": "concrete", "service": "concrete", "ramp": "concrete",
         "recreation": "concrete", "path": "stone",
         "linen": "linen", "upholstery": "linen", "curtain": "linen", "rug": "linen",
+        "plaster": "plaster", "plaster_trim": "plaster", "facade_stone": "rubble", "boundary_stone": "rubble",
+        "timber": "joinery",
     }
     family = families.get(name)
     color_map = {"walnut": "walnut", "upholstery": "sage", "curtain": "curtain", "rug": "rug"}.get(name, family)
@@ -116,18 +141,21 @@ def finish_material(name, color, maps):
         mat.node_tree.links.new(bump.outputs["Normal"], shader.inputs["Normal"])
         if family in {"oak", "joinery"}:
             shader.inputs["Coat Weight"].default_value = .16
-    if name in {"metal", "brass", "chrome", "solar_frame"}:
+    if name in {"metal", "brass", "chrome", "solar_frame", "frame"}:
         shader.inputs["Metallic"].default_value = .85
         shader.inputs["Roughness"].default_value = .27
     if name in {"porcelain", "basin", "double_basin", "screen", "car", "water"}:
         shader.inputs["Roughness"].default_value = .19
         shader.inputs["Coat Weight"].default_value = .35
-    if name in {"glass", "shower_glass"}:
-        shader.inputs["Alpha"].default_value = .19
+    if name in {"glass", "shower_glass", "facade_glass"}:
+        shader.inputs["Alpha"].default_value = .5 if name == "facade_glass" else .19
         shader.inputs["Roughness"].default_value = .12
         shader.inputs["Coat Weight"].default_value = .4
-        mat.diffuse_color = (*rgb, .19)
+        mat.diffuse_color = (*rgb, shader.inputs["Alpha"].default_value)
         mat.surface_render_method = "DITHERED"
+    if name in {"road", "context", "ridge_near", "ridge_far", "path_context"}:
+        shader.inputs["Roughness"].default_value = .96
+        shader.inputs["Specular IOR Level"].default_value = .04
     if name == "rubber":
         shader.inputs["Roughness"].default_value = .93
     mat["finish"] = family or name

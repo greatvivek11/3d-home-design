@@ -13,7 +13,7 @@ from mathutils import Matrix, Vector
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from scripts.layout import COLORS, dining_chairs, feet, floor_footprints, load_json, room_area, room_footprints, stair_profile, structural_members, subtract_rectangles, validate, wall_partition, wall_parts, walls, write_review
+from scripts.layout import COLORS, dining_chairs, facade_edges, facade_openings, facade_pieces, feet, floor_footprints, load_json, room_area, room_footprints, stair_profile, structural_members, subtract_rectangles, validate, wall_partition, wall_parts, walls, write_review
 from scripts.driveway import Driveway
 from blender.finishes import create_maps, finish_material
 
@@ -117,9 +117,9 @@ def rod(name, a, b, radius, mat):
     return obj
 
 
-def oval(name, rect, z, height, mat):
+def oval(name, rect, z, height, mat, detail=(32, 16)):
     x, y, w, d = rect
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=32, ring_count=16, radius=1)
+    bpy.ops.mesh.primitive_uv_sphere_add(segments=detail[0], ring_count=detail[1], radius=1)
     obj = attach(bpy.context.object, name, mat)
     obj.location = (feet(x + w / 2), feet(y + d / 2), feet(z + height / 2))
     obj.scale = (feet(w) / 2, feet(d) / 2, feet(height) / 2)
@@ -1186,6 +1186,291 @@ def site_geometry(layout):
     text("site.front", "FRONT / ROAD - NOT NORTH", width / 2, -1.8, .1, .65)
 
 
+def exterior_geometry(layout):
+    """Finished-looking shell, boundary, planting and context for exterior presentation only."""
+    global CURRENT, FLOOR_ID
+    spec = layout["exterior"]
+    t = layout["wall_thickness"]
+    floors = {f["id"]: f for f in layout["floors"]}
+    ground, first, roof = floors["ground"], floors["first"], floors["roof"]
+    FLOOR_ID = "exterior"
+    CURRENT = bpy.data.collections.new("EXTERIOR")
+    CURRENT["status"] = "unapproved_concept"
+    CURRENT["presentation_only"] = True
+    plaster, trim = material("plaster", "#e8dfcb"), material("plaster_trim", "#f1ead8")
+    rubble, frame = material("facade_stone", "#a89d8b"), material("frame", "#38403f")
+    glass, timber = material("facade_glass", "#86aeb3"), material("timber", "#8d6a47")
+    slab_material, brass = material("slab", "#ddd7c9"), material("brass", "#b39a6f")
+    fw, plinth_top = spec["frame_ft"], ground["elevation"] + spec["plinth_height"]
+    levels = [(ground, 0, first["elevation"] - .5), (first, first["elevation"] - .5, roof["elevation"] - .5)]
+
+    def plan(edge, a, b, d0, d1):
+        return ([a, edge["origin"] + d0, b - a, d1 - d0] if edge["axis"] == "x" else [edge["origin"] + d0, a, d1 - d0, b - a])
+
+    for floor, bottom, top in levels:
+        for i, rect in enumerate(floor_footprints(floor)):
+            box(f"slab.{floor['id']}.{i}", rect, floor["elevation"] - .5, .5, slab_material, 0)
+        for i, piece in enumerate(facade_pieces(floor, layout, bottom, top)):
+            z0, z1 = piece["z"]
+            name = f"wall.{floor['id']}.{i}"
+            if floor is ground and z0 < plinth_top:
+                split = min(z1, plinth_top)
+                box(name + ".stone", piece["rect"], z0, split - z0, rubble, 0)
+                if z1 > split + 1e-6:
+                    box(name + ".plaster", piece["rect"], split, z1 - split, plaster, 0)
+            else:
+                box(name, piece["rect"], z0, z1 - z0, plaster, 0)
+        edges = facade_edges(floor, t)
+        for index, o in enumerate(facade_openings(floor, layout)):
+            edge, a, b = edges[o["edge"]], o["start"], o["end"]
+            name = f"{floor['id']}.opening.{index}"
+            door = o["kind"] == "door"
+            if not door:
+                box(name + ".glass", plan(edge, a + fw, b - fw, t / 2 - .04, t / 2 + .04), o["sill"] + fw, o["head"] - o["sill"] - 2 * fw, glass, 0)
+                box(name + ".sill", plan(edge, a, b, t * .08, t * .92), o["sill"], fw, frame, .01)
+            box(name + ".head", plan(edge, a, b, t * .08, t * .92), o["head"] - fw, fw, frame, .01)
+            for side, (lo, hi) in enumerate([(a, a + fw), (b - fw, b)]):
+                box(f"{name}.jamb.{side}", plan(edge, lo, hi, t * .08, t * .92), o["sill"], o["head"] - o["sill"], frame, .01)
+            if not door:
+                panes = max(1, round(o["width"] / 4))
+                for k in range(1, panes):
+                    along = a + o["width"] * k / panes
+                    box(f"{name}.mullion.{k}", plan(edge, along - .06, along + .06, t * .3, t * .7), o["sill"] + fw, o["head"] - o["sill"] - 2 * fw, frame, 0)
+            else:
+                box(name + ".leaf", plan(edge, a + fw, b - fw, t * .3, t * .55), o["sill"], o["head"] - o["sill"] - fw, timber, .02)
+                for k in range(1, 6):
+                    box(f"{name}.batten.{k}", plan(edge, a + fw + k * (o["width"] - 2 * fw) / 6 - .03, a + fw + k * (o["width"] - 2 * fw) / 6 + .03, t * .22, t * .3),
+                        o["sill"] + .2, o["head"] - o["sill"] - fw - .4, timber, 0)
+                box(name + ".pull", plan(edge, b - fw - .6, b - fw - .45, t * .12, t * .22), o["sill"] + 2.8, 1.8, brass, .02)
+            if o["edge"] in {"left", "right"} or floor is first:
+                p, ov, th = spec["window_hood"]["projection"], spec["window_hood"]["overhang"], spec["window_hood"]["thickness"]
+                if o["edge"] == "front":
+                    rect = [a - ov, edge["origin"] - p, o["width"] + 2 * ov, p + .1]
+                elif o["edge"] == "rear":
+                    rect = [a - ov, edge["origin"] + t - .1, o["width"] + 2 * ov, p + .1]
+                elif o["edge"] == "left":
+                    rect = [edge["origin"] - p, a - ov, p + .1, o["width"] + 2 * ov]
+                else:
+                    rect = [edge["origin"] + t - .1, a - ov, p + .1, o["width"] + 2 * ov]
+                box(name + ".hood", rect, o["head"] + .12, th, trim, .03)
+    pj, depth = spec["fascia"]["projection"], spec["fascia"]["depth"]
+    for floor, _, top in levels:
+        x, y, w, d = floor["envelope"]
+        for i, rect in enumerate([[x - pj, y - pj, w + 2 * pj, pj + t], [x - pj, y + d - t, w + 2 * pj, pj + t],
+                                  [x - pj, y + t, pj + t, d - 2 * t], [x + w - t, y + t, pj + t, d - 2 * t]]):
+            box(f"fascia.{floor['id']}.{i}", rect, top - depth + .5, depth, trim, .04)
+    first_e = first["elevation"]
+    for b in layout["balconies"]:
+        x, y, w, d = b["rect"]
+        box(b["id"] + ".slab", b["rect"], first_e - .5, .4, trim, .03)
+        box(b["id"] + ".soffit", [x - .05, y - .05, w + .1, d + .1], first_e - .62, .12, timber, 0)
+        box(b["id"] + ".deck", b["rect"], first_e - .1, .1, timber, 0)
+        edge_y = y if y < ground["envelope"][1] else y + d
+        guard_panel(b["id"] + ".guard", [x, edge_y, w, .12], first_e, 3.5)
+        for edge_x in [x, x + w]:
+            guard_panel(b["id"] + ".end", [edge_x, y, .12, d], first_e, 3.5)
+    for column in spec["columns"]:
+        x, y, w, d = column["rect"]
+        box(column["id"], column["rect"], ground["elevation"], first_e - .5 - ground["elevation"], rubble, 0)
+        box(column["id"] + ".cap", [x - .1, y - .1, w + .2, d + .2], first_e - .8, .3, trim, .03)
+    ax, ay, aw, ad = ground["annexes"][0]["rect"]
+    tower_top = roof["elevation"]
+    slot = spec["lift_tower"]
+    cx, half = ax + aw / 2, slot["slot_width"] / 2
+    for i, rect in enumerate([[ax, ay, cx - half - ax, t], [cx + half, ay, ax + aw - cx - half, t],
+                              [ax, ay + t, t, ad - t], [ax + aw - t, ay + t, t, ad - t]]):
+        box(f"lift_tower.wall.{i}", rect, 0, tower_top, rubble, 0)
+    slot_rect = [cx - half, ay, 2 * half, t]
+    box("lift_tower.below_slot", slot_rect, 0, slot["slot_bottom"], rubble, 0)
+    box("lift_tower.above_slot", slot_rect, slot["slot_top"], tower_top - slot["slot_top"], rubble, 0)
+    box("lift_tower.glass", [cx - half + fw, ay + t / 2 - .04, 2 * half - 2 * fw, .08], slot["slot_bottom"],
+        slot["slot_top"] - slot["slot_bottom"], glass, 0)
+    for k, along in enumerate([cx - half, cx + half - fw]):
+        box(f"lift_tower.jamb.{k}", [along, ay + t * .08, fw, t * .84], slot["slot_bottom"], slot["slot_top"] - slot["slot_bottom"], frame, .01)
+    for k in range(5):
+        along = cx - half + .45 + k * (2 * half - .9) / 4
+        box(f"lift_tower.fin.{k}", [along - .1, ay - .5, .2, .5], slot["slot_bottom"], slot["slot_top"] - slot["slot_bottom"], timber, .01)
+    box("lift_tower.car", [cx - 1.6, ay + t + .9, 3.2, 4.2], ground["elevation"], 7.5, material("metal"), .05)
+    box("lift_tower.cap", [ax - .2, ay - .2, aw + .4, ad + .2], tower_top - .3, .3, trim, .04)
+    site = layout["site"]
+    bd = spec["boundary"]
+    bt, bh = bd["thickness"], bd["height"]
+    stone = material("boundary_stone", "#a89d8b")
+    gaps = sorted((g for g in bd["gaps"] if g["edge"] == "front"), key=lambda g: g["start"])
+    front, cursor = [], 0
+    for gap in gaps:
+        front.append((cursor, gap["start"]))
+        cursor = gap["end"]
+    front.append((cursor, site["width"]))
+    walls_ = [("front", [a, 0, b - a, bt]) for a, b in front if b > a]
+    walls_ += [("left", [0, bt, bt, site["depth"] - 2 * bt]), ("right", [site["width"] - bt, bt, bt, site["depth"] - 2 * bt]),
+               ("rear", [0, site["depth"] - bt, site["width"], bt])]
+    for i, (side, rect) in enumerate(walls_):
+        box(f"boundary.{side}.{i}", rect, 0, bh, stone, 0)
+        box(f"boundary.{side}.{i}.cap", [rect[0] - .05, rect[1] - .05, rect[2] + .1, rect[3] + .1], bh, .2, trim, .02)
+    ps = bd["post_size"]
+    for gap in gaps:
+        for x in [gap["start"] - ps, gap["end"]]:
+            box(f"gate_post.{gap['id']}.{x:g}", [x, bt / 2 - ps / 2, ps, ps], 0, bd["post_height"], stone, .03)
+            box(f"gate_post.{gap['id']}.{x:g}.cap", [x - .12, bt / 2 - ps / 2 - .12, ps + .24, ps + .24], bd["post_height"], .3, trim, .03)
+    far = 1800
+    for i, rect in enumerate([[-far, -far, 2 * far + site["width"], far - 22], [-far, -2, 2 * far + site["width"], 2],
+                              [-far, 0, far, site["depth"] + far], [site["width"], 0, far, site["depth"] + far],
+                              [0, site["depth"], site["width"], far]]):
+        box(f"context.{i}", rect, -.25, .4 if i == 1 else .25, material("path_context", "#cfc8b9") if i == 1 else material("context", "#7b9657"), 0)
+    box("context.road", [-far, -22, 2 * far + site["width"], 20], -.25, .25, material("road", "#5b5d5f"), 0)
+    for k in range(7):
+        box(f"context.road_mark.{k}", [site["width"] / 2 - 70 + k * 24, -13, 9, .5], 0, .02, material("path_context", "#cfc8b9"), 0)
+    planting_geometry(layout)
+    ridges = [("ridge_far", "#9fb5a6", -300, 1500, 1500, 380, 420), ("ridge_near", "#7f9b82", 500, 1200, 1100, 320, 260),
+              ("ridge_far", "#9fb5a6", 1500, 400, 900, 520, 360), ("ridge_near", "#7f9b82", 1250, -300, 900, 300, 250),
+              ("ridge_far", "#9fb5a6", -1500, 300, 800, 560, 380), ("ridge_near", "#7f9b82", -1100, 900, 900, 320, 240),
+              ("ridge_far", "#9fb5a6", 300, -1500, 1600, 400, 340), ("ridge_near", "#7f9b82", -900, -1000, 1100, 300, 220)]
+    for i, (finish, color, cx, cy, width, depth, height) in enumerate(ridges):
+        oval(f"ridge.{i}", [site["width"] / 2 + cx - width / 2, site["depth"] / 2 + cy - depth / 2, width, depth], -height * .6, height, material(finish, color), detail=(24, 10))
+    FLOOR_ID = "exterior"
+    return CURRENT
+
+
+def cone(name, x, y, z, radius, height, mat, segments=14):
+    vertices = [(x + radius * math.cos(i * math.tau / segments), y + radius * math.sin(i * math.tau / segments), z)
+                for i in range(segments)] + [(x, y, z + height), (x, y, z)]
+    faces = [(i, (i + 1) % segments, segments) for i in range(segments)]
+    faces += [((i + 1) % segments, i, segments + 1) for i in range(segments)]
+    obj = surface_mesh(name, vertices, faces, mat)
+    for face in obj.data.polygons:
+        face.use_smooth = True
+    return obj
+
+
+def broadleaf(name, x, y, level, height, canopy, index, foliage, trunk):
+    trunk_height = height * .45
+    cylinder(name + ".trunk", x, y, level, .2 + .01 * height, trunk_height, trunk)
+    crown = height - trunk_height
+    seed = (index * 7919 + 17) % 1000
+    count = 15
+    for k in range(count):
+        t = (k + .5) / count
+        angle = k * 2.399963 + seed * .013
+        ring = math.sqrt(t) * canopy * .34
+        lump = canopy * (.3 + .1 * ((seed + k * 37) % 5) / 4)
+        cz = level + trunk_height + crown * (.34 + .5 * (1 - t) ** .6) - lump * .2
+        oval(f"{name}.leaf.{k}", [x + math.cos(angle) * ring - lump / 2, y + math.sin(angle) * ring - lump / 2, lump, lump * .88],
+             cz - lump * .4, lump * .8, foliage[(index + k) % 3], detail=(12, 8))
+    for k in range(3):
+        angle = seed * .02 + k * 2.1
+        rod(f"{name}.branch.{k}", (x, y, level + trunk_height * .75), (x + math.cos(angle) * canopy * .2, y + math.sin(angle) * canopy * .2, level + trunk_height + crown * .22), .06, trunk)
+
+
+def conifer(name, x, y, level, height, canopy, index, foliage, trunk):
+    cylinder(name + ".trunk", x, y, level, .22, height * .22, trunk)
+    tiers = 9
+    for k in range(tiers):
+        t = k / (tiers - 1)
+        radius = canopy / 2 * (1 - .8 * t) + .3 + .12 * ((k * 5 + index) % 3)
+        tier_height = height * (.2 - .05 * t)
+        cone(f"{name}.tier.{k}", x + .08 * ((k + index) % 3 - 1), y + .08 * ((k * 2 + index) % 3 - 1),
+             level + height * (.14 + .72 * t), radius, tier_height, foliage[(index + k) % 3], 11)
+
+
+def planting_geometry(layout):
+    spec = layout["exterior"]
+    ground = next(f for f in layout["floors"] if f["id"] == "ground")
+    foliage = [material("leaf_a", "#587a3e"), material("leaf_b", "#6f9348"), material("leaf_c", "#46663a")]
+    trunk, hedge, soil = material("trunk", "#80664c"), material("hedge", "#4d6e3c"), material("soil", "#5b4636")
+    blooms = [material("bloom", "#e0a131"), material("bloom_pink", "#cf7e96")]
+    for index, plant in enumerate(spec["planting"]):
+        name = plant["id"]
+        if plant["kind"] in {"tree", "conifer", "shrub"}:
+            x, y = plant["at"]
+            level = ground["elevation"] if y >= layout["site"]["back_start"] else 0
+        if plant["kind"] == "tree":
+            broadleaf(name, x, y, level, plant["height"], plant["canopy"], index, foliage, trunk)
+        elif plant["kind"] == "conifer":
+            conifer(name, x, y, level, plant["height"], plant["canopy"], index, [material("pine_a", "#2f4a33"), material("pine_b", "#3b5a3d"), material("pine_c", "#274030")], trunk)
+        elif plant["kind"] == "shrub":
+            r = plant["radius"]
+            oval(name, [x - r, y - r, 2 * r, 2 * r], level, plant["height"], foliage[index % 3])
+            oval(name + ".b", [x - r * .55 + .5, y - r * .55, r * 1.2, r * 1.2], level + plant["height"] * .35, plant["height"] * .7, foliage[(index + 1) % 3])
+        elif plant["kind"] == "hedge":
+            box(name, plant["rect"], 0, plant["height"], hedge, .4)
+        elif plant["kind"] == "flower_bed":
+            x0, y0, w, d = plant["rect"]
+            box(name + ".soil", plant["rect"], 0, .5, soil, .05)
+            count = int(w / 1.1)
+            for k in range(count):
+                cx = x0 + (k + .5) * w / count
+                for row, cy in enumerate([y0 + d * .3, y0 + d * .7]):
+                    oval(f"{name}.bloom.{k}.{row}", [cx - .4, cy - .4, .8, .8], .45, plant["height"] - .1, blooms[(k + row) % 2])
+
+
+def exterior_roof_source(collections):
+    source = bpy.data.collections.new("EXTERIOR ROOF TERRACE SOURCE")
+    for obj in collections["roof"].objects:
+        if obj.type == "MESH":
+            source.objects.link(obj)
+    for child in collections["roof"].children:
+        if "WEATHER" in child.name:
+            for obj in child.all_objects:
+                if obj.type == "MESH":
+                    source.objects.link(obj)
+    return source
+
+
+def new_exterior_scene(name, collections, view):
+    scene = bpy.data.scenes.new(name)
+    scene.unit_settings.system = "METRIC"
+    scene.unit_settings.scale_length = 1
+    for collection in collections:
+        scene.collection.children.link(collection)
+    scene.render.engine = "CYCLES"
+    scene.cycles.device = "CPU"
+    scene.cycles.samples = 96
+    scene.cycles.use_adaptive_sampling = True
+    scene.cycles.adaptive_threshold = .02
+    scene.cycles.use_denoising = True
+    scene.render.resolution_x, scene.render.resolution_y = 2400, 1600
+    scene.render.resolution_percentage = 100
+    scene.render.image_settings.file_format = "PNG"
+    scene.view_settings.view_transform = "AgX"
+    world = bpy.data.worlds.new(name + ".world")
+    world.use_nodes = True
+    nodes, links = world.node_tree.nodes, world.node_tree.links
+    sky = nodes.new("ShaderNodeTexSky")
+    sky.sky_type = "MULTIPLE_SCATTERING"
+    sky.sun_disc = False
+    sky.sun_elevation = math.radians(48)
+    sky.air_density, sky.aerosol_density = 1.0, .6
+    background = nodes["Background"]
+    background.inputs[1].default_value = .32
+    links.new(sky.outputs["Color"], background.inputs[0])
+    scene.world = world
+    position, target = Vector(view["position"]), Vector(view["target"])
+    forward = (target - position)
+    forward.z = 0
+    forward.normalize()
+    side = Vector((-forward.y, forward.x, 0))
+    sun_from = (-forward * .55 + side * .55 + Vector((0, 0, .95))).normalized()
+    sun_data = bpy.data.lights.new(name + ".sun", "SUN")
+    sun_data.energy, sun_data.angle = 4.4, math.radians(1.2)
+    sun_data.color = (1, .94, .84)
+    sun = bpy.data.objects.new(name + ".sun", sun_data)
+    sun.rotation_euler = (-sun_from).to_track_quat("-Z", "Y").to_euler()
+    scene.collection.objects.link(sun)
+    cam_data = bpy.data.cameras.new(name + ".camera")
+    cam_data.type, cam_data.lens, cam_data.sensor_width = "PERSP", view["lens_mm"], 36
+    cam_data.clip_start, cam_data.clip_end = .3, 900
+    cam = bpy.data.objects.new(name + ".camera", cam_data)
+    cam.location = Vector(tuple(feet(v) for v in view["position"]))
+    cam.rotation_euler = (Vector(tuple(feet(v) for v in view["target"])) - cam.location).to_track_quat("-Z", "Y").to_euler()
+    scene.collection.objects.link(cam)
+    scene.camera = cam
+    scene.view_settings.exposure = -.3
+    scene["status"] = "UNAPPROVED EXTERIOR PRESENTATION - NOT CONSTRUCTION DOCUMENTATION"
+    scene["exterior_view"] = view["id"]
+    return scene
+
+
 def new_scene(name, collections, target, camera_position, ortho):
     scene = bpy.data.scenes.new(name)
     scene.unit_settings.system = "METRIC"
@@ -1307,6 +1592,25 @@ def main():
     CURRENT = bpy.data.collections.new("SITE")
     collections["site"] = CURRENT
     site_geometry(layout)
+    annotations = bpy.data.collections.new("SITE ANNOTATIONS")
+    CURRENT.children.link(annotations)
+    for obj in [o for o in CURRENT.objects if o.type == "FONT"]:
+        CURRENT.objects.unlink(obj)
+        annotations.objects.link(obj)
+    cutaway_planting = bpy.data.collections.new("SITE CUTAWAY PLANTING")
+    cutaway_planting["export_architecture"] = True
+    CURRENT.children.link(cutaway_planting)
+    for obj in [o for o in CURRENT.objects if o.name.startswith(("site.tree.", "site.front_shrub."))]:
+        CURRENT.objects.unlink(obj)
+        cutaway_planting.objects.link(obj)
+        obj["cutaway_planting"] = True
+    collections["exterior"] = exterior_geometry(layout)
+    roof_source = exterior_roof_source(collections)
+    roof_instance = bpy.data.collections.new("EXTERIOR ROOF INSTANCE")
+    roof_marker = bpy.data.objects.new("roof.exterior_physical_level", None)
+    roof_marker.instance_type, roof_marker.instance_collection = "COLLECTION", roof_source
+    roof_marker.location.z = feet(next(f for f in layout["floors"] if f["id"] == "roof")["elevation"])
+    roof_instance.objects.link(roof_marker)
     ground_floor = next(f for f in layout["floors"] if f["id"] == "ground")
     overview_ground = bpy.data.collections.new("OVERVIEW GROUND INSTANCE")
     instance = bpy.data.objects.new("ground.overview_physical_level", None)
@@ -1385,6 +1689,18 @@ def main():
                           (29, 48, 0), (80, -30, 145), 110)
         frame["structural_disclaimer"] = layout["structure"]["disclaimer"]
         scenes.append((f"structural-{fid}", frame))
+    for i, view in enumerate(layout["exterior"]["views"], start=16):
+        exterior_scene = new_exterior_scene(f"{i:02d} - Exterior {view['label']}",
+                                            [collections["site"], collections["exterior"], roof_instance], view)
+        scenes.append((f"exterior-{view['id']}", exterior_scene))
+        bpy.context.window.scene = exterior_scene
+        bpy.context.view_layer.update()
+        layer = bpy.context.view_layer.layer_collection
+        site_layer = layer.children.get("SITE") if layer else None
+        if site_layer is None or not {"SITE ANNOTATIONS", "SITE CUTAWAY PLANTING"} <= set(site_layer.children.keys()):
+            raise ValueError("Exterior scene could not hide site annotations and cutaway planting")
+        site_layer.children["SITE ANNOTATIONS"].exclude = True
+        site_layer.children["SITE CUTAWAY PLANTING"].exclude = True
     note = bpy.data.texts.new("START HERE - Study notes")
     note.write("DREAM HOME / " + STUDY_ID.replace("-", " ").upper() + " / UNAPPROVED CONCEPT\n\n"
                "This file opens with BASEMENT, GROUND, FIRST and ROOF placed side by side.\n"
@@ -1392,6 +1708,7 @@ def main():
                "Side-by-side objects reference the original floor collections; edit rooms in their individual floor scenes.\n"
                "Choose scenes from the scene selector: garden overview, individual plans, physical stack, side-by-side plans.\n"
                "Scenes 08-10 are composed living/kitchen, office and bedroom close-ups.\n"
+               "Scenes 16-23 are FINISHED EXTERIOR presentation views from the EXTERIOR collection (full-height facade, boundary, gates, planting) plus the site and roof terrace. The cutaway floor collections are unchanged.\n"
                "All geometry is in metres. Room labels show proposed clear-zone dimensions in feet.\n"
                "Study 010 keeps the spacious 7,000 sq ft site, 4 ft ground galleries and unified upstairs lounge. The front-lawn lift has INTERNAL stair access; there is NO external side link.\n"
                "Five bedrooms, equal 272 sq ft children's rooms, equal recreation, three SUVs, eight toilets and pantry fridge remain. Larger gardens and an outboard 8 x 16 ft pool return.\n"

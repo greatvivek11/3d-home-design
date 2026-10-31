@@ -4,6 +4,10 @@ A code-driven visualization of a private, nature-connected family retreat: basem
 
 ## Current status
 
+**Study 011 revises the master suite of the spacious Study 010 layout and adds a finished 360 degree exterior.** The separate 3 ft private master-entry passage is removed. The master bedroom now has one 3 ft door in the south end of its east wall, opening to the dining/kitchen family zone rather than the House Gallery. The bed headboard moves to the west wall facing that door, the reading corner moves to the north-west corner, and the west window narrows to 5.25 ft while the 10 ft rear garden slider remains. The freed area enlarges the master bath from 72.25 to **102 sq ft (12 x 8.5 ft)**, and the dressing room moves east without changing its **85.5 sq ft**. Dining grows by 6 sq ft to **156 sq ft** to host the door landing and the table shifts one foot east to keep its chairs clear. Everything else, including the plot, basement, roof, first floor, gardens, pool and ramp, is unchanged from Study 010. The Study 010 films below still depict Study 010 and need re-rendering to show this change.
+
+**Outside 360 degree view.** The cutaway floors cannot show how the house looks from the street, so Study 011 adds a presentation-only **EXTERIOR** collection: full-height plaster storeys with rubble-stone plinth, 11 ft storey heights, framed glazing at every real window/slider/door position, window hoods, roof-edge fascia, timber-soffit balconies on stone columns, the front-lawn lift tower with its timber-screened slot, a stone boundary wall with pedestrian and driveway gates, a road, distant hills, broadleaf trees, conifers, hedges, flower beds and shrubs around the same plan. Choose **Outside 360°** in the website header (or open `?view=outside&shot=orbit`) to orbit, zoom, auto-orbit or fly to nine presets: front, entrance, rear garden, left, driveway side, front/rear aerials, garden and pool, and a 360 orbit. The sun follows the camera and the exterior model loads only when chosen. The same nine cameras are rendered with Cycles in [output/study-011/exterior/](output/study-011/exterior/). Facade, materials, trees and street are illustrative; they are not a facade design, planning or engineering approval.
+
 **Spacious Study 010 restores the user's preferred 7,000 sq ft direction.** The candidate plot returns to **70 x 100 ft**, with **50 x 50 ft main plates**. Front drawing/guest rooms flank Entrance Gallery; the transverse House Gallery separates them from rear master/family spaces, with WC left and utility cupboard right. Upstairs, front office/Child 1 and two rear child rooms are separated by a transverse lounge. Larger gardens and an **8 x 16 ft pool** return. The front-lawn lift retains direct internal stair access, with **no external link or extra side strip**. Basement/roof functions and later furnishing/privacy/weather improvements remain, with necessary footprint/core alignment. This restores the pattern with local room/suite adjustments, not every old dimension. The editable cutaway retains 113 placements, 20 packed maps and fifteen scenes. Site, dimensions, cost, safety and engineering remain unapproved.
 
 Study 010 corrects [Study 009](assets/models/study-009/dream-home-study.blend): the user-approved **4 x 2 ft cupboard** faces left at the right terminal end of House Gallery, entirely outside living. Living regains **12 sq ft**, reaching **343.5 sq ft net**. The shared upstairs WC shrinks to **6 x 5.5 ft**, enlarging the unified lounge to **653 sq ft net**. Galleries retain their 4 ft through-route and the private master entry remains 3 ft. All other rooms, basement, roof, plot, gardens, pool and ramp are unchanged from Study 009.
@@ -24,9 +28,9 @@ Blender 5.2.2 LTS is accessible on macOS through `/Applications/Blender.app/Cont
 
 Install Git LFS, then run `git lfs install` and `git lfs pull` after cloning. The required binary assets are versioned with LFS:
 
-- [Editable Study 010](assets/models/study-010/dream-home-study.blend), with packed finishes, [layout snapshot](assets/models/study-010/layout-snapshot.json), [brief snapshot](assets/models/study-010/brief-snapshot.json) and [portable generation metadata](assets/models/study-010/generation-result.json).
+- [Editable Study 011](assets/models/study-011/dream-home-study.blend), with scenes 16-23 for the exterior views, packed finishes, [layout snapshot](assets/models/study-011/layout-snapshot.json), [brief snapshot](assets/models/study-011/brief-snapshot.json) and [portable generation metadata](assets/models/study-011/generation-result.json). The preserved [Study 010](assets/models/study-010/dream-home-study.blend) bundle is retained beside it.
 - Preserved [compact Study 007](assets/models/study-007/dream-home-study.blend), [Study 006](assets/models/study-006/dream-home-study.blend), [Study 005](assets/models/study-005/dream-home-study.blend), [Study 004](assets/models/study-004/dream-home-study.blend), [Study 003](assets/models/study-003/dream-home-study.blend) and its [animated tour](assets/models/study-003/dream-home-tour.blend). These are earlier layouts, not Study 010; the compact direction and Study 006's larger site/side link are superseded.
-- [Browser GLB](web/public/models/house.glb), with embedded finishes; matching metadata and SVG plans are committed alongside the app.
+- [Browser GLB](web/public/models/house.glb) and [exterior GLB](web/public/models/exterior.glb), with embedded finishes; both are stored as regular Git objects (see `.gitattributes`) so a hosting build receives the real binaries. Matching metadata and SVG plans are committed alongside the app.
 
 The Blender assets are copies of the validated local deliverables, not replacements for them. All screenshots, rendered images, MP4s, intermediate frames and render logs remain local/ignored. Links under `output/` below refer to those local previews, not files included in a clone. Use the checked-in study for rendering/exporting without first regenerating it; use a new output directory when generating new artifacts.
 
@@ -75,18 +79,18 @@ First regenerate the Blender study from the candidate using the commands below, 
 /Applications/Blender.app/Contents/MacOS/Blender \
   --background --factory-startup --python-exit-code 1 \
   --python blender/export_web.py -- \
-  --blend assets/models/study-010/dream-home-study.blend
+  --blend assets/models/study-011/dream-home-study.blend
 ```
 
 Replace the example path with the newly generated study when applicable. The exporter requires its matching layout snapshot; it refuses a stale/mismatched study. It evaluates bevels/normals, batches only compatible same-finish/identity pieces and preserves individually identified safety-intent panels and room tiles. Presentation stages, dimensions, text, cameras, lights and collection instances stay out of the GLB.
 
 The [local compression helper](web/scripts/optimize-model.mjs) applies Meshopt without quantization, filters or simplification, then decodes and fingerprints the result to verify exact attributes, triangle topology, transforms and picking identities. Export writes matching GLB, manifest/source fingerprints and SVGs without overwriting Blender. Exact compressed/uncompressed sizes are recorded in the manifest; the footer shows the current model size. HTTP gzip/Brotli can reduce transfer further when hosting is configured; deployment compression is not configured yet.
 
-Unlike local `output/`, the public browser model/plans and generated metadata are deliberate versioned deliverables. The repository assigns GLB files to Git LFS: a fresh checkout or future hosting build must fetch the actual binary, not an LFS pointer. The asset tests detect missing/pointer/mismatched GLBs. Deployment configuration is not included yet.
+Unlike local `output/`, the public browser model/plans and generated metadata are deliberate versioned deliverables. The repository assigns other GLB files to Git LFS, but the two public browser models are plain Git objects: a fresh checkout or future hosting build must fetch the actual binary, not an LFS pointer. The asset tests detect missing/pointer/mismatched GLBs. Deployment configuration is not included yet.
 
 ## Open the latest study
 
-Current local artifacts are in [output/study-010/](output/study-010/). Previous [Study 007](output/study-007/), [Study 006](output/study-006/), [Study 005](output/study-005/), [Study 004](output/study-004/), [refined Study 003](output/study-003-refined/), [Study 003 blockout](output/study-003-upstairs/), [Study 002](output/study-002-revised/) and [Study 001](output/study-001-side-by-side/) are preserved.
+Current local artifacts are in [output/study-011/](output/study-011/). Previous [Study 010](output/study-010/), [Study 007](output/study-007/), [Study 006](output/study-006/), [Study 005](output/study-005/), [Study 004](output/study-004/), [refined Study 003](output/study-003-refined/), [Study 003 blockout](output/study-003-upstairs/), [Study 002](output/study-002-revised/) and [Study 001](output/study-001-side-by-side/) are preserved.
 
 - [Editable Blender file - opens with all four levels side by side](output/study-010/dream-home-study.blend)
 - [Ground](output/study-010/ground.png), [basement](output/study-010/basement.png), [first floor](output/study-010/first.png), [roof](output/study-010/roof.png) and [garden overview](output/study-010/overview.png) previews
@@ -102,7 +106,91 @@ The internal `START HERE - Study notes` text explains the study. Walls remain in
 
 ### Animated video preview
 
-These preserved movies and the current tour camera sequence depict **Study 003**, not the current Study 010. No new tour is rendered as part of this layout revision; reframe every shot before filming the restored layout.
+#### Study 010: portrait web film
+
+##### Detailed camera tour
+
+The [3-minute-30-second detailed family tour](output/study-010-detailed-tour/dream-home-detailed-portrait-with-music.mp4) is the phone-first follow-up: **1080 x 1920, 30 fps**, close-up perspective camera travel, compact room/floor labels and readable explanatory captions. There are no oversized presentation headings. It uses the approved low-wall cutaway model, not a newly modelled eye-level interior or a photorealistic walkthrough.
+
+The same tour also has a [native 16:9 landscape edition](output/study-010-detailed-tour-landscape/dream-home-detailed-landscape-with-music.mp4): **1920 x 1080, 30 fps, 210 seconds**. It preserves the 27 stops, camera motion, captions and subtitle timing. A small vertical lens shift reserves caption space, while landscape-specific overlays keep room names and credits compact. It is rendered at the new aspect ratio, not stretched or letterboxed from the portrait movie. The soundtrack is copied from the approved portrait film without re-encoding; final verification compares its encoded audio hash and matching SRT. Both portrait films remain unchanged.
+
+- **0:00-1:42:** front garden/veranda, entrance and House Galleries, drawing and guest rooms, master suite, dining, kitchen/pantry, family living, prayer corner, backyard lawn/pool and stair/lift core.
+- **1:42-2:40:** office, all three children's suites, front/rear balconies, unified lounge and stair-side common WC.
+- **2:40-3:14:** driveway/garage, protected access, stores, gym, gaming and laundry/WC.
+- **3:14-3:30:** roof gathering/shaded seating, planting and solar reserve.
+
+Open `http://localhost:5173/?tour=detailed` for the silent playable camera preview. [Detailed itinerary and camera paths](web/src/detailedTour.ts) use canonical room bounds and outdoor coordinates. Nearby rooms connect smoothly; more distant relocations and floor changes use short fades instead of fast whip-pans. [Tests](web/src/detailedTour.test.ts) check all 6,300 frames, itinerary coverage, actual projected room-centre visibility in the portrait safe area, continuity, subtitles and invalid input. The [matching SRT](output/study-010-detailed-tour/dream-home-detailed-portrait.srt) and silent master remain local alongside the final film.
+
+Use the build/preview setup below, then export the detailed variant into a new directory:
+
+```bash
+npm --prefix web run video:export -- --url http://127.0.0.1:4179/ \
+  --tour detailed --output output/a-new-detailed-tour --stills-only
+npm --prefix web run video:export -- --url http://127.0.0.1:4179/ \
+  --tour detailed --output output/a-new-detailed-benchmark --start-frame 1830 --frames 360
+npm --prefix web run video:export -- --url http://127.0.0.1:4179/ \
+  --tour detailed --output output/a-new-detailed-tour
+```
+
+For landscape, use `http://localhost:5173/?tour=detailed&aspect=landscape` to preview, or add `--aspect landscape` to the detailed exporter:
+
+```bash
+npm --prefix web run video:export -- --url http://127.0.0.1:4179/ \
+  --tour detailed --aspect landscape --output output/a-new-landscape-framing --stills-only
+npm --prefix web run video:export -- --url http://127.0.0.1:4179/ \
+  --tour detailed --aspect landscape --output output/a-new-landscape-tour
+```
+
+The landscape silent master and SRT use the `dream-home-detailed-landscape` basename. Its default output directory is `output/study-010-detailed-tour-landscape`, separate from both portrait defaults. Landscape is currently supported for the detailed tour, not the one-minute editorial overview. The final [landscape verification report](output/study-010-detailed-tour-landscape/music-verification.json) records full decoding, native playback, frame count, resolution, audio levels and unchanged audio/video packet hashes after muxing.
+
+The exporter now uses fast **lossless PNG** capture, normalizes native Retina capture scaling and checks every captured image's dimensions before encoding. Both tour variants retain source-fingerprint, browser-error and full-file video checks. Their default output directories are separate, and existing movies or completed export reports cannot be overwritten. On the M4 Pro, the final 12-second moving benchmark took 26.41 seconds; the complete 210-second scene export took approximately nine minutes.
+
+The soundtrack stage for the detailed film copies the encoded video without re-encoding, adds the first 210 seconds of the selected track as AAC with gentle fades, and preserves the silent master. Artist links are already rendered in the final eight seconds; copy the [sharing credit](output/study-010-web-tour/music-credit.txt) into public upload descriptions.
+
+##### One-minute overview
+
+The [60-second family film with music](output/study-010-web-tour/dream-home-portrait-with-music.mp4) uses **Study 010**: 1080 x 1920, 30 fps, H.264/yuv420p with fast-start playback and stereo AAC audio. It has English captions burned into the image and a matching [SRT file](output/study-010-web-tour/dream-home-portrait.srt). It covers the four-level overview, gardens/pool, ground, first, basement, roof and closing overview. It is a moving cutaway/dollhouse presentation, not a first-person walkthrough or a claim of photorealistic ray-traced lighting. The [silent master](output/study-010-web-tour/dream-home-portrait.mp4) is retained separately.
+
+The selected soundtrack is **Flying High by FREDJI**, from the user-supplied [upload](https://www.youtube.com/watch?v=GLQqhMSx18o). The [artist's own track description](https://soundcloud.com/fredjimusic/fredji-flying-high) permits video use with SoundCloud and Facebook links in the description. This is not represented as an official NoCopyrightSounds release or a blanket Creative Commons licence. The first 60 seconds are loudness-normalized with gentle fades, and the closing shot includes artist credits. Copy the [music credit](output/study-010-web-tour/music-credit.txt) into any upload description or sharing caption. Soundtrack, permission evidence, movies and verification reports remain local under ignored `output/`, not redistributed as repository assets.
+
+The [cinematic route](web/src/CinematicTour.tsx) reuses the existing Three.js viewer and canonical GLB, studio lighting, ambient occlusion and materials. The [timeline](web/src/tour.ts) controls camera motion, captions, framing and soft scene fades. It never moves rooms or fixtures. Open `http://localhost:5173/?tour=1` for the playable preview; the ordinary app remains unchanged. The storyboard is authored for Study 010 and needs review when the design changes.
+
+The [local exporter](web/scripts/export-tour.mjs) drives each frame explicitly in GPU-accelerated Chromium, captures lossless PNGs directly into FFmpeg and verifies the completed MP4. This avoids real-time recording drops, UI chrome, paid editors, external rendering services and thousands of retained intermediate image files. Chromium must report a hardware GPU, not SwiftShader. All output stays under ignored `output/`.
+
+To reproduce:
+
+```bash
+npm --prefix web ci
+npm --prefix web exec -- playwright install chromium
+npm --prefix web run build
+npm --prefix web run preview -- --host 127.0.0.1 --port 4179 --strictPort
+```
+
+In a second terminal, first check framing and benchmark a moving shot:
+
+```bash
+npm --prefix web run video:export -- --url http://127.0.0.1:4179/ \
+  --output output/a-new-web-framing --stills-only
+npm --prefix web run video:export -- --url http://127.0.0.1:4179/ \
+  --output output/a-new-web-benchmark --start-frame 450 --frames 90
+```
+
+Then export the complete film:
+
+```bash
+npm --prefix web run video:export -- --url http://127.0.0.1:4179/ \
+  --output output/a-new-web-tour
+```
+
+Use `--browser "/path/to/Chromium"` to reuse an installed full Chromium executable instead of downloading the package's browser. The measured M4 Pro export uses full Chromium with ANGLE Metal. FFmpeg and FFprobe must be on PATH. Choose a new output directory: existing completed movies are never overwritten. Stop the temporary preview server after exporting.
+
+The exporter checks the canonical layout fingerprint, resolution, exact frame count/rate/duration, silent audio contract, codec/pixel format and complete decoding. Source fingerprints must remain unchanged through export. Reports record GPU identity, setup/encoding time and file size. Five additional frontend tests cover the complete 1,800-frame timeline, floor coverage, moving cameras, invalid frames, current area facts and contiguous subtitle timing. The M4 Pro benchmark exported a three-second moving sample in 16.65 seconds; the complete silent film took 6 minutes 7 seconds including setup. These are measured results, not guaranteed timings on other systems.
+
+The base exporter intentionally creates a silent master. The selected music edition is a separate local FFmpeg postprocess: trim and normalize the audio, fade in over 1.2 seconds and out over the final 3.5 seconds, overlay a browser-rasterized credit banner during seconds 55-60, encode high-quality H.264 (CRF 16) and AAC (192 kbps, 48 kHz stereo), and retain the original master. This does not render the 3D scene again. Separate [music verification](output/study-010-web-tour/music-verification.json) checks exact dimensions, 1,800 frames, 60 seconds, codecs, stereo audio, fades, full decoding and sampled visual similarity to the master; macOS AVFoundation also decodes every final video frame with exact timestamps. Future soundtracks need their own verified permission and attribution.
+
+#### Archived Study 003: Blender previews
+
+The following preserved movies and Blender tour camera sequence depict **Study 003**, not Study 010. Reframe those Blender shots before using them with the restored layout.
 
 - [12-second MP4](output/study-003-tour-preview/dream-home-preview.mp4) - 1920 x 1080, 24 fps, H.264/yuv420p with fast-start playback; silent, suitable for sharing.
 - [Animated Blender copy](output/study-003-tour-preview/dream-home-tour.blend) - select `TOUR 01-overview`, `TOUR 02-living` or `TOUR 03-suite` and play frames 1-102.
@@ -154,7 +242,7 @@ Main ground/first plates are **50 x 50 ft = 2,500 sq ft**, plus a **60 sq ft fro
 
 **Basement retained/aligned:** recreation stays in front, clean stores/laundry and protected circulation in the middle, garage behind. Gym/gaming are **387.75 sq ft net each**, stores **88.5 each**, laundry **117.5**. Three SUVs remain at the **front of the garage compartment**. Core alignment shifts the garage back, reducing rear aisle depth from 20.83 to **16.83 ft**, with greater width; the sampled route still clears actual parked fixtures. Independent stall manoeuvres, simultaneous equipment use, storage capacity and air/fire/egress performance remain unproven.
 
-**Entry and galleries:** one 4 ft front opening enters the **4 ft Entrance Gallery**, between drawing/guest rooms. The transverse **38 x 4 ft House Gallery** has its **8 x 5 ft WC left** and approved **4 ft long x 2 ft deep cupboard at the right terminal end**, facing left between stairs and living. The cupboard is outside living and does not narrow the through-route: the gallery ends at its sliding front. A **4 ft internal stair gallery** preserves front-landing access without an external link. The private master entry is the approved **3 ft exception**. Ordinary room/bath/stair/lift openings are 3 ft, family archway 6.5 ft; modeled widths are not finished clear widths after frames. Drawing/guest have no direct outside doors; garden/required escape remain.
+**Entry and galleries:** one 4 ft front opening enters the **4 ft Entrance Gallery**, between drawing/guest rooms. The transverse **38 x 4 ft House Gallery** has its **8 x 5 ft WC left** and approved **4 ft long x 2 ft deep cupboard at the right terminal end**, facing left between stairs and living. The cupboard is outside living and does not narrow the through-route: the gallery ends at its sliding front. A **4 ft internal stair gallery** preserves front-landing access without an external link. Study 011 removes the former 3 ft master-entry exception; the master bedroom opens through one 3 ft door from the dining/kitchen family zone, never from the House Gallery. Ordinary room/bath/stair/lift openings are 3 ft, family archway 6.5 ft; modeled widths are not finished clear widths after frames. Drawing/guest have no direct outside doors; garden/required escape remain.
 
 **Local ground adjustments:** drawing is **314.5 sq ft**. Narrowing Entrance Gallery gives guest **11.5 x 17 ft gross minus 5.5 x 7 ft ensuite = 157 sq ft net**, retaining front glazing, queen, reading seat and wardrobe. All five beds retain solid-wall headboards and two bedside tables/lamps; drawing/living/office retain side windows.
 
@@ -195,7 +283,7 @@ To render saved cameras separately, without changing the editable file:
 ```bash
 /Applications/Blender.app/Contents/MacOS/Blender \
   --background --python-exit-code 1 --python blender/render_study.py -- \
-  --blend assets/models/study-010/dream-home-study.blend --device METAL
+  --blend assets/models/study-011/dream-home-study.blend --device METAL
 ```
 
 Use `--device CPU` on other systems. Optional `--scenes office-detail living-detail`, `--samples 32` and `--resolution 1440` support focused previews. Missing requested GPU support fails explicitly rather than silently switching devices. Render settings/results are recorded alongside the study.
@@ -206,9 +294,9 @@ For plans/reports without Blender:
 python3 scripts/layout.py --output output/a-new-plan-directory
 ```
 
-`FAIL` produces a nonzero exit status. `NEEDS REVIEW` is the expected successful result for an unapproved concept. The 114 layout tests cover the 7,000 sq ft cap, restored spacious pattern, private master entry, unified lounge/front suite/stair-side WC, cupboard outside living and clear compact-WC approach, preserved basement/roof/outdoors, pool/barrier separation and required presence, no external link, direct internal landings, actual doors/private suites, 3 ft dressing-door approaches, common-WC space, raised-ground driveway assumptions, equal recreation, privacy/open connections, beds/lamps, pantry/fridge, galleries/airlock and non-engineered structure. Thirteen driveway tests check body/overhang sweep, flaring/portal, grade integration, roof/underbody margins and invalid cases; this is not independent parking certification.
+`FAIL` produces a nonzero exit status. `NEEDS REVIEW` is the expected successful result for an unapproved concept. The 142 layout tests cover the exterior facade ring, every outside opening, gates, columns, planting and the nine camera views, plus the 7,000 sq ft cap, restored spacious pattern, the family-zone master door with clear approaches and a west-wall bed facing it, the extended master bath, unified lounge/front suite/stair-side WC, cupboard outside living and clear compact-WC approach, preserved basement/roof/outdoors, pool/barrier separation and required presence, no external link, direct internal landings, actual doors/private suites, 3 ft dressing-door approaches, common-WC space, raised-ground driveway assumptions, equal recreation, privacy/open connections, beds/lamps, pantry/fridge, galleries/airlock and non-engineered structure. Thirteen driveway tests check body/overhang sweep, flaring/portal, grade integration, roof/underbody margins and invalid cases; this is not independent parking certification.
 
-Eight additional tour tests cover the exact dissolve timeline, moving camera paths, orbit radius/height, easing, invalid frame ranges and renderer-specific settings/validation. Blender round-trip pose checks and full MP4 probing/decoding complement those pure-Python tests.
+Six exterior frontend tests decode the exported exterior GLB for hash/revision, storey heights, lift tower, gate openings by ray tests and cutaway-tree hiding. Eight additional tour tests cover the exact dissolve timeline, moving camera paths, orbit radius/height, easing, invalid frame ranges and renderer-specific settings/validation. Blender round-trip pose checks and full MP4 probing/decoding complement those pure-Python tests.
 
 Generated output is Git-ignored and local, not included in a fresh checkout. Regenerate it using these commands. Edit [layout-study.json](house-spec/layout-study.json) for candidate placement/dimensions; do not write proposals into the approved brief as confirmed facts.
 

@@ -28,7 +28,7 @@ Approved by the user on 17 October 2026 after a requirements interview, with use
 - Front tea/breakfast/guest terrace; family living and relocated kitchen face the backyard, with dining inward beside the kitchen. Children should reach backyard without crossing master bedroom or office.
 - Fully open vegetarian Indian kitchen with effective stove extraction, island/breakfast counter, refrigerator, dishwasher, induction and LPG cooking. Pantry room; eight-seat dining nearby.
 - Covered verandas are required for rain/shade, with a swing facing backyard. Large operable garden-facing glazing where comfort/privacy permit.
-- Master: king bed, reading/seating, private garden access and closable walk-in for two. Retain **one wall-backed WC, one basin**, tub and separate shower; favor a larger closet over an oversized bath.
+- Master: king bed, reading/seating, private garden access and closable walk-in for two. Retain **one wall-backed WC, one basin**, tub and separate shower; favor a larger closet over an oversized bath. Study 011 later extends the bath at the user's request.
 - One controlled front entrance through a labelled Entrance Gallery, with internal drawing/guest doors only; no direct exterior doors into those rooms. Retain garden access and required emergency escape, not a literally single-exit house.
 - Guest: queen bed, reading/seating and freestanding wooden wardrobe, not a walk-in closet. Private corner ensuite entered only from guest, replacing the former dual-access bath.
 - Widen and label the House Gallery; common WC at its left end, reached only from shared circulation, not living/prayer or a private room.
@@ -125,6 +125,22 @@ Office reduces from 314.5 to **204 sq ft**, reclaiming a front band for Child 1'
 Current [layout-study.json](../house-spec/layout-study.json) moves the cupboard entirely out of living. The user explicitly approved reducing it to **4 ft long x 2 ft deep** so it can sit at House Gallery's right terminal end, between stairs and living, facing left into the gallery. The full **4 ft through-route** terminates at its sliding front instead of passing through a narrowed strip. Living regains **12 sq ft**, reaching **343.5 sq ft net**; the cupboard is an independent 8 sq ft footprint, not nested in living.
 
 The stair-side shared WC becomes **6 x 5.5 ft = 33 sq ft**, with repositioned wall-backed toilet/basin, **3 ft modeled doorway/clear inside approach** and **2.5 ft toilet-frontal space**. Lounge gains **19 sq ft**, reaching **653 sq ft net**. The opposite recreational end, other suites, basement, roof, plot, gardens, ramp and pool remain unchanged. Neither these checks nor the smaller WC certify door swings, accessibility or construction compliance.
+
+## Study 011 - master door from the family zone and extended bath
+
+The user asked to remove the 3 ft master-entry passage and instead open the master bedroom from the kitchen/dining family zone, with the bed on the opposite wall facing the entrance and the freed area given to the master bath. Current [layout-study.json](../house-spec/layout-study.json) therefore removes `master_entry`, adds a 3 ft door `master_family_door` at the south end of the bedroom's east wall, extends the bath to **12 x 8.5 ft = 102 sq ft** and shifts the **85.5 sq ft** dressing east by 3.5 ft. Access is **dining/kitchen family zone -> bedroom -> dressing -> bath**, never through the House Gallery or public circulation through the dressing.
+
+Dining grows from 12 x 12.5 to **12 x 13 ft (156 sq ft)** so the door lands inside the dining rectangle, and its table moves one foot east to keep the door approach clear of chairs. The master bed moves to the west wall (headboard on a solid wall, two bedside tables); the west window narrows to 5.25 ft beside the relocated reading corner, while the 10 ft rear garden slider continues to supply the required large operable glazing. This reverses the earlier preference for a larger closet than bath: the dressing room is unchanged and the bath is now larger.
+
+Trade-offs to review: door noise and kitchen smell near the bedroom, a possible sightline from the dining zone when the door is open (the door is at the far south end, offset from the bed), reduced west daylight, hinge direction and acoustics. All other rooms, basement, roof, plot, gardens, pool and ramp are unchanged from Study 010.
+
+## Study 011 - finished exterior and 360 degree view
+
+The user wanted to visualise how the house will look from outside, including front yard and backyard, for a website. Because the inspection model has 3 ft cutaway walls, Study 011 adds a separate presentation-only exterior built from the same plan. **Pahadi-modern** was chosen: ivory plaster, natural rubble-stone plinth and columns, timber accents, slate-grey frames, flat accessible roof terrace unchanged. Both an interactive Three.js view and Cycles stills were requested.
+
+Decisions: the exterior never alters rooms, openings or furniture; every glazed opening is taken from the layout; the lift remains a stone tower in the front lawn with a timber-screened slot; boundary gates must clear the entry path and the driveway lane; planting must stay off the house, pool barrier, path and driveway; and cameras must sit above ground and outside the house. Trees are deliberately stylised (broadleaf and conifer) rather than photoreal.
+
+Review items: facade materials and colours, window products and glazing performance, roof edge and drainage, balcony columns, boundary height, gates, lighting and planting are concepts only. Raised rear-lawn planting needs soil depth and structure review. The street and hills are illustrative.
 
 ## Still unresolved
 

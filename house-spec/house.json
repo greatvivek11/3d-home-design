@@ -101,7 +101,7 @@
       "lift_dimensions_and_product": "Unapproved shaft reserve only; usable cab, doors, pit, overrun, fire safety and accessibility require specialist design",
       "primary_front_entry_room_id": "entrance_gallery",
       "front_entry_direction": "One controlled front door to a labelled Entrance Gallery; drawing and guest have internal gallery doors only. Preserve garden access and required emergency escape routes; single front entry is not a single-egress instruction",
-      "gallery_direction": "Ground Entrance and House Galleries and retained above-ground stair/rear-balcony routes are 4 ft. Explicit exception: private master entrance passage is 3 ft, leading directly from House Gallery into bedroom, never through dressing. First-floor east/west galleries merge into a unified open lounge; shared WC is at its stair-side end. Basement circulation is unchanged",
+      "gallery_direction": "Ground Entrance and House Galleries and retained above-ground stair/rear-balcony routes are 4 ft. Study 011 removes the separate master entry passage: the master bedroom has a single 3 ft family-zone door and no House Gallery door. First-floor east/west galleries merge into a unified open lounge; shared WC is at its stair-side end. Basement circulation is unchanged",
       "stair_direction": "Efficient U-stair replan with comfortable flights and landings; actual geometry, headroom, guards and compliance must be verified before construction",
       "step_free_ground_access": "where_feasible",
       "double_height": "Optional modest stair atrium; removable before protected priorities"
@@ -121,7 +121,7 @@
       "Restore first-floor office and Child 1 in front, two child bedrooms behind a transverse shared lounge; retain equal sleeping rooms and private directly interconnected bath/dressing, permitting local suite adjustments for internal stair access",
       "Common indoor first-floor WC opens only to the unified lounge at the stair-side end, leaving the opposite end free for recreation",
       "Reduce office width to reclaim the front band for Child 1 private bath/dressing, preserving its 16 x 17 ft sleeping room and removing all suite encroachment from the lounge",
-      "Master suite entrance is a separate 3 ft private passage from House Gallery to bedroom; bathroom moves left and is reached via a smaller private dressing room",
+      "Master bedroom opens through one 3 ft door from the dining/kitchen family zone, not from the House Gallery; its bed faces that door, and the extended bathroom remains reached only via the private dressing room",
       "Child 2 entrance is near its bathroom side, mirroring the other bedroom approaches",
       "Large operable glass windows or balcony sliders on every bedroom's outward-facing frontage; provide privacy, shading, insect screens and fall protection as needed",
       "Keep open prayer in the family living corner clear of garden exit and toilets; lift in front lawn, with equal usable basement recreation areas",
@@ -224,9 +224,8 @@
           "attached_bathroom_id": "master_bathroom",
           "wardrobe_room_id": "master_wardrobe"
         },
-        {"id": "master_entry", "type": "circulation", "required": true, "access_from": ["cross_passage", "master_bedroom"], "width_ft": 3},
         {"id": "master_wardrobe", "type": "walk_in_closet", "required": true, "capacity_people": 2, "closable": true, "access_from": ["master_bedroom", "master_bathroom"]},
-        {"id": "master_bathroom", "type": "bathroom_suite", "required": true, "separate_toilet_cubicles": 1, "basin_count": 1, "bathtub_count": 1, "shower_count": 1, "bath_and_shower_share_space": true, "access_from": ["master_wardrobe"], "area_direction": "Left-side bathroom reached through private dressing, which remains larger than bath; toilet against a real room wall, single basin"},
+        {"id": "master_bathroom", "type": "bathroom_suite", "required": true, "separate_toilet_cubicles": 1, "basin_count": 1, "bathtub_count": 1, "shower_count": 1, "bath_and_shower_share_space": true, "access_from": ["master_wardrobe"], "area_direction": "Extended left-side bathroom reached through private dressing; toilet against a real room wall, single basin"},
         {"id": "guest_bedroom", "type": "bedroom", "required": true, "bed": "queen", "reading_seating_corner": true, "wardrobe": "freestanding", "attached_bathroom_id": "guest_bathroom", "access_from": ["entrance_gallery", "guest_bathroom"]},
         {"id": "guest_bathroom", "type": "bathroom", "required": true, "toilet_count": 1, "access_from": ["guest_bedroom"], "location_direction": "Private corner inside guest room, excluded from sleeping-zone area", "fixture_details": "Shower, toilet and basin; detailed clearances and plumbing require review"},
         {"id": "family_toilet", "type": "toilet", "required": true, "toilet_count": 1, "access_from": ["cross_passage"], "location_direction": "Left end of House Gallery, separate from guest ensuite", "away_from": ["family_living", "prayer_alcove"]},

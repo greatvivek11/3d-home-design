@@ -42,12 +42,73 @@ def batch_meshes(scene):
         active.name = f"web.{active['floor_id']}.{active.get('fixture_id', 'architecture')}.{finish}"
 
 
+def export_exterior(layout, model_path):
+    """Export the presentation-only EXTERIOR collection as its own lazily loaded, lossless-compressed GLB."""
+    source = bpy.data.collections.get("EXTERIOR")
+    if source is None:
+        raise ValueError("Missing EXTERIOR collection. Regenerate the Blender study.")
+    scene = bpy.data.scenes.new("WEB EXPORT - exterior")
+    bpy.context.window.scene = scene
+    root = bpy.data.objects.new("exterior_root", None)
+    root["floor_id"] = "exterior"
+    root["status"] = "unapproved_concept"
+    root["presentation_only"] = True
+    scene.collection.objects.link(root)
+    for obj in source.all_objects:
+        if obj.type != "MESH":
+            continue
+        duplicate = obj.copy()
+        duplicate.name = f"web.{obj.name}"
+        duplicate.parent = root
+        scene.collection.objects.link(duplicate)
+    bpy.context.view_layer.update()
+    depsgraph = bpy.context.evaluated_depsgraph_get()
+    for obj in list(scene.objects):
+        if obj.type == "MESH":
+            mesh = bpy.data.meshes.new_from_object(obj.evaluated_get(depsgraph), preserve_all_data_layers=True, depsgraph=depsgraph)
+            obj.modifiers.clear()
+            obj.data = mesh
+    batch_meshes(scene)
+    mesh_count = sum(obj.type == "MESH" for obj in scene.objects)
+    if mesh_count == 0:
+        raise ValueError("Empty exterior export")
+    temporary = model_path.with_name(model_path.stem + ".pending.glb")
+    bpy.ops.export_scene.gltf(
+        filepath=str(temporary.resolve()), export_format="GLB",
+        use_active_scene=True, export_cameras=False, export_lights=False,
+        export_extras=True, export_yup=True, export_apply=True, export_animations=False,
+    )
+    uncompressed = temporary.stat().st_size
+    subprocess.run(["node", str(ROOT / "web/scripts/optimize-model.mjs"), str(temporary.resolve())], check=True)
+    with temporary.open("rb") as stream:
+        magic, version, length = struct.unpack("<4sII", stream.read(12))
+        chunk_length, chunk_type = struct.unpack("<II", stream.read(8))
+        document = json.loads(stream.read(chunk_length))
+    if magic != b"glTF" or version != 2 or length != temporary.stat().st_size or chunk_type != 0x4E4F534A:
+        raise ValueError("Invalid exported exterior GLB")
+    if "exterior_root" not in {node.get("name") for node in document["nodes"]}:
+        raise ValueError("Exterior GLB lost its root")
+    revision = hashlib.sha256(temporary.read_bytes()).hexdigest()[:12]
+    return temporary, {"model_bytes": length, "uncompressed_model_bytes": uncompressed, "mesh_count": mesh_count, "revision": revision}
+
+
+def exterior_views(layout):
+    views = []
+    for view in layout["exterior"]["views"]:
+        x, y, z = view["position"]
+        tx, ty, tz = view["target"]
+        views.append({"id": view["id"], "label": view["label"], "lens_mm": view["lens_mm"],
+                      "position": [feet(x), feet(z), -feet(y)], "target": [feet(tx), feet(tz), -feet(ty)]})
+    return views
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--blend", type=Path, required=True)
     parser.add_argument("--layout", type=Path, default=ROOT / "house-spec/layout-study.json")
     parser.add_argument("--model", type=Path, default=ROOT / "web/public/models/house.glb")
     parser.add_argument("--manifest", type=Path, default=ROOT / "web/src/generated/house.json")
+    parser.add_argument("--exterior-model", type=Path, default=ROOT / "web/public/models/exterior.glb")
     args = parser.parse_args(sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else [])
     layout = load_json(args.layout)
     report = validate(load_json(ROOT / "house-spec/house.json"), layout)
@@ -107,6 +168,8 @@ def main():
             obj.modifiers.clear()
             obj.data = mesh
     batch_meshes(export_scene)
+    exterior_pending, exterior_info = export_exterior(layout, args.exterior_model)
+    bpy.context.window.scene = export_scene
     counts = {fid: sum(obj.type == "MESH" and obj.get("floor_id") == fid for obj in export_scene.objects) for fid in TITLES}
     args.model.parent.mkdir(parents=True, exist_ok=True)
     args.manifest.parent.mkdir(parents=True, exist_ok=True)
@@ -165,11 +228,17 @@ def main():
         "driveway": {**report["driveway"], "design_vehicle": layout["ramp"]["design_vehicle"],
                      "clear_width_ft": layout["ramp"]["clear_width_ft"], "status": "unapproved_concept"},
         "weather_protection": layout["weather_protection"],
+        "exterior": {
+            "style": layout["exterior"]["style"], "status": layout["exterior"]["status"],
+            "model": "models/exterior.glb", **exterior_info, "views": exterior_views(layout),
+            "storey_height_ft": layout["exterior"]["storey_height"],
+        },
         "review_items": report["review"],
     }
     pending_manifest = args.manifest.with_suffix(".pending.json")
     pending_manifest.write_text(json.dumps(manifest, indent=2) + "\n")
     temporary.replace(args.model)
+    exterior_pending.replace(args.exterior_model)
     pending_manifest.replace(args.manifest)
     plans = args.model.parent.parent / "plans"
     plans.mkdir(parents=True, exist_ok=True)
@@ -178,7 +247,8 @@ def main():
         pending_plan = plans / f"{name}.pending.svg"
         pending_plan.write_text(plan_svg(layout, floor))
         pending_plan.replace(plans / f"{name}.svg")
-    print("WEB_EXPORT_SUCCESS " + json.dumps({"model": str(args.model), "bytes": length, "revision": revision, "floor_meshes": counts}))
+    print("WEB_EXPORT_SUCCESS " + json.dumps({"model": str(args.model), "bytes": length, "revision": revision, "floor_meshes": counts,
+                                              "exterior": exterior_info}))
 
 
 if __name__ == "__main__":

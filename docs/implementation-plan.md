@@ -24,7 +24,7 @@ Study 008 supersedes that compact direction at **70 x 100 ft / 7,000 sq ft**. Re
 
 Study 009 refines only ground/first circulation and suites: 4 ft Entrance/House Galleries, an approved 3 ft private master entry, wider guest/master/living, smaller front office to house Child 1's suite, and a unified 634 sq ft net lounge with shared WC beside stairs. No east/west galleries remain. Basement/roof and outdoor functions are preserved; front path realigns with the narrower entry.
 
-Study 010 moves the approved 4 x 2 ft cupboard to the gallery's right terminal end outside living, preserving its 4 ft through-route, and shrinks the stair-side shared WC to 6 x 5.5 ft with repositioned fixtures/clear doorway approach. Living/lounge net areas become 343.5/653 sq ft; the rest of Study 009 is preserved.
+Study 011 also adds a finished presentation exterior and an Outside 360 degree website mode (separate lazily loaded GLB, nine camera presets) without changing the plan. Study 011 removes the separate master entry, opens the master bedroom through a 3 ft door from the dining/kitchen family zone, moves the bed to the opposite west wall and extends the master bath to 102 sq ft; nothing else changes. Study 010 moves the approved 4 x 2 ft cupboard to the gallery's right terminal end outside living, preserving its 4 ft through-route, and shrinks the stair-side shared WC to 6 x 5.5 ft with repositioned fixtures/clear doorway approach. Living/lounge net areas become 343.5/653 sq ft; the rest of Study 009 is preserved.
 
 ## M0 — Environment and repository foundation ([Codex task](tasks/00-foundation.md))
 

@@ -377,6 +377,195 @@ def wall_parts(wall, openings, height):
     return parts
 
 
+FACADE_EDGES = ("front", "rear", "left", "right")
+
+
+def facade_edges(floor, thickness):
+    """Closed outer-wall ring: front/rear own the corners; left/right run between them."""
+    x, y, w, d = floor["envelope"]
+    t = thickness
+    return {
+        "front": {"axis": "x", "at": y + t / 2, "span": (x, x + w), "origin": y},
+        "rear": {"axis": "x", "at": y + d - t / 2, "span": (x, x + w), "origin": y + d - t},
+        "left": {"axis": "y", "at": x + t / 2, "span": (y + t, y + d - t), "origin": x},
+        "right": {"axis": "y", "at": x + w - t / 2, "span": (y + t, y + d - t), "origin": x + w - t},
+    }
+
+
+def facade_plan_rect(edge, a, b, thickness):
+    return ([a, edge["origin"], b - a, thickness] if edge["axis"] == "x"
+            else [edge["origin"], a, thickness, b - a])
+
+
+def facade_openings(floor, layout):
+    """Exterior doors/windows hosted by the outer wall ring, with absolute heights."""
+    spec = layout["exterior"]
+    edges = facade_edges(floor, layout["wall_thickness"])
+    result = []
+    for index, opening in enumerate(floor["openings"]):
+        if "outside" not in opening.get("connects", []):
+            continue
+        name = next((key for key, edge in edges.items() if edge["axis"] == opening["axis"]
+                     and math.isclose(edge["at"], opening["at"], abs_tol=1e-6)), None)
+        if name is None:
+            continue
+        kind = opening.get("kind", "door")
+        sill = opening.get("sill", 0)
+        height = opening.get("height") or (spec["front_door_height"] if kind == "door" else spec["default_glazing_height"])
+        result.append({"id": opening.get("id") or f"{floor['id']}_{name}_{index}", "edge": name, "kind": kind,
+                       "start": opening["start"], "end": opening["start"] + opening["width"],
+                       "width": opening["width"], "sill": floor["elevation"] + sill,
+                       "head": floor["elevation"] + sill + height, "operable": opening.get("operable", kind == "slider")})
+    return result
+
+
+def facade_pieces(floor, layout, bottom, top):
+    """Solid wall pieces around outer openings; areas plus openings tile the whole facade."""
+    t = layout["wall_thickness"]
+    edges = facade_edges(floor, t)
+    openings = facade_openings(floor, layout)
+    pieces = []
+    for name, edge in edges.items():
+        lo, hi = edge["span"]
+        cuts = sorted((o for o in openings if o["edge"] == name), key=lambda o: o["start"])
+        cursor = lo
+        for o in cuts:
+            if o["start"] < cursor - 1e-9 or o["end"] > hi + 1e-9:
+                raise ValueError(f"{floor['id']}/{o['id']}: facade opening overlaps or leaves its wall")
+            if o["start"] > cursor:
+                pieces.append({"edge": name, "along": [cursor, o["start"]], "z": [bottom, top], "role": "wall"})
+            if o["sill"] > bottom:
+                pieces.append({"edge": name, "along": [o["start"], o["end"]], "z": [bottom, o["sill"]], "role": "sill"})
+            if o["head"] < top:
+                pieces.append({"edge": name, "along": [o["start"], o["end"]], "z": [o["head"], top], "role": "head"})
+            cursor = o["end"]
+        if cursor < hi:
+            pieces.append({"edge": name, "along": [cursor, hi], "z": [bottom, top], "role": "wall"})
+    for piece in pieces:
+        piece["rect"] = facade_plan_rect(edges[piece["edge"]], *piece["along"], t)
+    return pieces
+
+
+def circle_polygon(center, radius, count=16):
+    return [(center[0] + radius * math.cos(i * math.tau / count), center[1] + radius * math.sin(i * math.tau / count))
+            for i in range(count)]
+
+
+def validate_exterior(layout, floor_map, outdoors, pavement):
+    """Facade, boundary, planting and camera data for the presentation-only exterior."""
+    errors, checks = [], []
+    spec = layout.get("exterior")
+    if not isinstance(spec, dict):
+        return ["Layout needs an exterior presentation block"], checks
+    site = layout["site"]
+    ground, first, roof = floor_map["ground"], floor_map["first"], floor_map["roof"]
+    positive = [spec.get(k) for k in ["storey_height", "plinth_height", "frame_ft", "front_door_height", "default_glazing_height"]]
+    if not all(number(v) and v > 0 for v in positive):
+        return errors + ["Exterior dimensions must be positive finite lengths"], checks
+    if not (math.isclose(first["elevation"] - ground["elevation"], spec["storey_height"])
+            and math.isclose(roof["elevation"] - first["elevation"], spec["storey_height"])):
+        errors.append("Exterior storey height must match the ground-first-roof elevations")
+    t = layout["wall_thickness"]
+    for floor in (ground, first):
+        try:
+            pieces = facade_pieces(floor, layout, 0, spec["storey_height"] * 2)
+        except ValueError as error:
+            errors.append(str(error))
+            continue
+        edges = facade_edges(floor, t)
+        for name, edge in edges.items():
+            length = edge["span"][1] - edge["span"][0]
+            area = sum((p["along"][1] - p["along"][0]) * (p["z"][1] - p["z"][0]) for p in pieces if p["edge"] == name)
+            area += sum(o["width"] * (o["head"] - o["sill"]) for o in facade_openings(floor, layout) if o["edge"] == name)
+            if not math.isclose(area, length * spec["storey_height"] * 2, abs_tol=1e-6):
+                errors.append(f"{floor['id']}/{name}: facade pieces and openings do not tile the outer wall")
+        for o in facade_openings(floor, layout):
+            bottom = floor["elevation"] - .5
+            top = floor["elevation"] + spec["storey_height"] - .5
+            if o["sill"] < floor["elevation"] - 1e-6 or o["head"] > top - spec["fascia"]["depth"] + 1e-6:
+                errors.append(f"{floor['id']}/{o['id']}: opening must sit between floor level and the roof-edge fascia")
+            if o["kind"] != "door" and o["width"] < 3:
+                errors.append(f"{floor['id']}/{o['id']}: facade glazing must be at least 3 ft wide")
+    boundary = spec.get("boundary", {})
+    gaps = boundary.get("gaps", [])
+    gap_ids = [g.get("id") for g in gaps]
+    if (not number(boundary.get("height")) or not number(boundary.get("thickness"))
+            or len(set(gap_ids)) != len(gap_ids) or not {"pedestrian_gate", "driveway_gate"} <= set(gap_ids)):
+        errors.append("Boundary needs height, thickness and unique pedestrian/driveway gate gaps")
+    else:
+        for gap in gaps:
+            if gap.get("edge") != "front" or not (0 <= gap.get("start", -1) < gap.get("end", -1) <= site["width"]):
+                errors.append(f"Boundary gap {gap.get('id')} must lie inside the front boundary")
+        path = outdoors.get("entry_path")
+        gate = next(g for g in gaps if g["id"] == "pedestrian_gate")
+        if not path or gate["start"] > path["rect"][0] or gate["end"] < path["rect"][0] + path["rect"][2]:
+            errors.append("Pedestrian gate must clear the whole entry path")
+        drive = next(g for g in gaps if g["id"] == "driveway_gate")
+        ramp = layout["ramp"]
+        if drive["start"] > ramp["start"][0] - ramp["clear_width_ft"] / 2 or drive["end"] < ramp["start"][0] + ramp["clear_width_ft"] / 2:
+            errors.append("Driveway gate must clear the ramp's full straight lane")
+    for balcony in layout.get("balconies", []):
+        columns = [c for c in spec.get("columns", []) if c["rect"][1] >= balcony["rect"][1] - .3
+                   and c["rect"][1] + c["rect"][3] <= balcony["rect"][1] + balcony["rect"][3] + .3]
+        outer = [c for c in columns if abs((c["rect"][1] + c["rect"][3] / 2) - (balcony["rect"][1] if balcony["rect"][1] < ground["envelope"][1] else balcony["rect"][1] + balcony["rect"][3])) < 1]
+        if len(outer) < 3 or any(not contains(balcony["rect"], [c["rect"][0], balcony["rect"][1], c["rect"][2], balcony["rect"][3]]) for c in outer):
+            errors.append(f"{balcony['id']}: balcony needs outer-edge support columns inside its deck")
+    path = outdoors.get("entry_path")
+    column_ids = [c["id"] for c in spec.get("columns", [])]
+    if len(set(column_ids)) != len(column_ids) or any(
+            not valid_rect(c["rect"]) or (path and overlap(c["rect"], path["rect"]) > 0) for c in spec.get("columns", [])):
+        errors.append("Facade columns need unique IDs and must clear the entry path")
+    footprints = floor_footprints(ground)
+    barrier = outdoors.get("pool_barrier")
+    plant_ids = [p.get("id") for p in spec.get("planting", [])]
+    if len(set(plant_ids)) != len(plant_ids):
+        errors.append("Planting IDs must be unique")
+    for plant in spec.get("planting", []):
+        kind = plant.get("kind")
+        if kind in {"tree", "conifer", "shrub"}:
+            radius = plant.get("canopy", 0) / 2 if kind in {"tree", "conifer"} else plant.get("radius", 0)
+            at = plant.get("at")
+            if (not isinstance(at, list) or len(at) != 2 or not all(number(v) for v in at) or not number(radius) or radius <= 0
+                    or not number(plant.get("height")) or plant["height"] <= 0):
+                errors.append(f"{plant.get('id')}: invalid plant")
+                continue
+            footprint = [at[0] - radius, at[1] - radius, 2 * radius, 2 * radius]
+            if not contains([0, 0, site["width"], site["depth"]], footprint):
+                errors.append(f"{plant['id']}: canopy leaves the plot")
+            if any(overlap(footprint, rect) > 0 for rect in footprints) or (barrier and overlap(footprint, barrier["rect"]) > 0):
+                errors.append(f"{plant['id']}: planting overlaps the house or pool barrier")
+            circle = circle_polygon(at, radius)
+            # Planting above the structural deck is a flagged soil-depth review item, not open pavement.
+            on_deck = contains(floor_map["basement"]["envelope"], [at[0], at[1], 0, 0])
+            if not on_deck and any(polygons_overlap(circle, part) for part in pavement):
+                errors.append(f"{plant['id']}: planting overlaps driveway pavement")
+            if path and overlap(footprint, [path["rect"][0], path["rect"][1], path["rect"][2], path["rect"][3]]) > 0:
+                errors.append(f"{plant['id']}: planting blocks the entry path")
+        elif kind in {"hedge", "flower_bed"}:
+            if not valid_rect(plant.get("rect")) or not number(plant.get("height")) or plant["height"] <= 0:
+                errors.append(f"{plant.get('id')}: invalid planting bed")
+            elif not contains([0, 0, site["width"], site["depth"]], plant["rect"]) or any(overlap(plant["rect"], r) > 0 for r in footprints) \
+                    or (path and overlap(plant["rect"], path["rect"]) > 0):
+                errors.append(f"{plant['id']}: planting bed leaves the plot or blocks the house/path")
+        else:
+            errors.append(f"{plant.get('id')}: unknown planting kind")
+    views = spec.get("views", [])
+    view_ids = [v.get("id") for v in views]
+    if len(set(view_ids)) != len(view_ids) or not {"front", "rear", "left", "right", "aerial-front", "aerial-rear", "garden-pool", "entrance", "orbit"} <= set(view_ids):
+        errors.append("Exterior needs unique front, entrance, rear, left, right, two aerial, garden/pool and 360-degree orbit views")
+    house = [ground["envelope"][0], ground["envelope"][1], ground["envelope"][2], ground["envelope"][3]]
+    for view in views:
+        values = [*view.get("position", []), *view.get("target", [])]
+        if len(values) != 6 or not all(number(v) for v in values) or not number(view.get("lens_mm")) or view["lens_mm"] <= 0:
+            errors.append(f"{view.get('id')}: invalid camera view")
+            continue
+        px, py, pz = view["position"]
+        if pz < 2 or (house[0] <= px <= house[0] + house[2] and house[1] <= py <= house[1] + house[3] and pz < roof["elevation"] + 40):
+            errors.append(f"{view['id']}: camera is below ground or inside the house")
+    checks.append("Presentation exterior facade ring, openings, gates, columns, planting and nine camera views checked; materials, glazing, drainage and landscape design are NOT approved")
+    return errors, checks
+
+
 def validate_brief(spec):
     errors = []
     if spec.get("project", {}).get("version") != 2:
@@ -672,14 +861,28 @@ def validate(spec, layout):
                 errors.append("House Gallery, common WC, utility cupboard and core need shared access without private rooms or outside")
             checks.append("Single controlled front entry, private guest ensuite, left-end WC, labelled wider galleries and recessed utility storage checked; door operation/egress unverified")
             graph = access_graph(ground)
-            master_entry = ground_rooms.get("master_entry")
-            if (not master_entry or master_entry["rect"][2] != 3
-                    or graph.get("master_entry") != {"cross_passage", "master_bedroom"}
+            master = ground_rooms["master_bedroom"]
+            master_door = next((o for o in ground["openings"] if o.get("id") == "master_family_door"), None)
+            master_links = graph.get("master_bedroom", set()) - {"outside"}
+            if ("master_entry" in ground_rooms
+                    or master_door is None or master_door["axis"] != "y" or master_door["width"] != 3
+                    or set(master_door["connects"]) != {"master_bedroom", "dining"}
+                    or master_links != {"dining", "master_wardrobe"}
                     or graph.get("master_wardrobe") != {"master_bedroom", "master_bathroom"}
                     or graph.get("master_bathroom") != {"master_wardrobe"}):
-                errors.append("Master suite needs a separate 3 ft entrance to bedroom and private bedroom-dressing-bath access")
-            if master_entry and any(overlap(master_entry["rect"], item["rect"]) > 1e-6 for item in ground["furniture"]):
-                errors.append("Private master entrance passage must remain furniture-free")
+                errors.append("Master bedroom needs one 3 ft family-zone door, no House Gallery entry and private bedroom-dressing-bath access")
+            if master_door and master_door["axis"] == "y":
+                bedroom_approach = door_inside_approach(master, master_door)
+                dining_approach = door_inside_approach(ground_rooms["dining"], master_door)
+                chairs = [chair for item in ground["furniture"] if item["kind"] == "dining_table" for chair in dining_chairs(item["rect"])]
+                if (not contains(master["rect"], bedroom_approach) or not contains(ground_rooms["dining"]["rect"], dining_approach)
+                        or any(overlap(approach, rect) > 1e-6 for approach in (bedroom_approach, dining_approach)
+                               for rect in [item["rect"] for item in ground["furniture"]] + chairs)):
+                    errors.append("Master family door needs furniture-free 3 ft approaches inside the bedroom and dining zone")
+                bed = next((item for item in ground["furniture"] if item["id"] == "master_bed"), None)
+                if (bed is None or bed.get("back_edge") != "left"
+                        or master_door["at"] < master["rect"][0] + master["rect"][2] / 2):
+                    errors.append("Master bed headboard must be on the wall opposite the family-zone door, facing it")
             entry_opening = next((o for o in ground["openings"] if o.get("id") == "family_entry"), None)
             dining_boundaries = [public for public in [entry, gallery] if adjacent(public["rect"], ground_rooms["dining"]["rect"])]
             if ("dining" in graph["cross_passage"] or not dining_boundaries
@@ -882,6 +1085,12 @@ def validate(spec, layout):
                 if any(polygons_overlap(polygon, part) for part in pavement + vehicle):
                     errors.append(f"{item['id']}: pool and barrier must remain clear of driveway pavement and the sampled vehicle sweep")
             checks.append("Pool/barrier plan separation from basement, driveway pavement and buffered SUV sweep checked; structure, deck clearances and child safety NOT certified")
+        sections = road.sections()
+        road_pavement = [[a.offset(-a.inner), b.offset(-b.inner), b.offset(b.outer), a.offset(a.outer)]
+                         for a, b in zip(sections, sections[1:])]
+        exterior_errors, exterior_checks = validate_exterior(layout, floor_map, outdoors, road_pavement)
+        errors.extend(exterior_errors)
+        checks.extend(exterior_checks)
         if not errors:
             bsm = floor_map["basement"]
             aisle = next(r["rect"] for r in bsm["rooms"] if r["id"] == "drive_aisle")

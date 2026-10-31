@@ -125,3 +125,16 @@ export function dimensionLines(bounds: Room['bounds'], widthFt: number, depthFt:
       from: [x + width, y, z], to: [x + width, y, z + depth] },
   ]
 }
+
+export type ExteriorView = { id: string; label: string; lens_mm: number; position: Position; target: Position }
+export const exterior = manifest.exterior as typeof manifest.exterior & { views: ExteriorView[] }
+export const exteriorViews: ExteriorView[] = exterior.views
+
+export function verticalFov(lensMm: number): number {
+  if (!Number.isFinite(lensMm) || lensMm <= 0) throw new Error('A camera lens must be a positive finite focal length')
+  return 2 * Math.atan(12 / lensMm) * 180 / Math.PI
+}
+
+export function cameraAzimuth(position: Position, target: Position): number {
+  return Math.atan2(position[0] - target[0], position[2] - target[2])
+}

@@ -35,3 +35,5 @@ web/*.tsbuildinfo
 .env
 .env.*
 !.env.example
+.vercel
+.env*

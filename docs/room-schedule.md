@@ -1,10 +1,10 @@
 # Approved Space Program - Dimensions Pending
 
-Approved brief: 17 October 2026, with subsequent user revisions. The latest direction supersedes the compact rebuild and restores the spacious 7,000 sq ft arrangement. Study 010 is still **an unapproved candidate**, not approved room dimensions, engineering or construction.
+Approved brief: 17 October 2026, with subsequent user revisions. The latest direction supersedes the compact rebuild and restores the spacious 7,000 sq ft arrangement. Study 011 is still **an unapproved candidate**, not approved room dimensions, engineering or construction.
 
 Keep five bedrooms and the retained program; report local circulation/suite adjustments explicitly. Furniture bounds do not establish operating, accessible or comfortable movement clearances.
 
-The [Study 010 candidate](../house-spec/layout-study.json) and [local previews](../README.md#open-the-latest-study) fit **70 x 100 ft = 7,000 sq ft**. Main plates return to 2,500 sq ft plus a 60 sq ft front-lawn lift annex. **No external covered stair link or extra side strip exists**: internal galleries meet the front full-floor stair landing. Ground/first regain the earlier front/rear room pattern, larger gardens and pool; basement/roof functions remain with necessary alignment.
+The [Study 011 candidate](../house-spec/layout-study.json) and [local previews](../README.md#open-the-latest-study) fit **70 x 100 ft = 7,000 sq ft**. Main plates return to 2,500 sq ft plus a 60 sq ft front-lawn lift annex. **No external covered stair link or extra side strip exists**: internal galleries meet the front full-floor stair landing. Ground/first regain the earlier front/rear room pattern, larger gardens and pool; basement/roof functions remain with necessary alignment.
 
 ## Site and external circulation
 
@@ -41,13 +41,12 @@ Basement is **4,016.7 sq ft**, excluding driveway, with its current clean-front/
 | Entrance Gallery | Sole controlled front entrance; access to drawing and guest | **4 ft** wide; modeled 4 ft front opening; no direct external room entrance doors |
 | House Gallery | Transverse front/rear separator and shared route | **38 x 4 ft**, labelled; WC left, ends at cupboard's sliding front right; full 4 ft through-route |
 | Family living | Seating, side glazing, open prayer | **391.5 gross - 48 pantry = 343.5 sq ft net**; cupboard occupies no living floor; direct shared garden slider |
-| Dining | 8-seat table | **12 x 12.5 ft = 150 sq ft**; eight chair footprints fit, service/pull-back comfort needs review |
+| Dining | 8-seat table | **12 x 13 ft = 156 sq ft**, including the landing for the master door; eight chair footprints fit with the table shifted 1 ft east, service/pull-back comfort needs review |
 | Kitchen | Island/breakfast counter, dishwasher, induction + LPG, ducted extraction | Backyard view; refrigerator moves to pantry; windows do not replace extraction |
 | Pantry | Food and refrigerator | **6 x 8 ft**, deducted from living; kitchen is **12 x 14 ft = 168 sq ft** |
-| Master private entry | No furniture; direct bedroom access | **3 x 9.5 ft**, explicit user-approved exception to 4 ft galleries; House Gallery -> entry -> bedroom |
-| Master bedroom | King bed, bedside lamps, reading/seating | **21.5 x 17 ft = 365.5 sq ft**, rear-left with garden glazing |
-| Master walk-in closet | Storage for two, closable door | **9 x 9.5 ft = 85.5 sq ft**, private bedroom -> dressing -> bath; no public gallery door |
-| Master bathroom suite | 5.5 ft tub, separate shower, **one compact basin and one wall-backed WC** | **8.5 x 8.5 ft = 72.25 sq ft**, shifted left; access only through dressing |
+| Master bedroom | King bed, bedside lamps, reading/seating | **21.5 x 17 ft = 365.5 sq ft**, rear-left; one 3 ft door from the dining/kitchen family zone at the south end of its east wall; headboard on the west wall facing the door; 10 ft rear garden slider plus a 5.25 ft west window |
+| Master walk-in closet | Storage for two, closable door | **9 x 9.5 ft = 85.5 sq ft**, private bedroom -> dressing -> bath; no gallery door |
+| Master bathroom suite | 5.5 ft tub, separate shower, **one compact basin and one wall-backed WC** | **12 x 8.5 ft = 102 sq ft**, extended into the removed entry strip; 4 x 4 ft shower, 5.5 ft tub; access only through dressing |
 | Guest bedroom | Queen, bedside lamps, reading seat, wardrobe | **11.5 x 17 ft gross - ensuite = 157 sq ft net**; widened by 2 ft; internal Entrance Gallery access and front glazing |
 | Private guest ensuite | Toilet, basin, enclosed 3 x 3 ft shower | Agreed 5.5 x 7 ft study size; deducted from guest; pocket-door intent; details unapproved |
 | Family common toilet | Toilet and basin | **8 x 5 ft**, left House Gallery end, shared-gallery access only |

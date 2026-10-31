@@ -18,7 +18,7 @@ export default tseslint.config(
     },
   },
   {
-    files: ['src/HouseViewer.tsx'],
+    files: ['src/HouseViewer.tsx', 'src/ExteriorViewer.tsx'],
     // Three.js camera/scene objects are imperative resources, not immutable React state.
     rules: { 'react-hooks/immutability': 'off' },
   },

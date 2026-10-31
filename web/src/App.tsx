@@ -3,11 +3,17 @@ import type { ReactNode } from 'react'
 import Icon from './Icon'
 import type { IconName } from './Icon'
 import {
-  defaultVisibility, displayedFloors, findRoom, floorColors, floors, formatArea, formatFeet, modes, siteAllowed, study,
+  defaultVisibility, displayedFloors, exterior, exteriorViews, findRoom, floorColors, floors, formatArea, formatFeet, modes, siteAllowed, study,
 } from './model'
 import type { CameraView, FloorId, Inspection, Selection, ViewMode, Visibility } from './model'
 
 const HouseViewer = lazy(() => import('./HouseViewer'))
+const ExteriorViewer = lazy(() => import('./ExteriorViewer'))
+type Space = 'inside' | 'outside'
+const viewHints: Record<string, string> = {
+  front: 'From the road', entrance: 'The controlled entry', rear: 'Backyard & lawn', left: 'Garden side', right: 'Driveway & lift',
+  'aerial-front': 'Bird\'s-eye, front', 'aerial-rear': 'Bird\'s-eye, back', 'garden-pool': 'Lawn & pool', orbit: 'All the way round',
+}
 const modeIcons: Record<string, IconName> = { 'side-by-side': 'grid', stacked: 'layers', exploded: 'spread' }
 
 function NotesDialog({ children, onClose }: { children: ReactNode; onClose: () => void }) {
@@ -44,6 +50,15 @@ export default function App() {
   const [resetKey, setResetKey] = useState(0)
   const [attempt, setAttempt] = useState(0)
   const [showNotes, setShowNotes] = useState(false)
+  const [space, setSpace] = useState<Space>(() => new URLSearchParams(location.search).get('view') === 'outside' ? 'outside' : 'inside')
+  const [viewId, setViewId] = useState(() => {
+    const requested = new URLSearchParams(location.search).get('shot')
+    return exteriorViews.some((item) => item.id === requested) ? requested ?? 'aerial-front' : 'aerial-front'
+  })
+  const [autoOrbit, setAutoOrbit] = useState(false)
+  const [exteriorReset, setExteriorReset] = useState(0)
+  const [exteriorAttempt, setExteriorAttempt] = useState(0)
+  const currentView = exteriorViews.find((item) => item.id === viewId) ?? exteriorViews[0]
   const active = displayedFloors(mode, visible, single)
   const room = findRoom(selection)
   const currentFloor = floors.find((floor) => floor.id === single)
@@ -54,6 +69,29 @@ export default function App() {
     query.addEventListener('change', update)
     return () => query.removeEventListener('change', update)
   }, [])
+
+  function changeSpace(next: Space) {
+    setSpace(next)
+    setAutoOrbit(false)
+    const url = new URL(location.href)
+    if (next === 'outside') url.searchParams.set('view', 'outside')
+    else { url.searchParams.delete('view'); url.searchParams.delete('shot') }
+    history.replaceState(null, '', url)
+  }
+
+  function chooseView(id: string) {
+    setViewId(id)
+    setAutoOrbit(false)
+    const url = new URL(location.href)
+    url.searchParams.set('view', 'outside')
+    url.searchParams.set('shot', id)
+    history.replaceState(null, '', url)
+  }
+
+  function toggleOrbit(next: boolean) {
+    setAutoOrbit(next)
+    if (next) setViewId('orbit')
+  }
 
   function changeMode(next: ViewMode) {
     setMode(next)
@@ -81,11 +119,45 @@ export default function App() {
         <span>dream<span className="brand-light">home</span><small>A PLACE TO BELONG</small></span>
       </a>
       <div className="header-middle"><span className="header-line" /> THE SPATIAL STUDY <span className="header-line" /></div>
+      <div className="space-switch" role="group" aria-label="Choose inside or outside view">
+        <button aria-pressed={space === 'inside'} className={space === 'inside' ? 'is-active' : ''} onClick={() => changeSpace('inside')}>Inside</button>
+        <button aria-pressed={space === 'outside'} className={space === 'outside' ? 'is-active' : ''} onClick={() => changeSpace('outside')}>Outside 360°</button>
+      </div>
       <button className="study-badge" onClick={() => setShowNotes(true)}><span className="status-dot" /> {study.study_id.replace('study-', 'Concept ')} <Icon name="info" size={15} /></button>
     </header>
 
     <div className="workspace">
-      <aside className="sidebar" aria-label="House viewer controls">
+      {space === 'outside' ? <aside className="sidebar" aria-label="Exterior viewer controls">
+        <div className="intro">
+          <span className="eyebrow">THE OUTSIDE STORY</span>
+          <h1>Home, from<br /><em>every side.</em></h1>
+          <p>Walk around the house and its gardens, from the street to the pool.</p>
+        </div>
+        <section className="control-section">
+          <h2><span>01</span> Choose a view <small>CLICK TO FLY THERE</small></h2>
+          <div className="view-grid">
+            {exteriorViews.map((item) => <button key={item.id} className={`view-button ${viewId === item.id ? 'is-active' : ''}`}
+              aria-pressed={viewId === item.id} onClick={() => chooseView(item.id)}>
+              <strong>{item.label}</strong><small>{viewHints[item.id] ?? ''}</small>
+            </button>)}
+          </div>
+          <label className="setting-row">
+            <span>Auto-orbit the house</span>
+            <input type="checkbox" checked={autoOrbit} onChange={(event) => toggleOrbit(event.target.checked)} />
+          </label>
+          <label className={`setting-row ${smallScreen ? 'is-muted' : ''}`}>
+            <span>Studio quality</span>
+            <input type="checkbox" checked={studioQuality && !smallScreen} disabled={smallScreen} onChange={(event) => setStudioQuality(event.target.checked)} />
+          </label>
+          <p className="setting-hint">{smallScreen ? 'Balanced rendering on small screens. ' : 'Studio adds ambient depth and soft contact shadows. '}Touching the model stops the orbit.</p>
+        </section>
+        <section className="control-section">
+          <h2><span>02</span> About this view</h2>
+          <p className="room-hint">A presentation of the finished concept: pahadi-modern stone, plaster and timber, glazed rooms, boundary wall, gates and planting around the same floor plan. Materials, trees and the street are illustrative.</p>
+          <p className="room-hint"><strong>Not a design approval.</strong> {exterior.status}</p>
+        </section>
+        <div className="sidebar-foot"><span className="eyebrow">THE IDEA</span><p>A family retreat, designed around light, greenery and everyday life.</p><button className="text-button" onClick={() => changeSpace('inside')}>Explore inside <Icon name="arrow" size={15} /></button></div>
+      </aside> : <aside className="sidebar" aria-label="House viewer controls">
         <div className="intro">
           <span className="eyebrow">A HOME, REIMAGINED</span>
           <h1>Room to<br /><em>imagine.</em></h1>
@@ -169,9 +241,26 @@ export default function App() {
         </section>
 
         <div className="sidebar-foot"><span className="eyebrow">THE IDEA</span><p>A family retreat, designed around light, greenery and everyday life.</p><button className="text-button" onClick={() => setShowNotes(true)}>About this study <Icon name="arrow" size={15} /></button></div>
-      </aside>
+      </aside>}
 
-      <main className="viewer-panel" aria-label="Interactive 3D house viewer">
+      {space === 'outside' ? <main className="viewer-panel is-outside" aria-label="Interactive 3D exterior viewer">
+        <div className="viewer-heading">
+          <div><span className="eyebrow">LIVE MODEL / {study.study_id.toUpperCase()} / EXTERIOR</span><h2>{autoOrbit ? '360° around the house' : currentView.label}</h2></div>
+          <span className="model-status"><span className="status-dot" /> BLENDER → THREE.JS</span>
+        </div>
+        <div className="canvas-shell">
+          <Suspense fallback={<div className="viewer-message" role="status"><h3>Preparing the 3D viewer…</h3></div>}>
+            <ExteriorViewer viewId={viewId} autoOrbit={autoOrbit} studioQuality={studioQuality && !smallScreen} resetKey={exteriorReset}
+              attempt={exteriorAttempt} onRetry={() => setExteriorAttempt((value) => value + 1)} onUserMove={() => setAutoOrbit(false)} />
+          </Suspense>
+        </div>
+        <div className="viewer-toolbar" aria-label="Exterior camera controls">
+          <button className={`toolbar-button ${autoOrbit ? 'is-active' : ''}`} aria-pressed={autoOrbit} onClick={() => toggleOrbit(!autoOrbit)}>{autoOrbit ? 'Stop orbit' : 'Auto-orbit'}</button>
+          <span className="toolbar-divider" />
+          <button className="toolbar-button reset-button" onClick={() => { setAutoOrbit(false); setExteriorReset((value) => value + 1) }}><Icon name="reset" size={16} /><span>Reset view</span></button>
+        </div>
+        <div className="viewer-caption"><span><span className="north-marker">↑</span> FRONT / ROAD <small>Orientation illustrative</small></span><p>Drag to orbit <i /> Scroll to zoom <i /> Right-drag to pan<br /><small>Touch: one finger to orbit · pinch / two fingers to zoom and pan</small></p></div>
+      </main> : <main className="viewer-panel" aria-label="Interactive 3D house viewer">
         <div className="viewer-heading">
           <div><span className="eyebrow">LIVE MODEL / {study.study_id.toUpperCase()}</span><h2>{inspection === 'structure' ? `${mode === 'single' ? currentFloor?.title : 'The house'} / conceptual frame` : mode === 'single' ? currentFloor?.title : mode === 'side-by-side' ? 'Every level. One vision.' : mode === 'stacked' ? 'The house, together.' : 'A little breathing room.'}</h2></div>
           <span className="model-status"><span className="status-dot" /> BLENDER → THREE.JS</span>
@@ -199,7 +288,7 @@ export default function App() {
           <button className="toolbar-button reset-button" onClick={() => { setSelection(null); setResetKey((value) => value + 1) }}><Icon name="reset" size={16} /><span>Reset view</span></button>
         </div>
         <div className="viewer-caption"><span><span className="north-marker">↑</span> BACK / GARDEN <small>Orientation illustrative</small></span><p>Drag to orbit <i /> Scroll to zoom <i /> Right-drag to pan<br /><small>Touch: one finger to orbit · pinch / two fingers to zoom and pan</small></p></div>
-      </main>
+      </main>}
     </div>
     <footer className="app-footer"><span><span className="status-dot" /> A LIVING DESIGN STUDY <span className="footer-separator">/</span> NOT AN APPROVED BUILDING PLAN</span><span>{study.site.width_ft} × {study.site.depth_ft} FT STUDY PLOT <span className="footer-separator">·</span> {(study.model_bytes / 1_000_000).toFixed(2)} MB MODEL</span></footer>
     {showNotes && <NotesDialog onClose={() => setShowNotes(false)}>
