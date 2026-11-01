@@ -413,9 +413,12 @@ def facade_openings(floor, layout):
         sill = opening.get("sill", 0)
         height = opening.get("height") or (spec["front_door_height"] if kind == "door" else spec["default_glazing_height"])
         result.append({"id": opening.get("id") or f"{floor['id']}_{name}_{index}", "edge": name, "kind": kind,
+                       "room_id": next((ref for ref in opening["connects"] if ref != "outside"), None),
                        "start": opening["start"], "end": opening["start"] + opening["width"],
                        "width": opening["width"], "sill": floor["elevation"] + sill,
-                       "head": floor["elevation"] + sill + height, "operable": opening.get("operable", kind == "slider")})
+                       "head": floor["elevation"] + sill + height, "operable": opening.get("operable", kind == "slider"),
+                       "sections": opening.get("sections", max(1, round(opening["width"] / 4))),
+                       "privacy_glass": opening.get("privacy_glass", False), "operation": opening.get("operation", "")})
     return result
 
 
@@ -484,8 +487,15 @@ def validate_exterior(layout, floor_map, outdoors, pavement):
             top = floor["elevation"] + spec["storey_height"] - .5
             if o["sill"] < floor["elevation"] - 1e-6 or o["head"] > top - spec["fascia"]["depth"] + 1e-6:
                 errors.append(f"{floor['id']}/{o['id']}: opening must sit between floor level and the roof-edge fascia")
-            if o["kind"] != "door" and o["width"] < 3:
-                errors.append(f"{floor['id']}/{o['id']}: facade glazing must be at least 3 ft wide")
+            room = next((r for r in floor["rooms"] if r["id"] == o["room_id"]), None)
+            if room is None:
+                errors.append(f"{floor['id']}/{o['id']}: facade glazing references a missing room")
+                continue
+            minimum = 2 if room["kind"] == "bathroom" else 3
+            if o["kind"] != "door" and o["width"] < minimum:
+                errors.append(f"{floor['id']}/{o['id']}: facade glazing must be at least {minimum} ft wide")
+            if not isinstance(o["sections"], int) or isinstance(o["sections"], bool) or not 1 <= o["sections"] <= 4:
+                errors.append(f"{floor['id']}/{o['id']}: glazing sections must be an integer from 1 to 4")
     boundary = spec.get("boundary", {})
     gaps = boundary.get("gaps", [])
     gap_ids = [g.get("id") for g in gaps]
@@ -618,6 +628,13 @@ def validate(spec, layout):
     area_cap = spec["site"].get("study_area_cap_sq_ft")
     if area_cap is not None and (not number(area_cap) or area_cap <= 0 or site["width"] * site["depth"] > area_cap + 1e-6):
         errors.append("Candidate site exceeds the user-permitted plot area")
+    if not all(number(site.get(key)) for key in ["front_depth", "back_start"]) or not 0 < site["front_depth"] < site["back_start"] < site["depth"]:
+        return {"status": "FAIL", "geometry_status": "FAIL", "errors": errors + ["Invalid front/rear yard bands"], "checks": [], "review": []}
+    allocation = spec["site"]["outdoor_allocation"]
+    for key, depth in [("front", site["front_depth"]), ("back", site["depth"] - site["back_start"])]:
+        target = allocation.get(f"{key}_depth_target_ft")
+        if target is not None and (not number(target) or target <= 0 or not math.isclose(depth, target, abs_tol=1e-6)):
+            errors.append(f"Candidate {key} yard must match the user-approved depth target")
     thickness = layout.get("wall_thickness")
     if not number(thickness) or thickness <= 0:
         return {"status": "FAIL", "errors": errors + ["Invalid wall thickness"], "checks": [], "review": []}
@@ -880,9 +897,8 @@ def validate(spec, layout):
                                for rect in [item["rect"] for item in ground["furniture"]] + chairs)):
                     errors.append("Master family door needs furniture-free 3 ft approaches inside the bedroom and dining zone")
                 bed = next((item for item in ground["furniture"] if item["id"] == "master_bed"), None)
-                if (bed is None or bed.get("back_edge") != "left"
-                        or master_door["at"] < master["rect"][0] + master["rect"][2] / 2):
-                    errors.append("Master bed headboard must be on the wall opposite the family-zone door, facing it")
+                if bed is None or bed.get("back_edge") != "right":
+                    errors.append("Master bed headboard must be on the solid east wall, facing the west window")
             entry_opening = next((o for o in ground["openings"] if o.get("id") == "family_entry"), None)
             dining_boundaries = [public for public in [entry, gallery] if adjacent(public["rect"], ground_rooms["dining"]["rect"])]
             if ("dining" in graph["cross_passage"] or not dining_boundaries
@@ -910,11 +926,43 @@ def validate(spec, layout):
             if (any(not ground_rooms[rid].get("open") for rid in family_ids)
                     or not family_ids <= reachable(graph, "family_living", set(graph) - family_ids)):
                 errors.append("Family living, dining and kitchen must remain internally open")
-        for fid, rid in [("ground", "receiving"), ("ground", "family_living"), ("first", "office")]:
+        for fid, rid in [("ground", "receiving"), ("ground", "family_living"), ("first", "child_bedroom_1")]:
             if not any(o["axis"] == "y" and set(o["connects"]) == {rid, "outside"}
                        and o.get("kind") == "window" and o.get("operable") and o["width"] >= 6
                        for o in floor_map[fid]["openings"]):
                 errors.append(f"{fid}/{rid}: operable side-wall glazing required")
+        for rid, oid, width, height, sill, sections in [
+                ("family_toilet", "ground_wc_window", 2, 2, 5, 1),
+                ("master_bathroom", "master_bath_window", 5, 4, 4.5, 2),
+                ("master_bedroom", "master_side_window", 9, 7, 1.5, 3),
+                ("family_living", "living_side_window", 10, 7, 1.5, 3)]:
+            opening = next((o for o in ground["openings"] if o.get("id") == oid), None)
+            room = ground_rooms.get(rid)
+            if room is None:
+                errors.append(f"{rid}: daylight window requires its room")
+                continue
+            if (not opening or opening.get("kind") != "window" or opening.get("operable") is not True
+                    or set(opening["connects"]) != {rid, "outside"} or opening["axis"] != "y"
+                    or (opening["width"], opening.get("height"), opening.get("sill"), opening.get("sections")) != (width, height, sill, sections)
+                    or not math.isclose(opening["start"] + width / 2, room["rect"][1] + room["rect"][3] / 2, abs_tol=1e-6)):
+                errors.append(f"{rid}: centred operable window must retain its agreed size, sill and sections")
+            elif room["kind"] == "bathroom":
+                if opening.get("privacy_glass") is not True:
+                    errors.append(f"{rid}: high-sill bathroom window needs privacy glass")
+            elif opening.get("operation") != "horizontal_sliding_intent":
+                errors.append(f"{rid}: dedicated side window needs horizontal sliding intent")
+        television = next((item for item in ground["furniture"] if item["id"] == "family_tv"), None)
+        sofa = next((item for item in ground["furniture"] if item["id"] == "family_sofa"), None)
+        living = ground_rooms["family_living"]["rect"]
+        if (not television or not sofa or not television.get("wooden_cabinet") or television.get("back_edge") != "front"
+                or not math.isclose(television["rect"][1], living[1], abs_tol=1e-6)
+                or sofa.get("back_edge") != "back"):
+            errors.append("Living TV needs its north-wall wooden cabinet with the sofa facing north")
+        side_window = next((o for o in ground["openings"] if o.get("id") == "living_side_window"), None)
+        if side_window and television:
+            window_approach = [living[0] + living[2] - 3, side_window["start"], 3, side_window["width"]]
+            if overlap(television["rect"], window_approach) > 1e-6:
+                errors.append("Living TV/cabinet must not obstruct the centred east window")
         fridge = [item for item in fixtures if item["id"] == "kitchen_fridge"]
         if len(fridge) != 1 or fridge[0]["room"] != "pantry":
             errors.append("Refrigerator must be inside the enlarged pantry, not kitchen")
@@ -929,6 +977,21 @@ def validate(spec, layout):
                         errors.append("Prayer corner must not obstruct the living-room garden exit")
         first = floor_map["first"]
         first_rooms = {r["id"]: r for r in first["rooms"]}
+        child1, office = first_rooms.get("child_bedroom_1"), first_rooms.get("office")
+        if (not child1 or not office
+                or not math.isclose(child1["rect"][0], first["envelope"][0] + thickness, abs_tol=1e-6)
+                or office["rect"][0] <= child1["rect"][0] + child1["rect"][2]
+                or child1["rect"][2:] != [16, 17] or office["rect"][2:] != [12, 17]):
+            errors.append("Front-left Child 1 suite and front-right office must retain their agreed room sizes")
+        for edge, oid, width in [("left", "lounge_west_window", 9), ("right", "lounge_east_window", 8)]:
+            opening = next((o for o in first["openings"] if o.get("id") == oid), None)
+            at = first["envelope"][0] + (thickness / 2 if edge == "left" else first["envelope"][2] - thickness / 2)
+            if (not opening or opening["axis"] != "y" or not math.isclose(opening["at"], at, abs_tol=1e-6)
+                    or set(opening["connects"]) != {"upstairs_lounge", "outside"}
+                    or opening.get("kind") != "window" or opening.get("operation") != "horizontal_sliding_intent"
+                    or opening.get("operable") is not True or opening["width"] != width
+                    or opening.get("height") != 7 or opening.get("sections") != 3):
+                errors.append(f"Family lounge needs its big three-section {edge} sliding window")
         if "upstairs_lounge" in first_rooms:
             lounge = first_rooms["upstairs_lounge"]
             common_wc = first_rooms.get("first_common_toilet")
@@ -941,6 +1004,9 @@ def validate(spec, layout):
                     or not adjacent(common_wc["rect"], first_rooms["stairs"]["rect"])):
                 errors.append("First-floor common WC must be recessed at the lounge stair end")
             if common_wc:
+                east_window = next((o for o in first["openings"] if o.get("id") == "lounge_east_window"), None)
+                if east_window and east_window["start"] < common_wc["rect"][1] + common_wc["rect"][3] + thickness / 2 - 1e-6:
+                    errors.append("Family lounge east window must remain wholly beyond the common WC and its wall allowance")
                 wc_items = [i for i in first["furniture"] if i["room"] == common_wc["id"]]
                 for door in first["openings"]:
                     if common_wc["id"] not in door["connects"] or door.get("kind") == "window":
@@ -1115,6 +1181,8 @@ def validate(spec, layout):
         "driveway": driveway_report,
         "front_yard_fraction": site["front_depth"] / site["depth"],
         "back_yard_fraction": (site["depth"] - site["back_start"]) / site["depth"],
+        "front_yard_area_sq_ft": site["width"] * site["front_depth"],
+        "back_yard_area_sq_ft": site["width"] * (site["depth"] - site["back_start"]),
         "errors": errors,
         "checks": checks,
         "review": layout["review_items"],

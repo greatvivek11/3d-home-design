@@ -197,7 +197,9 @@ def main():
         "brief_sha256": hashlib.sha256((ROOT / "house-spec/house.json").read_bytes()).hexdigest(),
         "compression": "lossless_meshopt", "uncompressed_model_bytes": uncompressed_bytes,
         "status": "unapproved_concept", "model_bytes": length, "mesh_counts": counts,
-        "site": {"width_ft": layout["site"]["width"], "depth_ft": layout["site"]["depth"], "area_sq_ft": report["plot_area_sq_ft"]},
+        "site": {"width_ft": layout["site"]["width"], "depth_ft": layout["site"]["depth"], "area_sq_ft": report["plot_area_sq_ft"],
+                 "front_depth_ft": layout["site"]["front_depth"], "back_depth_ft": layout["site"]["depth"] - layout["site"]["back_start"],
+                 "front_yard_area_sq_ft": report["front_yard_area_sq_ft"], "back_yard_area_sq_ft": report["back_yard_area_sq_ft"]},
         "floors": [
             {
                 "id": floor["id"], "title": TITLES[floor["id"]],

@@ -13,7 +13,7 @@ from mathutils import Matrix, Vector
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from scripts.layout import COLORS, dining_chairs, facade_edges, facade_openings, facade_pieces, feet, floor_footprints, load_json, room_area, room_footprints, stair_profile, structural_members, subtract_rectangles, validate, wall_partition, wall_parts, walls, write_review
+from scripts.layout import COLORS, dining_chairs, facade_edges, facade_openings, facade_pieces, feet, floor_bounds, floor_footprints, load_json, room_area, room_footprints, stair_profile, structural_members, subtract_rectangles, validate, wall_partition, wall_parts, walls, write_review
 from scripts.driveway import Driveway
 from blender.finishes import create_maps, finish_material
 
@@ -632,9 +632,19 @@ def furnishing_mesh(item):
                 box(name + ".ebony", [x + .1 + i * kw + kw * .65, y + d - .8, kw * .55, .38], 2.78, .055, dark, .008)
         box(name + ".music_rest", [x + .3, y + .1, w - .6, .08], 2.7, .75, material("walnut"))
     elif kind == "tv":
-        box(name + ".stand", [x + w * .35, y + .05, w * .3, d - .1], .05, 2.1, metal)
-        box(name + ".bezel", [x, y, w, d], 2.1, 3.2, dark, .065)
-        box(name + ".display", [x + .07, y + d - .015, w - .14, .01], 2.18, 3.04, material("screen"), .025)
+        if item.get("wooden_cabinet"):
+            cabinet(item, height=2, counter=True)
+            cabinet_top = box(name + ".cabinet_top", item["rect"], 2, .12, wood, .025)
+            cabinet_top["role"] = "tv_wooden_cabinet"
+            box(name + ".stand", [x + w * .4, y + d / 2 - .15, w * .2, .3], 2.12, .28, metal)
+            bezel = box(name + ".bezel", [x + .15, y + d / 2 - .1, w - .3, .2], 2.4, 3.2, dark, .065)
+            display = box(name + ".display", [x + .22, y + d / 2 + .105, w - .44, .01], 2.48, 3.04, material("screen"), .025)
+            for obj in [bezel, display]:
+                obj["role"] = "tv_screen"
+        else:
+            box(name + ".stand", [x + w * .35, y + .05, w * .3, d - .1], .05, 2.1, metal)
+            box(name + ".bezel", [x, y, w, d], 2.1, 3.2, dark, .065)
+            box(name + ".display", [x + .07, y + d - .015, w - .14, .01], 2.18, 3.04, material("screen"), .025)
     elif kind == "prayer":
         box(name + ".cabinet", item["rect"], .1, 2.2, wood, .04)
         box(name + ".stone_cap", item["rect"], 2.3, .12, material("stone"))
@@ -755,19 +765,30 @@ def floor_geometry(floor, layout):
         if o.get("kind") in {"window", "slider"}:
             rect = [o["start"], o["at"] - 0.035, o["width"], 0.07] if o["axis"] == "x" else [o["at"] - 0.035, o["start"], 0.07, o["width"]]
             sill = o.get("sill", 0)
+            # Above-cut-height windows use a cap marker; the exterior keeps actual sill/head levels.
+            display_sill = min(sill, layout["section_height"] - .4)
             top = min(layout["section_height"], sill + o.get("height", 2))
-            glass = box(f"opening.{i}.glass", rect, sill + .04, max(.08, top - sill - .08), material("glass", "#b6d0cd"), .008)
+            glass = box(f"opening.{i}.glass", rect, display_sill + .04, top - display_sill - .08,
+                        material("privacy_glass", "#d6e4df") if o.get("privacy_glass") else material("glass", "#b6d0cd"), .008)
             glass["room_id"] = next(ref for ref in o["connects"] if ref != "outside")
             glass["role"] = "facade_glazing"
             glass["operable_intent"] = o.get("operable", o["kind"] == "slider")
             glass["intended_glazing_height_ft"] = o.get("height", 2)
             glass["opening_width_ft"] = o["width"]
+            glass["opening_id"] = o.get("id", f"{FLOOR_ID}_opening_{i}")
+            glass["intended_sill_ft"] = sill
+            glass["high_sill_marker"] = display_sill != sill
+            glass["privacy_glass"] = o.get("privacy_glass", False)
+            glass["sections"] = o.get("sections", 2)
+            glass["operation"] = o.get("operation", "")
             glass["cutaway"] = True
-            for z in [sill, top - .035]:
+            for z in [display_sill, top - .035]:
                 box(f"opening.{i}.track", rect, z, .035, material("metal"), .01)
-            for along in [o["start"] + .025, o["start"] + o["width"] / 2, o["start"] + o["width"] - .025]:
+            alongs = [o["start"] + .025, o["start"] + o["width"] - .025]
+            alongs += [o["start"] + o["width"] * k / o.get("sections", 2) for k in range(1, o.get("sections", 2))]
+            for along in alongs:
                 r = [along - .025, o["at"] - .035, .05, .07] if o["axis"] == "x" else [o["at"] - .035, along - .025, .07, .05]
-                box(f"opening.{i}.mullion", r, sill, max(.12, top - sill), material("metal"), .01)
+                box(f"opening.{i}.mullion", r, display_sill, top - display_sill, material("metal"), .01)
         elif o.get("kind") == "lift_door":
             for side, start in enumerate([o["start"], o["start"] + o["width"] - .35]):
                 rect = [start, o["at"] - .05, .35, .1] if o["axis"] == "x" else [o["at"] - .05, start, .1, .35]
@@ -836,7 +857,7 @@ def floor_geometry(floor, layout):
             deck["role"] = "shared_balcony_deck"
             x, y, w, d = balcony["rect"]
             # No rear rail against the room openings.
-            edge_y = y if y < 20 else y + d
+            edge_y = y if y < floor["envelope"][1] else y + d
             guard = guard_panel(balcony["id"] + ".guard", [x, edge_y, w, 0.12], 0, 3.5)
             guard["balcony_id"] = balcony["id"]
             guard["role"] = "perimeter_guard"
@@ -1052,7 +1073,7 @@ def driveway_geometry(layout):
                 faces.append(tuple(range(offset, len(vertices))))
         guard = surface_mesh(f"ramp.guard.{side}", vertices, faces, material("guard"))
         guard["role"] = "driveway_edge_guard"
-    for index, station in enumerate([4, road.arc_end + 2]):
+    for index, station in enumerate([road.grades[1][0], road.arc_end + 2]):
         p = road.at(station)
         a, b = p.offset(-p.inner), p.offset(p.outer)
         for i in range(12):
@@ -1163,7 +1184,9 @@ def site_geometry(layout):
         cylinder(f"tree.{i}.planter", x, y, z, 1.3, .6, material("stone"))
         cylinder(f"tree.{i}.trunk", x, y, z + .6, .15, 3.6, material("trunk", "#80664c"))
         oval(f"tree.{i}.canopy", [x - 1.5, y - 1.5, 3, 3], z + 3, 4, material("foliage_light", "#82916a"))
-    for i, (x, y) in enumerate([(8, 6), (14, 6), (28, 5), (33, 5)]):
+    fx, fy, fw, fd = outdoors["front_lawn"]["rect"]
+    for i, (x, y) in enumerate([(fx + 4, fy + fd * 6 / 13), (fx + 10, fy + fd * 6 / 13),
+                                (fx + 24, fy + fd * 5 / 13), (fx + 29, fy + fd * 5 / 13)]):
         cylinder(f"front_shrub.{i}", x, y, 0.1, 1.5, 1.7, material("foliage", "#62834b"))
     vx, vy, vw, vd = outdoors["back_veranda"]["rect"]
     for x in [vx + .5, vx + vw - .8]:
@@ -1226,13 +1249,21 @@ def exterior_geometry(layout):
             name = f"{floor['id']}.opening.{index}"
             door = o["kind"] == "door"
             if not door:
-                box(name + ".glass", plan(edge, a + fw, b - fw, t / 2 - .04, t / 2 + .04), o["sill"] + fw, o["head"] - o["sill"] - 2 * fw, glass, 0)
+                pane = box(name + ".glass", plan(edge, a + fw, b - fw, t / 2 - .04, t / 2 + .04), o["sill"] + fw, o["head"] - o["sill"] - 2 * fw,
+                           material("privacy_glass", "#d6e4df") if o["privacy_glass"] else glass, 0)
+                pane["role"] = "exterior_glazing"
+                pane["opening_id"] = o["id"]
+                pane["room_id"] = o["room_id"]
+                pane["privacy_glass"] = o["privacy_glass"]
+                pane["operable_intent"] = o["operable"]
+                pane["sections"] = o["sections"]
+                pane["operation"] = o["operation"]
                 box(name + ".sill", plan(edge, a, b, t * .08, t * .92), o["sill"], fw, frame, .01)
             box(name + ".head", plan(edge, a, b, t * .08, t * .92), o["head"] - fw, fw, frame, .01)
             for side, (lo, hi) in enumerate([(a, a + fw), (b - fw, b)]):
                 box(f"{name}.jamb.{side}", plan(edge, lo, hi, t * .08, t * .92), o["sill"], o["head"] - o["sill"], frame, .01)
             if not door:
-                panes = max(1, round(o["width"] / 4))
+                panes = o["sections"]
                 for k in range(1, panes):
                     along = a + o["width"] * k / panes
                     box(f"{name}.mullion.{k}", plan(edge, along - .06, along + .06, t * .3, t * .7), o["sill"] + fw, o["head"] - o["sill"] - 2 * fw, frame, 0)
@@ -1622,8 +1653,11 @@ def main():
                          (120, -85, 165), max(layout["site"]["width"] * 1.5, layout["site"]["depth"] * 1.3))
     scenes = [("overview", overview)]
     floor_scenes = {}
+    floor_map = {floor["id"]: floor for floor in layout["floors"]}
     for fid, title in [("ground", "02 - Ground plan"), ("basement", "03 - Basement plan"), ("first", "04 - First-floor plan"), ("roof", "05 - Roof terrace plan")]:
-        scene = new_scene(title, [collections[fid]], (25, 41, 0), (25, 41, 150), 87)
+        x, y, w, d = floor_bounds(floor_map[fid])
+        cx, cy = x + w / 2, y + d / 2
+        scene = new_scene(title, [collections[fid]], (cx, cy, 0), (cx, cy, 150), max(87, d * 1.15))
         if fid == "basement":
             context = bpy.data.objects.new("basement.driveway_cutaway_context", None)
             context.instance_type = "COLLECTION"
@@ -1632,7 +1666,7 @@ def main():
             context["presentation_only"] = True
             scene.collection.objects.link(context)
             scene.camera.location.x = feet(30)
-            scene.camera.data.ortho_scale = feet(90)
+            scene.camera.data.ortho_scale = feet(max(90, (y + d) * 1.15))
         if fid == "roof":
             scene.view_layers[0].layer_collection.children["ROOF"].children["ROOF WEATHER COVERS"].exclude = True
         floor_scenes[fid] = scene
@@ -1644,7 +1678,8 @@ def main():
         instance.instance_collection = collections[floor["id"]]
         instance.location.z = feet(floor["elevation"])
         assembly.objects.link(instance)
-    new_scene("06 - Stacked physical levels", [collections["site"], assembly], (34, 48, 8), (145, -125, 140), 145)
+    site_cy = layout["site"]["depth"] / 2
+    new_scene("06 - Stacked physical levels", [collections["site"], assembly], (34, site_cy, 8), (145, site_cy - 173, 140), max(145, layout["site"]["depth"] * 1.45))
     exploded = bpy.data.collections.new("EXPLODED LEVEL INSTANCES")
     CURRENT = exploded
     FLOOR_ID = "presentation"
@@ -1657,18 +1692,19 @@ def main():
         instance.location = (feet(i * 68), 0, 0)
         instance["floor_id"] = fid
         exploded.objects.link(instance)
-        text(f"{fid}.heading", headings[fid], 29 + i * 68, 99, size=1.65)
+        text(f"{fid}.heading", headings[fid], 29 + i * 68, layout["site"]["depth"] - 1, size=1.65)
         text(f"{fid}.caption", f"Physical level {floor['elevation']:+g} ft  |  FRONT BELOW", 29 + i * 68, 5, size=0.85)
-    text("comparison.title", "DREAM HOME / ALL FOUR LEVELS", 131, 108, size=2.2)
+    text("comparison.title", "DREAM HOME / ALL FOUR LEVELS", 131, layout["site"]["depth"] + 8, size=2.2)
     text("comparison.subtitle", "SIDE-BY-SIDE STUDY - UNAPPROVED LAYOUT - LOW WALLS FOR VISIBILITY", 131, -2, size=1)
-    comparison = new_scene("07 - All four plans side by side", [exploded], (131, 52, 0), (131, 52, 230), 290)
+    comparison = new_scene("07 - All four plans side by side", [exploded], (131, site_cy + 2, 0), (131, site_cy + 2, 230), 290)
     comparison.render.resolution_x = 5200
     comparison.render.resolution_y = 2400
     scenes.append(("all-floors", comparison))
+    front_y = floor_map["ground"]["envelope"][1]
     for stem, name, fid, target, camera, ortho in [
-        ("living-detail", "08 - Living and kitchen detail", "ground", (40, 56, 1), (55, 28, 41), 40),
-        ("office-detail", "09 - Office detail", "first", (13.75, 29, 1), (21, 8, 31), 28),
-        ("bedroom-detail", "10 - Bedroom detail", "first", (31.5, 29, 1), (39.5, 8, 33), 28),
+        ("living-detail", "08 - Living and kitchen detail", "ground", (40, front_y + 36, 1), (55, front_y + 8, 41), 40),
+        ("office-detail", "09 - Office detail", "first", (13.75, front_y + 9, 1), (21, front_y - 12, 31), 28),
+        ("bedroom-detail", "10 - Bedroom detail", "first", (31.5, front_y + 9, 1), (39.5, front_y - 12, 33), 28),
     ]:
         detail = new_scene(name, [collections[fid]], target, camera, ortho)
         detail.render.resolution_y = 1800 if fid == "ground" else 2100
@@ -1680,13 +1716,13 @@ def main():
         instance.instance_collection = structure_collections[floor["id"]]
         instance.location.z = feet(floor["elevation"])
         frame_instances.objects.link(instance)
-    frame = new_scene("11 - Structural intent NOT ENGINEERED", [frame_instances], (29, 48, 8), (130, -115, 125), 145)
+    frame = new_scene("11 - Structural intent NOT ENGINEERED", [frame_instances], (29, front_y + 28, 8), (130, front_y - 135, 125), 145)
     frame["structural_disclaimer"] = layout["structure"]["disclaimer"]
     scenes.append(("structural-stack", frame))
     for i, floor in enumerate(layout["floors"], start=12):
         fid = floor["id"]
         frame = new_scene(f"{i:02d} - {fid.title()} frame NOT ENGINEERED", [structure_collections[fid]],
-                          (29, 48, 0), (80, -30, 145), 110)
+                          (29, front_y + 28, 0), (80, front_y - 50, 145), 110)
         frame["structural_disclaimer"] = layout["structure"]["disclaimer"]
         scenes.append((f"structural-{fid}", frame))
     for i, view in enumerate(layout["exterior"]["views"], start=16):
@@ -1732,7 +1768,7 @@ def main():
             if area.type == "VIEW_3D":
                 space = area.spaces.active
                 space.use_local_camera = False
-                space.region_3d.view_location = (feet(131), feet(52), 0)
+                space.region_3d.view_location = (feet(131), feet(site_cy + 2), 0)
                 space.region_3d.view_rotation = comparison.camera.rotation_euler.to_quaternion()
                 space.region_3d.view_distance = feet(230)
                 space.region_3d.view_camera_zoom = 0

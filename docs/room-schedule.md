@@ -1,15 +1,16 @@
 # Approved Space Program - Dimensions Pending
 
-Approved brief: 17 October 2026, with subsequent user revisions. The latest direction supersedes the compact rebuild and restores the spacious 7,000 sq ft arrangement. Study 011 is still **an unapproved candidate**, not approved room dimensions, engineering or construction.
+Approved brief: 17 October 2026, with subsequent user revisions. Study 013 adds daylight windows and swaps the upstairs front suite/office while retaining Study 012's explicitly permitted 8,120 sq ft illustrative plot. It is still **an unapproved candidate**, not approved room dimensions, engineering or construction.
 
 Keep five bedrooms and the retained program; report local circulation/suite adjustments explicitly. Furniture bounds do not establish operating, accessible or comfortable movement clearances.
 
-The [Study 011 candidate](../house-spec/layout-study.json) and [local previews](../README.md#open-the-latest-study) fit **70 x 100 ft = 7,000 sq ft**. Main plates return to 2,500 sq ft plus a 60 sq ft front-lawn lift annex. **No external covered stair link or extra side strip exists**: internal galleries meet the front full-floor stair landing. Ground/first regain the earlier front/rear room pattern, larger gardens and pool; basement/roof functions remain with necessary alignment.
+The [Study 013 candidate](../house-spec/layout-study.json) and [local previews](../README.md#open-the-latest-study) fit **70 x 116 ft = 8,120 sq ft**. Main plates retain 2,500 sq ft plus a 60 sq ft front-lawn lift annex. **No external covered stair link or extra side strip exists**: internal galleries meet the front full-floor stair landing. Room/balcony sizes and private master access remain unchanged; Child 1 suite and office swap positions, and beds/living seating follow the new glazing.
 
 ## Site and external circulation
 
-- Latest target approximately 7,000 sq ft; further growth requires approval. The earlier 500 sq yd reference is 4,500 sq ft. No actual site dimensions are approved.
-- Front yard around 20%, backyard around 30% of total area, including associated paths, ramp/driveway and other uses. Side passages connect both. Avoid double-counting and do not infer a fixed house footprint.
+- Latest user-approved illustrative target is 8,120 sq ft; further growth requires approval. The earlier 500 sq yd reference is 4,500 sq ft. No actual site dimensions are approved.
+- Whole front yard band **24 ft / 1,680 sq ft (+20%)**; backyard **42 ft / 2,940 sq ft (+40%)**, relative to Study 011's 20/30 ft bands. These are approximately 20.69%/36.21% of the new plot, including paths, terraces, ramp/driveway and other uses, not lawn alone. Side paths connect both.
+- Front lawn **50 x 17 ft** and rear play lawn **48 x 27 ft**; rear tree buffer and unchanged **8 x 16 ft pool** move 16 ft rearward. Verandas remain 6 ft deep. Ramp straight extends 54 to 58 ft by adding a level approach; old grades, descent and curve retain their geometry relative to the shifted basement.
 - Front formal garden/lawn and covered tea/guest terrace. Rear play lawn, shrubs/trees/mini-forest edge, private seating and covered veranda swing.
 - Restore the **8 x 16 ft family pool**, with barrier/gate, outside basement and driveway/sampled vehicle sweep. Pool structure, enclosure/deck circulation and child safety remain unverified. Fishpond optional/deferred; no vegetable garden.
 - Proposed levels remain basement -8.5, ground +1.5, first +12.5 and roof +23.5 ft relative to road. Three front steps, raised rear garden grade/deck and aligned pool edges are shown; step-free arrival, fill/retaining, planting/soil loads and drainage need design.
@@ -40,16 +41,16 @@ Basement is **4,016.7 sq ft**, excluding driveway, with its current clean-front/
 | Drawing/receiving | Visitor seating; side glazing | **18.5 x 17 ft = 314.5 sq ft**; front-left, internal door only to Entrance Gallery |
 | Entrance Gallery | Sole controlled front entrance; access to drawing and guest | **4 ft** wide; modeled 4 ft front opening; no direct external room entrance doors |
 | House Gallery | Transverse front/rear separator and shared route | **38 x 4 ft**, labelled; WC left, ends at cupboard's sliding front right; full 4 ft through-route |
-| Family living | Seating, side glazing, open prayer | **391.5 gross - 48 pantry = 343.5 sq ft net**; cupboard occupies no living floor; direct shared garden slider |
+| Family living | North-facing sofa, TV on north-wall wooden cabinet, clear side glazing, open prayer | **391.5 gross - 48 pantry = 343.5 sq ft net**; centred **10 x 7 ft three-section east sliding window**, unobscured by TV; direct shared garden slider |
 | Dining | 8-seat table | **12 x 13 ft = 156 sq ft**, including the landing for the master door; eight chair footprints fit with the table shifted 1 ft east, service/pull-back comfort needs review |
 | Kitchen | Island/breakfast counter, dishwasher, induction + LPG, ducted extraction | Backyard view; refrigerator moves to pantry; windows do not replace extraction |
 | Pantry | Food and refrigerator | **6 x 8 ft**, deducted from living; kitchen is **12 x 14 ft = 168 sq ft** |
-| Master bedroom | King bed, bedside lamps, reading/seating | **21.5 x 17 ft = 365.5 sq ft**, rear-left; one 3 ft door from the dining/kitchen family zone at the south end of its east wall; headboard on the west wall facing the door; 10 ft rear garden slider plus a 5.25 ft west window |
+| Master bedroom | King bed, bedside lamps, reading/seating | **21.5 x 17 ft = 365.5 sq ft**, rear-left; one 3 ft door from dining/kitchen at the south end of its east wall; solid east-wall headboard facing centred **9 x 7 ft west sliding window**; 10 ft rear garden slider retained, reading table clears its approach |
 | Master walk-in closet | Storage for two, closable door | **9 x 9.5 ft = 85.5 sq ft**, private bedroom -> dressing -> bath; no gallery door |
-| Master bathroom suite | 5.5 ft tub, separate shower, **one compact basin and one wall-backed WC** | **12 x 8.5 ft = 102 sq ft**, extended into the removed entry strip; 4 x 4 ft shower, 5.5 ft tub; access only through dressing |
+| Master bathroom suite | 5.5 ft tub, separate shower, **one compact basin and one wall-backed WC** | **12 x 8.5 ft = 102 sq ft**; **5 x 4 ft double west privacy window / 4.5 ft sill**; access only through dressing |
 | Guest bedroom | Queen, bedside lamps, reading seat, wardrobe | **11.5 x 17 ft gross - ensuite = 157 sq ft net**; widened by 2 ft; internal Entrance Gallery access and front glazing |
 | Private guest ensuite | Toilet, basin, enclosed 3 x 3 ft shower | Agreed 5.5 x 7 ft study size; deducted from guest; pocket-door intent; details unapproved |
-| Family common toilet | Toilet and basin | **8 x 5 ft**, left House Gallery end, shared-gallery access only |
+| Family common toilet | Toilet and basin | **8 x 5 ft**, left House Gallery end, shared-gallery access only; **2 x 2 ft single west privacy window / 5 ft sill** |
 | Household utility cupboard | Vacuum/mop reserve and shelves | Approved **4 ft long x 2 ft deep**, rotated at right gallery end between stairs/living, facing left into gallery; outside living, no passage projection |
 | Prayer alcove | Floor seating with living overflow; diya safety | **7 x 6.5 ft**, open living corner clear of garden exit/WCs |
 | Stairs/lift/circulation | Front-lawn shaft; internal front landing/gallery | **7 x 7 ft shaft**, **9 x 17 ft stair**, 4 ft flights/landings; **no external link** |
@@ -58,14 +59,14 @@ Basement is **4,016.7 sq ft**, excluding driveway, with its current clean-front/
 
 | Space | Furniture/fixtures | Relationships |
 |---|---|---|
-| Child bedroom 1 | Queen, reading seat, desk, bedside lamps | **16 x 17 ft = 272 sq ft**, front/right; bath/dressing each **6 x 8.25 ft** in front band reclaimed from office, not lounge |
+| Child bedroom 1 | Queen, reading seat, desk, bedside lamps | **16 x 17 ft = 272 sq ft**, front/left; **9 x 7 ft west sliding window** and front balcony slider; bed on solid right wall; bath/dressing each **6 x 8.25 ft** immediately east, not lounge |
 | Child bedroom 2 | Same sleeping-room program | **16 x 17 ft**, rear/right; lounge-side entry near private suite |
 | Child bedroom 3 | Same sleeping-room program | **16 x 17 ft**, rear/left; mirrored lounge-side entry |
 | Three private walk-in dressing rooms | Dedicated wardrobe storage and clear dressing aisles | Each connects its bedroom directly to its bathroom; no return through bedroom to dress after bathing |
 | Three private bathrooms | Enclosed shower, toilet, basin each; no bathtubs | Bath/dressing soft divider permitted; extraction, waterproofing and moisture control required |
-| Unified family lounge | Transverse front/rear divider, seating, recreation and shared routes | **49 x 14 ft gross - 33 WC = 653 sq ft net**; no east/west galleries; 4 ft front-stair/rear-balcony routes meet it openly |
+| Unified family lounge | Transverse divider, seating, recreation and shared routes | **49 x 14 ft gross - 33 WC = 653 sq ft net**; **9 x 7 ft west** and **8 x 7 ft east** three-section sliding windows, east clear of common WC; no east/west galleries |
 | Front and rear shared balconies | Perimeter guards; no dividers | Front **40 x 6 ft**, via office/Child 1/common gallery; rear **50 x 6 ft** |
-| Quiet front-left office | Workstation, shared table, reduced shelves, piano | **12 x 17 ft = 204 sq ft**, side glazing, no private WC |
+| Quiet front-right office | Workstation, shared table, reduced shelves, piano | **12 x 17 ft = 204 sq ft**, front balcony slider only; side-window loss explicitly accepted because stair/gallery occupy the right edge; no private WC |
 | Common first-floor WC | Repositioned toilet and basin | **6 x 5.5 ft**, at right stair end; shared lounge access only, 3 ft modeled doorway/clear inside approach and 2.5 ft toilet-frontal space; deducted from lounge; total eight toilets |
 | Landing/stairs | Clear routes to rooms, basement/ground and roof | Proper fall protection; atrium optional |
 
@@ -79,7 +80,7 @@ Basement is **4,016.7 sq ft**, excluding driveway, with its current clean-front/
 | Passenger/household lift | All four levels including roof, shared clean-side landings | Shaft reserve only, not a cab/product selection; pit, overrun, loading, accessibility, fire protection and weathering |
 | Structural inspection | Non-engineered perimeter/core support and beam display proxies; no internal living/parking columns as an intent | Long-span feasibility, load paths, foundations, member sizing and potential internal supports require an engineer |
 
-All bedrooms have large operable outward glazing: Child 1 has an 11 ft front slider; guest has a 9 ft front window; rear children have 11 ft sliders and side windows; master has garden glazing. Daylight/airflow, shading, screening and fall protection are unverified.
+All bedrooms have large operable outward glazing: Child 1 has an 11 ft front slider plus a 9 ft west window; guest has a 9 ft front window; rear children have 11 ft sliders and side windows; master has a 10 ft garden slider plus centred 9 ft west window. Bathroom privacy finishes and above-cut-height markers are illustrative; true sill/head levels are in the exterior. Daylight/airflow, extraction, shading, screening and fall protection are unverified.
 
 This restores the preferred spacious pattern, not an exact historical plan: front-room/gallery depths, narrower guest beside a 4 ft internal stair gallery, master suite proportions and Child 1 suite/lounge depth are locally adjusted. The roof retains solar, gathering, shaded seating and planter functions on the aligned plate.
 

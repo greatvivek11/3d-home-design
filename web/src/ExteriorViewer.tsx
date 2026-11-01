@@ -25,7 +25,8 @@ const base = import.meta.env.BASE_URL
 // A retry changes the query so a cached failed request cannot be reused.
 const houseUrl = (attempt: number) => `${base}models/house.glb?v=${study.revision}&attempt=${attempt}`
 const exteriorUrl = (attempt: number) => `${base}${exterior.model}?v=${exterior.revision}&attempt=${attempt}`
-const HOUSE_CENTER = new Vector3(8.84, 4.2, -13.7)
+const groundBounds = floors[1].bounds
+const HOUSE_CENTER = new Vector3(groundBounds.x + groundBounds.width / 2, 4.2, groundBounds.z + groundBounds.depth / 2)
 const SUN_ELEVATION = 0.74
 const SUN_OFFSET = 0.85
 const TRANSITION_MS = 1700

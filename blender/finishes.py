@@ -153,6 +153,9 @@ def finish_material(name, color, maps):
         shader.inputs["Coat Weight"].default_value = .4
         mat.diffuse_color = (*rgb, shader.inputs["Alpha"].default_value)
         mat.surface_render_method = "DITHERED"
+    if name == "privacy_glass":
+        shader.inputs["Roughness"].default_value = .65
+        shader.inputs["Coat Weight"].default_value = .15
     if name in {"road", "context", "ridge_near", "ridge_far", "path_context"}:
         shader.inputs["Roughness"].default_value = .96
         shader.inputs["Specular IOR Level"].default_value = .04

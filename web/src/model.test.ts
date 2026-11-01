@@ -89,8 +89,39 @@ describe('the exported study contract', () => {
   it('retains the four floors and explicit concept status', () => {
     expect(floors.map((floor) => floor.id)).toEqual(['basement', 'ground', 'first', 'roof'])
     expect(study.status).toBe('unapproved_concept')
-    expect(study.site.area_sq_ft).toBe(7000)
+    expect(study.site.area_sq_ft).toBe(8120)
+    expect(study.site.front_depth_ft).toBe(24)
+    expect(study.site.back_depth_ft).toBe(42)
+    expect(study.site.front_yard_area_sq_ft).toBe(1680)
+    expect(study.site.back_yard_area_sq_ft).toBe(2940)
     expect(Object.values(study.mesh_counts).every((count) => count > 0)).toBe(true)
+  })
+
+  it('shows honest high-sill window markers and a separate north-wall wooden TV cabinet', async () => {
+    const gltf = await model()
+    gltf.scene.updateMatrixWorld(true)
+    const meshes: Mesh[] = []
+    gltf.scene.traverse((node) => { if (node instanceof Mesh) meshes.push(node) })
+    for (const [id, sill, sections] of [['ground_wc_window', 5, 1], ['master_bath_window', 4.5, 2]] as const) {
+      const window = meshes.find((node) => node.userData.role === 'facade_glazing' && node.userData.opening_id === id)
+      expect(window, id).toBeDefined()
+      expect(window?.userData.high_sill_marker).toBe(true)
+      expect(window?.userData.intended_sill_ft).toBe(sill)
+      expect(window?.userData.sections).toBe(sections)
+      expect(window?.userData.privacy_glass).toBe(true)
+      expect(new Box3().setFromObject(window!).max.y / .3048).toBeLessThanOrEqual(3.0001)
+    }
+    const cabinet = meshes.find((node) => node.userData.fixture_id === 'family_tv' && node.userData.role === 'tv_wooden_cabinet')
+    expect(cabinet).toBeDefined()
+    const bounds = new Box3().setFromObject(cabinet!)
+    expect(bounds.min.z).toBeCloseTo(-48.5 * .3048, 4)
+    expect(bounds.max.z).toBeCloseTo(-46.5 * .3048, 4)
+    const materials = Array.isArray(cabinet!.material) ? cabinet!.material : [cabinet!.material]
+    expect(materials.every((material) => material.name === 'wood')).toBe(true)
+    const window = meshes.find((node) => node.userData.opening_id === 'living_side_window')
+    expect(window?.userData.sections).toBe(3)
+    const glass = new Box3().setFromObject(window!)
+    expect(bounds.min.z).toBeGreaterThan(glass.max.z)
   })
 
   it('binds the revised study to the actual layout and brief fingerprints', () => {
@@ -194,12 +225,12 @@ describe('the exported study contract', () => {
     const living = findRoom({ floorId: 'ground', roomId: 'family_living' })
     const kitchen = findRoom({ floorId: 'ground', roomId: 'kitchen' })
     const pantry = findRoom({ floorId: 'ground', roomId: 'pantry' })
-    expect(study.study_id).toBe('study-011')
+    expect(study.study_id).toBe('study-013')
     expect(floors[0].bounds.depth / 0.3048).toBeCloseTo(80.33333333333333)
     expect(living?.area_sq_ft).toBe(343.5)
     expect(kitchen?.area_sq_ft).toBe(168)
     expect(living?.footprints.length).toBeGreaterThan(1)
-    expect(kitchen?.bounds.z).toBeCloseTo(-69.5 * 0.3048)
+    expect(kitchen?.bounds.z).toBeCloseTo(-73.5 * 0.3048)
     expect(pantry?.bounds.x).toBeCloseTo(39 * 0.3048)
     const gltf = await model()
     gltf.scene.updateMatrixWorld(true)
@@ -236,8 +267,8 @@ describe('the exported study contract', () => {
       expect((box.max.x - box.min.x) * (box.max.z - box.min.z) / 0.09290304).toBeCloseTo(272, 3)
       expect(findRoom({ floorId: 'first', roomId: `child_wardrobe_${i}` })?.area_sq_ft).toBeGreaterThanOrEqual(30.25)
     }
-    expect(findRoom({ floorId: 'first', roomId: 'office' })?.bounds.x).toBeCloseTo(4.5 * 0.3048)
-    expect(findRoom({ floorId: 'first', roomId: 'child_bedroom_1' })?.bounds.x).toBeCloseTo(23.5 * 0.3048)
+    expect(findRoom({ floorId: 'first', roomId: 'office' })?.bounds.x).toBeCloseTo(27.5 * 0.3048)
+    expect(findRoom({ floorId: 'first', roomId: 'child_bedroom_1' })?.bounds.x).toBeCloseTo(4.5 * 0.3048)
     expect(findRoom({ floorId: 'first', roomId: 'first_common_toilet' })?.area_sq_ft).toBe(33)
     expect(findRoom({ floorId: 'first', roomId: 'office_toilet' })).toBeUndefined()
     const toiletIds = new Set(document.nodes.map((node) => node.extras?.fixture_id).filter((id) =>
@@ -380,11 +411,11 @@ describe('the exported study contract', () => {
       })
       expect(slabs.length).toBeGreaterThan(0)
       const ray = new Raycaster()
-      for (const [x, y] of [[49, 35.5], [46.5, 29], [51.5, 29], [50, 16.5]]) {
+      for (const [x, y] of [[49, 39.5], [46.5, 33], [51.5, 33], [50, 20.5]]) {
         ray.set(new Vector3(x * .3048, .01, -y * .3048), new Vector3(0, -1, 0))
         expect(ray.intersectObjects(slabs, false)).toHaveLength(0)
       }
-      ray.set(new Vector3(49 * .3048, .01, -22.5 * .3048), new Vector3(0, -1, 0))
+      ray.set(new Vector3(49 * .3048, .01, -26.5 * .3048), new Vector3(0, -1, 0))
       expect(ray.intersectObjects(slabs, false).length).toBeGreaterThan(0)
     }
   })
@@ -397,7 +428,7 @@ describe('the exported study contract', () => {
     const ray = new Raycaster()
     ray.far = 2.6 * .3048
     for (const [x, entrance] of [[26.5, true], [8, false], [33, false]] as const) {
-      ray.set(new Vector3(x * .3048, .3048, -18 * .3048), new Vector3(0, 0, -1))
+      ray.set(new Vector3(x * .3048, .3048, -22 * .3048), new Vector3(0, 0, -1))
       const hits = ray.intersectObject(architecture, true)
       expect(hits.length === 0).toBe(entrance)
     }
@@ -459,7 +490,7 @@ describe('the exported study contract', () => {
     for (const roomId of ['child_bathroom_1', 'child_wardrobe_1']) {
       const tile = tiles.find(node => node.userData.room_id === roomId)
       if (!tile) throw new Error(`Missing front-suite floor ${roomId}`)
-      expect(new Box3().setFromObject(tile).min.z / -.3048).toBeLessThanOrEqual(37.5001)
+      expect(new Box3().setFromObject(tile).min.z / -.3048).toBeLessThanOrEqual(41.5001)
     }
   })
 
@@ -488,8 +519,8 @@ describe('the exported study contract', () => {
     }
     for (const door of doors) {
       const box = new Box3().setFromObject(door)
-      expect(box.min.z).toBeCloseTo(-20.3 * .3048, 4)
-      expect(box.max.z).toBeCloseTo(-20.2 * .3048, 4)
+      expect(box.min.z).toBeCloseTo(-24.3 * .3048, 4)
+      expect(box.max.z).toBeCloseTo(-24.2 * .3048, 4)
     }
   })
 
@@ -498,7 +529,7 @@ describe('the exported study contract', () => {
     gltf.scene.updateMatrixWorld(true)
     const meshes: Mesh[] = []
     gltf.scene.traverse(node => { if (node instanceof Mesh) meshes.push(node) })
-    for (const [floorId, roomId] of [['ground', 'receiving'], ['ground', 'family_living'], ['first', 'office']]) {
+    for (const [floorId, roomId] of [['ground', 'receiving'], ['ground', 'family_living'], ['first', 'child_bedroom_1']]) {
       const windows = meshes.filter(node => node.userData.floor_id === floorId && node.userData.room_id === roomId && node.userData.role === 'facade_glazing')
       expect(windows.some(node => {
         const box = new Box3().setFromObject(node)
@@ -515,14 +546,14 @@ describe('the exported study contract', () => {
     expect(box.max.x).toBeCloseTo(69.5 * .3048, 4)
     const garden = meshes.filter(node => node.userData.floor_id === 'site' && (Array.isArray(node.material) ? node.material : [node.material]).some(material => material.name === 'garden'))
     const ray = new Raycaster()
-    ray.set(new Vector3(60.5 * .3048, 2, -40 * .3048), new Vector3(0, -1, 0))
+    ray.set(new Vector3(60.5 * .3048, 2, -44 * .3048), new Vector3(0, -1, 0))
     expect(ray.intersectObjects(garden, false)).toHaveLength(0)
     expect(ray.intersectObject(road, false)[0].point.y).toBeCloseTo(-4.445 * .3048, 4)
     expect(study.driveway.minimum_roof_clearance_m).toBeGreaterThanOrEqual(.3)
     expect(study.driveway.minimum_underbody_clearance_m).toBeGreaterThanOrEqual(.1)
   })
 
-  it('keeps site geometry within 7,000 sq ft and models the raised entrance and rear deck', async () => {
+  it('keeps site geometry within 8,120 sq ft and models the raised entrance and rear deck', async () => {
     const gltf = await model()
     gltf.scene.updateMatrixWorld(true)
     const site = gltf.scene.getObjectByName('floor_site')
@@ -555,13 +586,13 @@ describe('the exported study contract', () => {
     const pool = new Box3().setFromObject(water)
     expect(pool.min.x).toBeCloseTo(57 * .3048, 4)
     expect(pool.max.x).toBeCloseTo(65 * .3048, 4)
-    expect(pool.min.z).toBeCloseTo(-98 * .3048, 4)
-    expect(pool.max.z).toBeCloseTo(-82 * .3048, 4)
+    expect(pool.min.z).toBeCloseTo(-114 * .3048, 4)
+    expect(pool.max.z).toBeCloseTo(-98 * .3048, 4)
     expect(pool.min.y).toBeCloseTo((1.5 - .35) * .3048, 4)
     const garden = meshes.filter(node => (Array.isArray(node.material) ? node.material : [node.material])
       .some(material => material.name === 'garden'))
     const ray = new Raycaster()
-    for (const [x, y] of [[61, 90], [55.5, 77]]) {
+    for (const [x, y] of [[61, 106], [55.5, 81]]) {
       ray.set(new Vector3(x * .3048, 3, -y * .3048), new Vector3(0, -1, 0))
       expect(ray.intersectObjects(garden, false)).toHaveLength(0)
     }

@@ -24,6 +24,12 @@ function outside(id: string, distance: number, dx = 0, dz = 0, yaw = 80): Point 
   const [x, z, width, depth] = source.rect
   return point([(x + width / 2) * 0.3048 + dx, 0.1, -(z + depth / 2) * 0.3048 + dz], distance, yaw, 52)
 }
+const rearBalcony = layout.balconies.find((item) => item.id === 'rear_balcony')
+if (!rearBalcony) throw new Error('Detailed tour rear balcony is missing')
+const [bx, by, bw, bd] = rearBalcony.rect
+const groundEnvelope = layout.floors.find((floor) => floor.id === 'ground')?.envelope
+if (!groundEnvelope) throw new Error('Detailed tour ground envelope is missing')
+const [gx, gy, gw, gd] = groundEnvelope
 
 const stops: Stop[] = [
   { start: 0, end: 12, floor: 'ground', title: 'Arriving through the front garden',
@@ -42,7 +48,7 @@ const stops: Stop[] = [
     text: 'The House Gallery screens family life, with a shared WC and utility cupboard at opposite ends.',
     rooms: ['cross_passage', 'family_toilet', 'utility_store'], at: room('ground', 'utility_store', 11, -0.5), to: room('ground', 'family_toilet', 12, 1.2, 0, 95) },
   { start: 43, end: 54, floor: 'ground', title: 'The private master suite',
-    text: 'The master bedroom opens from the family zone, with the bed facing the door. A larger bathroom is reached through the private dressing.',
+    text: 'The master opens from the family zone, with its bed facing a centred sliding window. The private dressing leads to a daylight bathroom.',
     rooms: ['master_bedroom', 'master_wardrobe', 'master_bathroom'],
     at: room('ground', 'master_bedroom', 16, 0.4, -0.5, 98), to: room('ground', 'master_wardrobe', 11, -0.6, -0.4, 85) },
   { start: 54, end: 61, floor: 'ground', title: 'Family dining',
@@ -67,7 +73,7 @@ const stops: Stop[] = [
     text: 'Internal stairs and the proposed front-lawn lift connect the levels without taking living-room space.',
     rooms: ['stairs', 'lift', 'lift_lobby'], at: room('ground', 'stairs', 14, 0, -1), to: room('ground', 'lift', 13, -0.4, 0.3, 100) },
   { start: 102, end: 110, floor: 'first', title: 'Upstairs office',
-    text: 'A separate front office makes space for focused work and piano, with side-wall daylight.',
+    text: 'The separate front-right office makes space for focused work and piano, with daylight from its front balcony slider.',
     rooms: ['office'], at: room('first', 'office', 12, -0.3, 0.7, 100), to: room('first', 'office', 11, 0.3, -0.7, 85) },
   { start: 110, end: 120, floor: 'first', title: 'Child 1 suite & front balcony',
     text: 'The front bedroom has 272 square feet of sleeping space, private dressing and bath, plus shared balcony access.',
@@ -86,7 +92,7 @@ const stops: Stop[] = [
     at: room('first', 'child_bedroom_3', 13, -0.1, -0.5, 100), to: room('first', 'child_bathroom_3', 11, -0.4, -0.4, 82) },
   { start: 150, end: 155, floor: 'first', title: 'Shared rear balcony',
     text: 'A common rear route reaches the shared balcony overlooking the backyard.',
-    rooms: ['rear_gallery'], at: room('first', 'rear_gallery', 12, 0, -0.5, 95), to: point([8.8, 0.4, -22.2], 15, 80) },
+    rooms: ['rear_gallery'], at: room('first', 'rear_gallery', 12, 0, -0.5, 95), to: point([(bx + bw / 2) * 0.3048, 0.4, -(by + bd / 2) * 0.3048], 15, 80) },
   { start: 155, end: 160, floor: 'first', title: 'The shared stair-side WC',
     text: 'The compact six-by-five-and-a-half-foot common WC stays beside the stairs, away from the play area.',
     rooms: ['first_common_toilet', 'core_lobby', 'stairs', 'lift'],
@@ -94,7 +100,7 @@ const stops: Stop[] = [
   { start: 160, end: 168, floor: 'basement', title: 'Driveway & three-SUV garage',
     text: 'The curved ramp reaches a rear turning reserve. Three SUVs park within the garage bays.',
     rooms: ['drive_aisle', 'vehicle_parking', 'two_wheelers'],
-    at: point([16.8, 0.5, -22], 23, 100), to: room('basement', 'vehicle_parking', 20, 0, 0.3, 80) },
+    at: room('basement', 'drive_aisle', 23, 7.8, 0, 100), to: room('basement', 'vehicle_parking', 20, 0, 0.3, 80) },
   { start: 168, end: 174, floor: 'basement', title: 'Protected access & household stores',
     text: 'A two-door garage airlock leads to the clean gallery, with separate general and food stores.',
     rooms: ['garage_airlock', 'clean_lobby', 'clean_spine', 'general_storage', 'food_storage', 'stairs', 'lift'],
@@ -111,11 +117,11 @@ const stops: Stop[] = [
   { start: 194, end: 202, floor: 'roof', title: 'Open-sky family terrace',
     text: 'On the roof: a family gathering terrace and shaded seating, reached by sheltered stairs and the proposed lift.',
     rooms: ['roof_gathering', 'roof_shade', 'stairs', 'lift', 'lift_lobby'],
-    at: room('roof', 'roof_gathering', 18, 2.5, 0, 100), to: room('roof', 'roof_shade', 18, 0.5, 0, 85) },
+    at: room('roof', 'lift_lobby', 18, 2.5, 0, 100), to: room('roof', 'roof_shade', 18, 0.5, 0, 85) },
   { start: 202, end: 210, floor: 'roof', title: 'Room to grow, together',
     text: 'Planters and a solar reserve complete the concept. A home for private retreats and shared family life.',
     rooms: ['roof_planters', 'roof_solar'],
-    at: room('roof', 'roof_planters', 19, -0.7, 0, 100), to: point([8.8, 0.4, -13.5], 36, 84, 60) },
+    at: room('roof', 'roof_planters', 19, -0.7, 0, 100), to: point([(gx + gw / 2) * 0.3048, 0.4, -(gy + gd / 2) * 0.3048], 36, 84, 60) },
 ]
 export const detailedShots = stops.map((stop) => ({ ...stop, mode: 'single' as const, site: stop.floor === 'ground' }))
 export const detailedCaptions = detailedShots.map(({ start, end, text }) => ({ start, end, text }))

@@ -12,8 +12,8 @@ Approved by the user on 17 October 2026 after a requirements interview, with use
 
 ## Site and outdoor allocation
 
-- No plot purchased. Initial target was 4,000-5,000 sq ft; the latest decision explicitly rejects the compact direction and restores approximately **7,000 sq ft**, larger gardens and pool. Further growth requires approval. The earlier 500 sq yd reference is 4,500 sq ft.
-- Rough targets: front yard 20%, backyard 30% of total plot area. These INCLUDE associated play/planting, paths, driveway/ramp and other uses, not planting alone.
+- No plot purchased. Initial target was 4,000-5,000 sq ft; the spacious restoration used **7,000 sq ft**. The user subsequently explicitly approved **70 x 116 ft / 8,120 sq ft** for Study 012 to enlarge both yards while retaining room sizes. Further growth still requires approval. The earlier 500 sq yd reference is 4,500 sq ft.
+- Whole front/rear bands grow **20/30 ft to 24/42 ft (+20%/+40%)**, or **1,680/2,940 sq ft**. These INCLUDE play/planting, terraces, paths and driveway/ramp, not grass alone; their new plot fractions are approximately 20.69%/36.21%.
 - Side passages connect both yards. Side paths and all access must be explicitly accounted for without double-counting outdoor area.
 - Do not derive a fixed 50% house footprint from these targets. Setbacks, side circulation, basement openings/access and other constraints remain unresolved.
 - A flat standalone site with a road at the designated front may be used as a labeled study assumption, not an actual site fact. Front does not establish north.
@@ -151,6 +151,22 @@ Review items: facade materials and colours, window products and glazing performa
 - Basement ramp/swept paths, footprint, ventilation/fire/egress, occupied-area separation and equipment placement.
 - Laundry acoustic/ventilation/drainage/drying details (basement selected); stair headroom/guarding and lift product/pit/overrun/fire/accessibility coordination; private ensuite clearances, cupboard operation/ventilation/chemical storage and pool systems.
 - Professional cost review, procurement, approvals and actual construction timetable.
+
+## Study 012 - explicitly approved yard and plot expansion
+
+The user selected plot expansion rather than shrinking/replanning the house or increasing grass only. Width remains 70 ft and the main house depth 50 ft, so the new 24 ft front and 42 ft rear bands require a 116 ft plot depth. This supersedes the 7,000 sq ft cap for this illustrative study, not the actual-site unknowns.
+
+All four floors, fixtures, wall openings, privacy observers, structural rows, lift and stair core translate 4 ft rearward; full Study 011 floor data remains otherwise identical. The ramp adds 4 ft of level approach before its original graded geometry, preserving the 19 ft curve, widths, garage portal alignment and -8.5 ft arrival. Front lawn depth grows 13 to 17 ft; rear play lawn 15 to 27 ft. Pool/barrier and rear tree buffer move 16 ft rearward with sizes unchanged. Verandas/balconies retain their dimensions. Paths, boundaries, planting and exterior camera framing follow the new site. Specialist reviews, existing image/video provenance and non-engineered caveats remain.
+
+## Study 013 - daylight windows and front suite swap
+
+The user confirmed an east-wall master bed facing the centred west sliding window, a clear living-room window with TV on the north privacy wall, and the complete front-left Child 1/front-right office swap. Room sizes, plot, expanded yards, balconies, basement, ramp and roof functions remain unchanged. The office's loss of side glazing was explicitly accepted; its front balcony slider remains.
+
+Proposed windows: ground WC single **2 x 2 ft / 5 ft sill**; master bath double **5 x 4 ft / 4.5 ft sill**, both with opaque privacy-glass intent; centred master west **9 x 7 ft**, centred living east **10 x 7 ft**, Child 1 west **9 x 7 ft**, lounge west/east **9/8 x 7 ft**. The latter sliding windows have three-section intent. The lounge east window lies wholly beyond the common WC. Existing rear garden and balcony sliders remain.
+
+Master retains two bedside tables and clear dining/dressing doors; the reading table moves clear of the rear-slider approach. Child 1 mirrors Child 3's west glazing/right-wall headboard, with its private suite immediately east. Living's dedicated wooden TV cabinet is north of the prayer corner and east of the wide entrance; sofa faces north, and coffee table stays between them. Pantry, prayer, entrance and garden exit remain clear. Viewing distance, acoustics, furnishings in use, window opening products, shading/glare, privacy, insect screens, restrictors and fall protection require review. Bathroom glazing does not replace exhaust ventilation.
+
+Above-cut-height glazing is a wall-cap marker with intended sill metadata in the low inside cutaway; full-height exterior openings retain actual sill/head levels and opaque bathroom privacy finishes. Sliding sections are visual intent, not interactive opening animation or ventilation certification. Earlier movies and stills remain historical.
 
 ## Change rule
 

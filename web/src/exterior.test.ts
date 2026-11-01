@@ -117,6 +117,47 @@ describe('the 360 degree exterior', () => {
     expect(site.width).toBe(70)
   })
 
+  it('decodes every added or centred window at its real exterior height, width and section count', async () => {
+    const gltf = await load()
+    gltf.scene.updateMatrixWorld(true)
+    const panes: Mesh[] = []
+    gltf.scene.traverse((node) => { if (node instanceof Mesh && node.userData.role === 'exterior_glazing') panes.push(node) })
+    const ids = ['ground_wc_window', 'master_bath_window', 'master_side_window', 'living_side_window',
+      'child1_side_window', 'lounge_west_window', 'lounge_east_window']
+    for (const id of ids) {
+      const floor = layout.floors.find((f: { openings: { id?: string }[] }) => f.openings.some((o) => o.id === id))
+      const opening = floor.openings.find((o: { id?: string }) => o.id === id)
+      const matches = panes.filter((node) => node.userData.opening_id === id)
+      expect(matches, id).toHaveLength(1)
+      const pane = matches[0]
+      const bounds = new Box3().setFromObject(pane)
+      const frame = layout.exterior.frame_ft
+      expect(bounds.min.z).toBeCloseTo(-(opening.start + opening.width - frame) * FT, 4)
+      expect(bounds.max.z).toBeCloseTo(-(opening.start + frame) * FT, 4)
+      expect(bounds.min.y).toBeCloseTo((floor.elevation + opening.sill + frame) * FT, 4)
+      expect(bounds.max.y).toBeCloseTo((floor.elevation + opening.sill + opening.height - frame) * FT, 4)
+      expect(pane.userData.sections).toBe(opening.sections)
+      expect(pane.userData.operable_intent).toBe(true)
+      const left = opening.at < layout.site.width / 2
+      const fromX = left ? 3 : 55
+      for (let k = 1; k < opening.sections; k++) {
+        const divider = opening.start + opening.width * k / opening.sections
+        const ray = new Raycaster(new Vector3(fromX * FT, (floor.elevation + opening.sill + opening.height / 2) * FT, -divider * FT),
+          new Vector3(left ? 1 : -1, 0, 0), 0, 3 * FT)
+        const hit = ray.intersectObject(gltf.scene, true).find((h) => h.object instanceof Mesh)
+        expect(hit, `${id} divider ${k}`).toBeDefined()
+        const mesh = hit!.object as Mesh
+        const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material]
+        expect(materials.every((m) => m.name === 'frame')).toBe(true)
+      }
+      if (opening.privacy_glass) {
+        const materials = Array.isArray(pane.material) ? pane.material : [pane.material]
+        expect(materials.every((m) => m.name === 'privacy_glass' && m.opacity === 1)).toBe(true)
+        expect(pane.userData.privacy_glass).toBe(true)
+      } else expect(pane.userData.operation).toBe('horizontal_sliding_intent')
+    }
+  })
+
   it('marks cutaway trees so the exterior never mixes low-poly cutaway planting into the outside view', async () => {
     const gltf = await new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).parseAsync(
       new Uint8Array(readFileSync(new URL('../public/models/house.glb', import.meta.url))).buffer, '')

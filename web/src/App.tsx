@@ -154,6 +154,9 @@ export default function App() {
         <section className="control-section">
           <h2><span>02</span> About this view</h2>
           <p className="room-hint">A presentation of the finished concept: pahadi-modern stone, plaster and timber, glazed rooms, boundary wall, gates and planting around the same floor plan. Materials, trees and the street are illustrative.</p>
+          <p className="room-hint"><strong>Front yard:</strong> {formatFeet(study.site.front_depth_ft)} ft deep / {formatArea(study.site.front_yard_area_sq_ft)} sq ft.
+            {' '}<strong>Backyard:</strong> {formatFeet(study.site.back_depth_ft)} ft deep / {formatArea(study.site.back_yard_area_sq_ft)} sq ft.
+            {' '}Whole yard bands include paths, terraces and driveway, not just lawn.</p>
           <p className="room-hint"><strong>Not a design approval.</strong> {exterior.status}</p>
         </section>
         <div className="sidebar-foot"><span className="eyebrow">THE IDEA</span><p>A family retreat, designed around light, greenery and everyday life.</p><button className="text-button" onClick={() => changeSpace('inside')}>Explore inside <Icon name="arrow" size={15} /></button></div>

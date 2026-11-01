@@ -12,8 +12,8 @@ Create editable, dimensioned 2D layout studies for basement, ground, first, roof
 
 ## Site and coordinate rules
 
-- Latest target restores approximately **7,000 sq ft**, with the spacious ground/first room pattern, larger gardens and pool. No site dimensions are approved; further plot growth needs approval.
-- Front/back yard fractions of roughly 20%/30% include associated paths, driveway/ramp and other uses. Connect yards via side paths; do not infer a fixed building footprint or double-count access.
+- Latest user-approved illustrative plot is **70 x 116 ft / 8,120 sq ft**, preserving Study 011 room sizes. No actual surveyed site dimensions are approved; further plot growth needs approval.
+- Front/back whole yard bands are **24/42 ft**, or **1,680/2,940 sq ft**, exactly +20%/+40% relative to Study 011. They include paths, terraces, driveway/ramp and other uses, not grass alone. Connect yards via side paths; do not infer a fixed building footprint or double-count access.
 - Use a local plotting coordinate convention (for example, X across the plot width and Y along its depth). Treat the front edge as a drawing convention only; it does not establish compass direction or road orientation.
 - Setbacks, road width, jurisdiction, basement permissions, ground conditions and buildable envelopes are unresolved. Do not present the whole plot as legally buildable or assume basement and above-ground envelopes match.
 - Flat, standalone and front-road context may be used only as labeled study assumptions. Do not erase required outdoor space to fit the house. Any feasibility study remains unapproved, not permit-ready or code-compliant.
