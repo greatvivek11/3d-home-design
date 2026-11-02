@@ -9,6 +9,8 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js'
 import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js'
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js'
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js'
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js'
+import { realismEnabled } from './realism'
 import {
   annotationFloors, dimensionLines, displayedFloors, findRoom, floorPosition, floors, formatFeet, roomLabelAnchor, siteAllowed, sitePosition, study, visibleRoomAnnotations,
 } from './model'
@@ -108,6 +110,22 @@ function StudioLighting({ controls, sceneKey, studio }: {
   </>
 }
 
+// Display-referred finishing after tone mapping: gentle S-curve, a little saturation and a soft vignette.
+const GRADE = {
+  uniforms: { tDiffuse: { value: null } },
+  vertexShader: 'varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+  fragmentShader: `uniform sampler2D tDiffuse; varying vec2 vUv;
+    void main() {
+      vec4 c = texture2D(tDiffuse, vUv);
+      float l = dot(c.rgb, vec3(0.2126, 0.7152, 0.0722));
+      c.rgb = mix(vec3(l), c.rgb, 1.14);
+      c.rgb = mix(c.rgb, c.rgb * c.rgb * (3.0 - 2.0 * c.rgb), 0.3);
+      vec2 d = vUv - 0.5;
+      c.rgb *= 1.0 - 0.12 * smoothstep(0.4, 1.0, dot(d, d) * 2.2);
+      gl_FragColor = vec4(clamp(c.rgb, 0.0, 1.0), c.a);
+    }`,
+}
+
 export function StudioEffects({ enabled }: { enabled: boolean }) {
   const { gl, scene, camera, size, invalidate, viewport } = useThree()
   const pipeline = useRef<{ composer: EffectComposer; ao: GTAOPass } | null>(null)
@@ -125,6 +143,8 @@ export function StudioEffects({ enabled }: { enabled: boolean }) {
     composer.addPass(render)
     composer.addPass(ao)
     composer.addPass(output)
+    const grade = realismEnabled() ? new ShaderPass(GRADE) : null
+    if (grade) composer.addPass(grade)
     pipeline.current = { composer, ao }
     invalidate()
     return () => {
@@ -132,6 +152,7 @@ export function StudioEffects({ enabled }: { enabled: boolean }) {
       render.dispose()
       ao.dispose()
       output.dispose()
+      grade?.dispose()
       composer.dispose()
     }
   }, [enabled, gl, scene, camera, invalidate])

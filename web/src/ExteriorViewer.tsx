@@ -8,6 +8,7 @@ import {
 } from 'three'
 import { Sky } from 'three/addons/objects/Sky.js'
 import { LoadingModel, StudioEffects, ViewerBoundary } from './HouseViewer'
+import { enhanceRealism } from './realism'
 import { cameraAzimuth, exterior, exteriorViews, floors, study, verticalFov } from './model'
 import type { ExteriorView } from './model'
 
@@ -36,6 +37,7 @@ function ease(t: number) {
 }
 
 function prepare(root: Object3D, anisotropy: number) {
+  enhanceRealism(root)
   root.traverse((node) => {
     if (!(node instanceof Mesh)) return
     const materials = Array.isArray(node.material) ? node.material : [node.material]
@@ -61,7 +63,7 @@ function Atmosphere() {
     sky.scale.setScalar(6000)
     const uniforms = sky.material.uniforms
     uniforms.turbidity.value = 3.2
-    uniforms.rayleigh.value = 1.35
+    uniforms.rayleigh.value = 2.1
     uniforms.mieCoefficient.value = 0.004
     uniforms.mieDirectionalG.value = 0.82
     uniforms.sunPosition.value.set(-0.35, 0.62, 0.7).normalize()
@@ -72,10 +74,10 @@ function Atmosphere() {
     const environment = generator.fromScene(envScene, 0.02)
     const previous = { environment: scene.environment, fog: scene.fog, background: scene.background, intensity: scene.environmentIntensity }
     scene.environment = environment.texture
-    scene.environmentIntensity = 0.34
-    scene.fog = new Fog(new Color('#c3d3d3'), 140, 1250)
-    scene.background = new Color('#c3d3d3')
-    gl.toneMappingExposure = 0.58
+    scene.environmentIntensity = 0.3
+    scene.fog = new Fog(new Color('#bcd0dc'), 200, 1700)
+    scene.background = new Color('#bcd0dc')
+    gl.toneMappingExposure = 0.7
     invalidate()
     return () => {
       scene.remove(sky)
@@ -146,8 +148,8 @@ function Lighting({ sun, studio }: { sun: { current: DirectionalLight | null }; 
   const size = studio ? 4096 : 2048
   return <>
     <primitive object={target} />
-    <hemisphereLight args={['#d6e6ff', '#6f8456', 0.4]} />
-    <directionalLight key={size} ref={sun} target={target} castShadow intensity={studio ? 4.6 : 4.2} color="#ffeccc"
+    <hemisphereLight args={['#cfe2ff', '#5f7a48', 0.3]} />
+    <directionalLight key={size} ref={sun} target={target} castShadow intensity={studio ? 5.6 : 5} color="#ffe3b8"
       position={[-30, 55, 60]} shadow-mapSize={[size, size]} shadow-bias={-0.00004} shadow-normalBias={0.02} shadow-autoUpdate={false} />
   </>
 }

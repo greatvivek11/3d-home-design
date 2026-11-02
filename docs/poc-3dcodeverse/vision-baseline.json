@@ -1,0 +1,5 @@
+{
+  "reviewer": "Copilot (self-review of the captured sheets, not an independent VLM)",
+  "weights": { "materials": 3, "lighting": 2, "vegetation": 2, "atmosphere": 2, "geometry": 3 },
+  "scores": { "materials": 4, "lighting": 5, "vegetation": 3, "atmosphere": 4, "geometry": 5 }
+}
