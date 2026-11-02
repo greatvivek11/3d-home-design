@@ -97,7 +97,7 @@ describe('the exported study contract', () => {
     expect(Object.values(study.mesh_counts).every((count) => count > 0)).toBe(true)
   })
 
-  it('shows honest high-sill window markers and a separate north-wall wooden TV cabinet', async () => {
+  it('shows honest high-sill window markers and a west-wall TV cabinet with the privacy wall present', async () => {
     const gltf = await model()
     gltf.scene.updateMatrixWorld(true)
     const meshes: Mesh[] = []
@@ -114,14 +114,17 @@ describe('the exported study contract', () => {
     const cabinet = meshes.find((node) => node.userData.fixture_id === 'family_tv' && node.userData.role === 'tv_wooden_cabinet')
     expect(cabinet).toBeDefined()
     const bounds = new Box3().setFromObject(cabinet!)
-    expect(bounds.min.z).toBeCloseTo(-48.5 * .3048, 4)
-    expect(bounds.max.z).toBeCloseTo(-46.5 * .3048, 4)
+    expect(bounds.min.x).toBeCloseTo(22.2 * .3048, 4)
+    expect(bounds.max.x).toBeCloseTo(24.2 * .3048, 4)
+    expect(bounds.min.z).toBeCloseTo(-68.75 * .3048, 4)
+    expect(bounds.max.z).toBeCloseTo(-62.25 * .3048, 4)
     const materials = Array.isArray(cabinet!.material) ? cabinet!.material : [cabinet!.material]
     expect(materials.every((material) => material.name === 'wood')).toBe(true)
     const window = meshes.find((node) => node.userData.opening_id === 'living_side_window')
     expect(window?.userData.sections).toBe(3)
-    const glass = new Box3().setFromObject(window!)
-    expect(bounds.min.z).toBeGreaterThan(glass.max.z)
+    const privacyWalls = document.nodes.filter(node => String(node.extras?.partition_id).startsWith('public_'))
+    expect(privacyWalls.length).toBeGreaterThan(0)
+    expect(document.nodes.some(node => node.extras?.partition_id === 'family_entry_return')).toBe(false)
   })
 
   it('binds the revised study to the actual layout and brief fingerprints', () => {
@@ -140,7 +143,7 @@ describe('the exported study contract', () => {
     expect(result.brief_sha256).toBe(study.brief_sha256)
     expect(result.structural_status).toBe('illustrative_only_not_engineered')
     expect(result.renders).toEqual([])
-    expect(result.locked_fixtures_checked).toBe(113)
+    expect(result.locked_fixtures_checked).toBe(117)
     expect(JSON.parse(readFileSync(new URL('layout-snapshot.json', base), 'utf8'))).toEqual(
       JSON.parse(readFileSync(new URL('../../house-spec/layout-study.json', import.meta.url), 'utf8')))
     expect(JSON.parse(readFileSync(new URL('brief-snapshot.json', base), 'utf8'))).toEqual(
@@ -159,7 +162,7 @@ describe('the exported study contract', () => {
     expect(study.model_bytes).toBeLessThan(study.uncompressed_model_bytes * 0.75)
   })
 
-  it('preserves every rendered room footprint and all 113 revised source furniture placements', async () => {
+  it('preserves every rendered room footprint and all 117 revised source furniture placements', async () => {
     const layout: { floors: { id: string; furniture: { id: string; kind: string; rect: number[] }[] }[] } =
       JSON.parse(readFileSync(new URL('../../house-spec/layout-study.json', import.meta.url), 'utf8'))
     const gltf = await model()
@@ -185,8 +188,13 @@ describe('the exported study contract', () => {
         const [x, y, w, d] = item.rect
         const allowed = [item.rect]
         if (item.kind === 'dining_table') {
-          for (const t of [0, 0.5, 1]) allowed.push([x - 1.8, y + (d - 1.5) * t, 1.5, 1.5], [x + w + 0.3, y + (d - 1.5) * t, 1.5, 1.5])
-          allowed.push([x + w / 2 - 0.75, y - 1.8, 1.5, 1.5], [x + w / 2 - 0.75, y + d + 0.3, 1.5, 1.5])
+          if (w > d) {
+            for (const t of [0, 0.5, 1]) allowed.push([x + (w - 1.5) * t, y - 1.8, 1.5, 1.5], [x + (w - 1.5) * t, y + d + 0.3, 1.5, 1.5])
+            allowed.push([x - 1.8, y + d / 2 - 0.75, 1.5, 1.5], [x + w + 0.3, y + d / 2 - 0.75, 1.5, 1.5])
+          } else {
+            for (const t of [0, 0.5, 1]) allowed.push([x - 1.8, y + (d - 1.5) * t, 1.5, 1.5], [x + w + 0.3, y + (d - 1.5) * t, 1.5, 1.5])
+            allowed.push([x + w / 2 - 0.75, y - 1.8, 1.5, 1.5], [x + w / 2 - 0.75, y + d + 0.3, 1.5, 1.5])
+          }
         }
         const parts = meshes.filter((mesh) => mesh.userData.floor_id === floor.id && mesh.userData.fixture_id === item.id)
         expect(parts.length).toBeGreaterThan(0)
@@ -204,7 +212,7 @@ describe('the exported study contract', () => {
         checked++
       }
     }
-    expect(checked).toBe(113)
+    expect(checked).toBe(117)
     expect(violations).toEqual([])
   })
 
@@ -221,17 +229,18 @@ describe('the exported study contract', () => {
     }
   })
 
-  it('retains basement functions and actual net living floor around its pantry and cupboard', async () => {
+  it('retains basement functions and enlarges net living without counting dining or kitchen twice', async () => {
     const living = findRoom({ floorId: 'ground', roomId: 'family_living' })
     const kitchen = findRoom({ floorId: 'ground', roomId: 'kitchen' })
     const pantry = findRoom({ floorId: 'ground', roomId: 'pantry' })
-    expect(study.study_id).toBe('study-013')
+    expect(study.study_id).toBe('study-015')
     expect(floors[0].bounds.depth / 0.3048).toBeCloseTo(80.33333333333333)
-    expect(living?.area_sq_ft).toBe(343.5)
-    expect(kitchen?.area_sq_ft).toBe(168)
+    expect(living?.area_sq_ft).toBeCloseTo(467.85)
+    expect(kitchen?.area_sq_ft).toBeCloseTo(203.25)
     expect(living?.footprints.length).toBeGreaterThan(1)
     expect(kitchen?.bounds.z).toBeCloseTo(-73.5 * 0.3048)
-    expect(pantry?.bounds.x).toBeCloseTo(39 * 0.3048)
+    expect(pantry?.bounds.x).toBeCloseTo(47.5 * 0.3048)
+    expect(pantry?.bounds.width).toBeCloseTo(6 * 0.3048)
     const gltf = await model()
     gltf.scene.updateMatrixWorld(true)
     const tiles: Mesh[] = []
@@ -239,16 +248,20 @@ describe('the exported study contract', () => {
       if (node instanceof Mesh && node.userData.floor_id === 'ground' && node.userData.role === 'room_floor') tiles.push(node)
     })
     const pantryTile = tiles.find((node) => node.userData.room_id === 'pantry')
-    if (!pantryTile) throw new Error('GLB is missing the enclosed pantry tile')
+    if (!pantryTile) throw new Error('GLB is missing the walk-in pantry tile')
     const pantryBox = new Box3().setFromObject(pantryTile)
     const livingBoxes = tiles.filter((node) => node.userData.room_id === 'family_living').map((node) => new Box3().setFromObject(node))
     expect(livingBoxes.length).toBeGreaterThan(1)
     const area = livingBoxes.reduce((total, box) => total + (box.max.x - box.min.x) * (box.max.z - box.min.z), 0)
-    expect(area / 0.09290304).toBeCloseTo(343.5, 3)
+    expect(area / 0.09290304).toBeCloseTo(467.85, 3)
+    const excludedBoxes = tiles.filter(node => ['dining', 'kitchen', 'master_wardrobe'].includes(node.userData.room_id))
+      .map(node => new Box3().setFromObject(node))
     for (const box of livingBoxes) {
-      const overlapX = Math.max(0, Math.min(box.max.x, pantryBox.max.x) - Math.max(box.min.x, pantryBox.min.x))
-      const overlapZ = Math.max(0, Math.min(box.max.z, pantryBox.max.z) - Math.max(box.min.z, pantryBox.min.z))
-      expect(overlapX * overlapZ).toBeLessThan(0.00001)
+      for (const excluded of [pantryBox, ...excludedBoxes]) {
+        const overlapX = Math.max(0, Math.min(box.max.x, excluded.max.x) - Math.max(box.min.x, excluded.min.x))
+        const overlapZ = Math.max(0, Math.min(box.max.z, excluded.max.z) - Math.max(box.min.z, excluded.min.z))
+        expect(overlapX * overlapZ).toBeLessThan(0.00001)
+      }
     }
   })
 
@@ -463,10 +476,10 @@ describe('the exported study contract', () => {
     expect(findRoom({ floorId: 'first', roomId: 'east_gallery' })).toBeUndefined()
     expect(findRoom({ floorId: 'first', roomId: 'office' })?.area_sq_ft).toBe(204)
     expect(findRoom({ floorId: 'ground', roomId: 'master_entry' })).toBeUndefined()
-    expect(findRoom({ floorId: 'ground', roomId: 'master_bathroom' })?.area_sq_ft).toBe(102)
-    expect(findRoom({ floorId: 'ground', roomId: 'master_wardrobe' })?.area_sq_ft).toBe(85.5)
-    expect(findRoom({ floorId: 'ground', roomId: 'dining' })?.area_sq_ft).toBe(156)
-    expect(findRoom({ floorId: 'ground', roomId: 'master_bedroom' })?.area_sq_ft).toBe(365.5)
+    expect(findRoom({ floorId: 'ground', roomId: 'master_bathroom' })?.area_sq_ft).toBeCloseTo(78.2)
+    expect(findRoom({ floorId: 'ground', roomId: 'master_wardrobe' })?.area_sq_ft).toBe(71.25)
+    expect(findRoom({ floorId: 'ground', roomId: 'dining' })?.area_sq_ft).toBe(114)
+    expect(findRoom({ floorId: 'ground', roomId: 'master_bedroom' })?.area_sq_ft).toBeCloseTo(365.5 * .8)
     const gltf = await model()
     gltf.scene.updateMatrixWorld(true)
     const tiles: Mesh[] = []
@@ -657,7 +670,7 @@ describe('presentation without duplicating house geometry', () => {
   })
 
   it('resolves room details without substituting a default room', () => {
-    expect(findRoom({ floorId: 'ground', roomId: 'master_bedroom' })?.width_ft).toBe(21.5)
+    expect(findRoom({ floorId: 'ground', roomId: 'master_bedroom' })?.width_ft).toBe(17.2)
     expect(findRoom({ floorId: 'first', roomId: 'office' })?.name).toContain('office')
     expect(findRoom({ floorId: 'first', roomId: 'missing' })).toBeUndefined()
     expect(findRoom(null)).toBeUndefined()
@@ -686,7 +699,7 @@ describe('presentation without duplicating house geometry', () => {
     expect(lines[0].end[0] - lines[0].start[0]).toBeCloseTo(room.bounds.width)
     expect(lines[1].end[2] - lines[1].start[2]).toBeCloseTo(room.bounds.depth)
     expect(room).toEqual(before)
-    expect(room.area_sq_ft).toBe(343.5)
+    expect(room.area_sq_ft).toBeCloseTo(467.85)
   })
 
   it('places room label anchors inside actual net footprints, never inside a pantry or shaft hole', () => {

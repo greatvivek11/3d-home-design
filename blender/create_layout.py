@@ -13,7 +13,7 @@ from mathutils import Matrix, Vector
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from scripts.layout import COLORS, dining_chairs, facade_edges, facade_openings, facade_pieces, feet, floor_bounds, floor_footprints, load_json, room_area, room_footprints, stair_profile, structural_members, subtract_rectangles, validate, wall_partition, wall_parts, walls, write_review
+from scripts.layout import COLORS, dining_chair_turns, dining_chairs, facade_edges, facade_openings, facade_pieces, feet, floor_bounds, floor_footprints, load_json, room_area, room_footprints, stair_profile, structural_members, subtract_rectangles, validate, wall_partition, wall_parts, walls, write_review
 from scripts.driveway import Driveway
 from blender.finishes import create_maps, finish_material
 
@@ -595,8 +595,8 @@ def furnishing_mesh(item):
         table_legs(name, item["rect"], height, material("walnut"))
         box(name + ".top", item["rect"], height, .12, wood, .07)
         if kind == "dining_table":
-            for i, r in enumerate(dining_chairs(item["rect"])):
-                chair(f"{name}.chair_{i + 1}", r, -math.pi / 2 if i < 3 else math.pi / 2 if i < 6 else math.pi if i == 7 else 0)
+            for i, (r, turn) in enumerate(zip(dining_chairs(item["rect"]), dining_chair_turns(item["rect"]))):
+                chair(f"{name}.chair_{i + 1}", r, turn)
         elif kind == "desk":
             if name == "office_workstation":
                 rod(name + ".monitor_stand", (x + w / 2, y + .38, height + .12), (x + w / 2, y + .38, 3.35), .055, metal)
@@ -737,9 +737,13 @@ def floor_geometry(floor, layout):
                 tile["room_id"] = room["id"]
                 tile["role"] = "room_floor"
     cap_regions = {}
+    # Windows above the cutaway height dip the cut wall to the marker level so the opening is visible.
+    cutaway_openings = [{**o, "sill": min(o["sill"], layout["section_height"] - .4)}
+                        if o.get("kind") == "window" and o.get("sill", 0) >= layout["section_height"] - .4 else o
+                        for o in floor["openings"]]
     for index, wall in enumerate(walls(floor, layout["wall_thickness"])):
         partition = wall_partition(floor, wall)
-        for j, (start, end, height) in enumerate(wall_parts(wall, floor["openings"], layout["section_height"])):
+        for j, (start, end, height) in enumerate(wall_parts(wall, cutaway_openings, layout["section_height"])):
             t = layout["wall_thickness"]
             rect = [start, wall["at"] - t / 2, end - start, t] if wall["axis"] == "x" else [wall["at"] - t / 2, start, t, end - start]
             base, cap = min(.27, height / 3), min(.035, height / 6)
@@ -1746,10 +1750,11 @@ def main():
                "Scenes 08-10 are composed living/kitchen, office and bedroom close-ups.\n"
                "Scenes 16-23 are FINISHED EXTERIOR presentation views from the EXTERIOR collection (full-height facade, boundary, gates, planting) plus the site and roof terrace. The cutaway floor collections are unchanged.\n"
                "All geometry is in metres. Room labels show proposed clear-zone dimensions in feet.\n"
-               "Study 010 keeps the spacious 7,000 sq ft site, 4 ft ground galleries and unified upstairs lounge. The front-lawn lift has INTERNAL stair access; there is NO external side link.\n"
-               "Five bedrooms, equal 272 sq ft children's rooms, equal recreation, three SUVs, eight toilets and pantry fridge remain. Larger gardens and an outboard 8 x 16 ft pool return.\n"
-               "The guest room is wider; master has a private 3 ft entrance, bedroom-to-dressing-to-bath access. Child 1 bath/dressing occupy reclaimed office width, not lounge. Shared upstairs WC is beside stairs. Basement/roof remain unchanged from Study 008.\n"
-               "A 4 x 2 ft cupboard faces left at the House Gallery terminal end, outside living. Upstairs shared WC is 6 x 5.5 ft; living/lounge net areas are 343.5/653 sq ft.\n"
+               "Study 015 retains the expanded 8,120 sq ft site, 4 ft ground galleries and unified upstairs lounge. The front-lawn lift has INTERNAL stair access; there is NO external side link.\n"
+               "Five bedrooms, equal 272 sq ft children's rooms, equal recreation, three SUVs and eight toilets remain. Larger gardens and an outboard 8 x 16 ft pool return.\n"
+               "Master sleeping area is 20% smaller (292.4 sq ft); its bath and dressing are trimmed to the bedroom length, with a 3 ft family-living door. Basement, first floor and roof remain Study 013.\n"
+               "Dining table runs horizontally beside the privacy wall; living is 467.85 sq ft net on the west side with the TV on a west-wall cabinet and the sofa about 8 ft away. Kitchen is 203.25 sq ft net with an island, a free-standing fridge, a 60 sq ft (6 x 10 ft) walk-in pantry room and wide windows above the whole rear and east counters. The prayer corner is rotated into the north-east corner of the east wall with a high window behind it; the living slider matches the master's 10 ft slider; the master bed is on the west wall.\n"
+               "The horizontal House Gallery privacy wall is retained with its doorless offset archway; there is no prayer-corner return. A 4 x 2 ft cupboard remains outside living; upstairs lounge is 653 sq ft net.\n"
                "The curved driveway checks a sampled large-SUV body sweep; independent parking and engineering remain unverified.\n"
                "Weather covers are separate Outliner collections. The roof plan and basement driveway context omit covers for inspection.\n"
                "The 9 x 17 ft U-stair is a geometry candidate, not approved headroom, fire/escape or code compliance.\n"

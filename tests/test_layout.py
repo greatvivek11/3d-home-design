@@ -5,7 +5,7 @@ import tempfile
 import unittest
 import xml.etree.ElementTree as ET
 
-from scripts.layout import ROOT, access_graph, facade_edges, facade_openings, facade_pieces, back_wall_is_solid, contains, dining_chairs, door_inside_approach, feet, floor_bounds, full_height_garage_barrier, load_json, opening_meets_room, opening_touches, overlap, plan_svg, reachable, room_area, room_footprints, square_feet, stair_profile, structural_members, subtract_rectangles, validate, validate_brief, wall_parts, walls, write_review
+from scripts.layout import ROOT, access_graph, facade_edges, facade_openings, facade_pieces, back_wall_is_solid, contains, dining_chair_turns, dining_chairs, door_inside_approach, feet, floor_bounds, full_height_garage_barrier, load_json, opening_meets_room, opening_touches, overlap, plan_svg, partition_between, reachable, room_area, room_footprints, sightline_blocked, square_feet, stair_profile, structural_members, subtract_rectangles, validate, validate_brief, wall_parts, walls, write_review
 from scripts.driveway import Driveway
 
 
@@ -169,23 +169,44 @@ class LayoutTests(unittest.TestCase):
         kitchen = next(r for r in floor["rooms"] if r["id"] == "kitchen")
         living = next(r for r in floor["rooms"] if r["id"] == "family_living")
         pantry = next(r for r in floor["rooms"] if r["id"] == "pantry")
-        self.assertEqual(room_area(floor, kitchen), 168)
-        self.assertEqual(room_area(floor, living), 343.5)
-        self.assertEqual(pantry["parent"], "family_living")
+        self.assertEqual(room_area(floor, kitchen), 203.25)
+        self.assertAlmostEqual(room_area(floor, living), 467.85)
+        self.assertEqual(room_area(floor, pantry), 60)
+        self.assertEqual(pantry["parent"], "kitchen")
         parts = room_footprints(floor, living)
         self.assertGreater(len(parts), 1)
         self.assertTrue(all(overlap(part, pantry["rect"]) == 0 for part in parts))
 
     def test_living_furniture_cannot_be_inside_the_enclosed_pantry(self):
         floor = self.layout["floors"][1]
-        item = next(i for i in floor["furniture"] if i["id"] == "family_sofa")
+        item = next(i for i in floor["furniture"] if i["id"] == "kitchen_fridge")
         item["rect"] = next(r["rect"].copy() for r in floor["rooms"] if r["id"] == "pantry")
         self.assertTrue(any("excluded child" in error for error in self.errors()))
 
-    def test_enclosed_pantry_needs_its_real_door_not_parent_adjacency(self):
+    def test_dedicated_pantry_is_a_walled_room_with_a_door_and_the_fridge_stays_outside(self):
         floor = self.layout["floors"][1]
-        floor["openings"] = [o for o in floor["openings"] if "pantry" not in o["connects"]]
-        self.assertTrue(any("disconnected" in error for error in self.errors()))
+        items = {i["id"]: i for i in floor["furniture"]}
+        pantry = next(r for r in floor["rooms"] if r["id"] == "pantry")
+        door = next(o for o in floor["openings"] if o.get("id") == "pantry_door")
+        self.assertFalse(pantry.get("open"))
+        self.assertEqual(set(door["connects"]), {"pantry", "kitchen"})
+        self.assertIn("kitchen", access_graph(floor)["pantry"])
+        self.assertTrue(any(w["axis"] == "y" and w["at"] == 47.25 for w in walls(floor, self.layout["wall_thickness"])))
+        self.assertEqual(pantry["rect"][2:], [6, 10])
+        self.assertGreaterEqual(pantry["rect"][1], next(r["rect"][1] for r in floor["rooms"] if r["id"] == "kitchen"))
+        self.assertEqual(items["kitchen_fridge"]["room"], "kitchen")
+        self.assertEqual({i["room"] for i in items.values() if i["id"].startswith("pantry_shelves")}, {"pantry"})
+        pantry["open"] = True
+        self.assertTrue(any("dedicated enclosed walk-in pantry" in error for error in self.errors()))
+
+    def test_refrigerator_is_outside_the_pantry_and_not_in_a_corner(self):
+        floor = self.layout["floors"][1]
+        kitchen = next(r["rect"] for r in floor["rooms"] if r["id"] == "kitchen")
+        fridge = next(i for i in floor["furniture"] if i["id"] == "kitchen_fridge")
+        self.assertGreaterEqual(fridge["rect"][1] - kitchen[1], 8)
+        self.assertGreaterEqual(kitchen[1] + kitchen[3] - fridge["rect"][1] - fridge["rect"][3], 5)
+        fridge["rect"] = [kitchen[0] + kitchen[2] - 2.5, kitchen[1] + kitchen[3] - 3, 2.5, 3]
+        self.assertTrue(any("not in a kitchen corner" in e for e in self.errors()))
 
     def test_restored_dining_keeps_eight_chairs_and_table_clearances(self):
         floor = self.layout["floors"][1]
@@ -416,17 +437,26 @@ class LayoutTests(unittest.TestCase):
         f["furniture"] = [item for item in f["furniture"] if item["id"] != "master_wc_1"]
         self.assertTrue(any("master_bathroom: missing" in e for e in self.errors()))
 
-    def test_master_bath_is_extended_into_the_removed_entry_and_retains_fixtures(self):
+    def test_master_bath_and_dressing_are_trimmed_to_the_bedroom_length_and_retain_fixtures(self):
         floor = self.layout["floors"][1]
         rooms = {r["id"]: r for r in floor["rooms"]}
         self.assertNotIn("master_entry", rooms)
-        self.assertEqual(room_area(floor, rooms["master_wardrobe"]), 85.5)
-        self.assertEqual(room_area(floor, rooms["master_bathroom"]), 102)
-        self.assertEqual(rooms["master_bathroom"]["rect"], [4.5, 47.5, 12, 8.5])
-        self.assertEqual(rooms["master_wardrobe"]["rect"], [17, 46.5, 9, 9.5])
-        self.assertEqual(rooms["master_bedroom"]["rect"], [4.5, 56.5, 21.5, 17])
-        fixtures = [item["kind"] for item in floor["furniture"] if item["room"] == "master_bathroom"]
-        self.assertCountEqual(fixtures, ["wc_cubicle", "basin", "bathtub", "shower"])
+        bedroom, bath, dressing = rooms["master_bedroom"]["rect"], rooms["master_bathroom"]["rect"], rooms["master_wardrobe"]["rect"]
+        self.assertEqual(bedroom, [4.5, 56.5, 17.2, 17])
+        self.assertEqual((bath[0], dressing[0] + dressing[2]), (bedroom[0], bedroom[0] + bedroom[2]))
+        self.assertAlmostEqual(dressing[0] - bath[0] - bath[2], self.layout["wall_thickness"])
+        self.assertAlmostEqual(room_area(floor, rooms["master_bathroom"]), 78.2)
+        self.assertAlmostEqual(room_area(floor, rooms["master_wardrobe"]), 71.25)
+        fixtures = [item for item in floor["furniture"] if item["room"] == "master_bathroom"]
+        self.assertCountEqual([item["kind"] for item in fixtures], ["wc_cubicle", "basin", "bathtub", "shower"])
+        self.assertTrue(all(contains(bath, item["rect"]) for item in fixtures))
+        dressing_door = next(o for o in floor["openings"] if set(o["connects"]) == {"master_bathroom", "master_wardrobe"})
+        self.assertTrue(all(overlap(door_inside_approach(rooms[rid], dressing_door), i["rect"]) == 0
+                            for rid in ["master_bathroom", "master_wardrobe"] for i in floor["furniture"]))
+        shelves = sorted((i["rect"] for i in floor["furniture"] if i["room"] == "master_wardrobe"), key=lambda r: r[0])
+        self.assertGreaterEqual(shelves[1][0] - shelves[0][0] - shelves[0][2], 3)
+        self.assertTrue(all(s[1] + s[3] <= dressing[1] + dressing[3] for s in shelves))
+        self.assertGreaterEqual(dressing[3], 5)
 
     def test_ground_front_wider_drawing_furnished_smaller_guest(self):
         floor = self.layout["floors"][1]
@@ -439,12 +469,12 @@ class LayoutTests(unittest.TestCase):
         self.assertGreater(rooms["family_living"]["rect"][1], rooms["cross_passage"]["rect"][1])
         self.assertEqual(access_graph(floor)["family_toilet"], {"cross_passage"})
         self.assertNotIn("laundry", rooms)
-        self.assertEqual(rooms["prayer_alcove"]["rect"], [46.5, 50, 7, 6.5])
+        self.assertEqual(rooms["prayer_alcove"]["rect"], [47, 46.5, 6.5, 7])
 
     def test_lift_does_not_force_living_access_through_the_kitchen(self):
         floor = self.layout["floors"][1]
-        door = next(o for o in floor["openings"] if o.get("id") == "family_entry")
-        approach = [door["start"], door["at"] + .25, door["width"], 8]
+        self.assertIn("family_living", reachable(access_graph(floor), "lift", {"kitchen", "outside"}))
+        approach = [39, 46.5, 6.5, 8]
         self.assertTrue(all(overlap(approach, item["rect"]) == 0 for item in floor["furniture"]))
 
     def test_family_garden_access_does_not_cross_master_or_prayer(self):
@@ -622,42 +652,46 @@ class LayoutTests(unittest.TestCase):
         rooms = {r["id"]: r for r in floor["rooms"]}
         graph = access_graph(floor)
         door = next(o for o in floor["openings"] if o.get("id") == "master_family_door")
-        self.assertEqual((door["axis"], door["width"], set(door["connects"])), ("y", 3, {"master_bedroom", "dining"}))
+        self.assertEqual((door["axis"], door["width"], set(door["connects"])), ("y", 3, {"master_bedroom", "family_living"}))
         self.assertTrue(opening_meets_room(floor, rooms["master_bedroom"], door, self.layout["wall_thickness"]))
-        self.assertTrue(opening_meets_room(floor, rooms["dining"], door, self.layout["wall_thickness"]))
-        self.assertEqual(graph["master_bedroom"] - {"outside"}, {"dining", "master_wardrobe"})
+        self.assertTrue(opening_meets_room(floor, rooms["family_living"], door, self.layout["wall_thickness"]))
+        self.assertEqual(graph["master_bedroom"] - {"outside"}, {"family_living", "master_wardrobe"})
         self.assertEqual(graph["master_wardrobe"], {"master_bedroom", "master_bathroom"})
         self.assertEqual(graph["master_bathroom"], {"master_wardrobe"})
         self.assertNotIn("master_bedroom", graph["cross_passage"])
         self.assertNotIn("master_wardrobe", reachable(graph, "cross_passage", {"master_bedroom", "outside"}))
         self.assertIn("master_bedroom", reachable(graph, "family_living", {"cross_passage", "outside"}))
-        for room_id in ["master_bedroom", "dining"]:
+        for room_id in ["master_bedroom", "family_living"]:
             approach = door_inside_approach(rooms[room_id], door)
             self.assertTrue(contains(rooms[room_id]["rect"], approach))
             self.assertTrue(all(overlap(approach, i["rect"]) == 0 for i in floor["furniture"]))
         table = next(i["rect"] for i in floor["furniture"] if i["id"] == "dining_table")
-        approach = door_inside_approach(rooms["dining"], door)
+        approach = door_inside_approach(rooms["family_living"], door)
         self.assertTrue(all(overlap(approach, chair) == 0 for chair in dining_chairs(table)))
 
-    def test_master_bed_faces_the_centred_window_from_a_solid_east_wall_with_side_tables(self):
+    def test_master_bed_sits_on_the_west_wall_under_a_high_window_opposite_the_tv_wall(self):
         floor = self.layout["floors"][1]
         bed = next(i for i in floor["furniture"] if i["id"] == "master_bed")
-        self.assertEqual((bed["rect"][0], bed["back_edge"]), (19, "right"))
+        room = next(r for r in floor["rooms"] if r["id"] == "master_bedroom")["rect"]
+        tv = next(i for i in floor["furniture"] if i["id"] == "family_tv")["rect"]
+        self.assertEqual((bed["rect"][0], bed["back_edge"]), (room[0], "left"))
+        self.assertLess(bed["rect"][0] + bed["rect"][2], tv[0])
         self.assertTrue(back_wall_is_solid(floor, bed, self.layout["wall_thickness"]))
+        self.assertEqual(bed["rect"][1] + bed["rect"][3] / 2, room[1] + room[3] / 2)
         tables = [i for i in floor["furniture"] if i.get("bed_id") == "master_bed"]
         self.assertEqual(len(tables), 2)
-        self.assertTrue(all(t["rect"][0] == 24.25 and t["back_edge"] == "right" for t in tables))
+        self.assertTrue(all(t["rect"][0] == room[0] and t["back_edge"] == "left" for t in tables))
+        window = next(o for o in floor["openings"] if o.get("id") == "master_side_window")
+        self.assertGreaterEqual(window["sill"], 4.5)
+        self.assertTrue(window["start"] <= bed["rect"][1] and window["start"] + window["width"] >= bed["rect"][1] + bed["rect"][3])
         glazing = [o for o in floor["openings"] if o["connects"] == ["master_bedroom", "outside"]]
         self.assertTrue(any(o["axis"] == "x" and o["width"] >= 9 and o["height"] >= 7 for o in glazing))
-        self.assertTrue(all(not (o["axis"] == "y" and o["at"] == 26.25
-                                 and o["start"] < bed["rect"][1] + bed["rect"][3] and o["start"] + o["width"] > bed["rect"][1])
-                            for o in glazing))
-
     def test_daylight_revision_preserves_plot_room_sizes_and_unaffected_floor_data(self):
         prior = load_json(ROOT / "assets/models/study-012/layout-snapshot.json")
+        daylight = load_json(ROOT / "assets/models/study-013/layout-snapshot.json")
         for key in ["site", "ramp", "outdoor", "balconies", "weather_protection", "structure"]:
             self.assertEqual(self.layout[key], prior[key], key)
-        for before, floor in zip(prior["floors"], self.layout["floors"]):
+        for before, floor in zip(prior["floors"], daylight["floors"]):
             if floor["id"] in {"basement", "roof"}:
                 self.assertEqual(floor, before)
             self.assertEqual(floor["envelope"], before["envelope"])
@@ -683,11 +717,162 @@ class LayoutTests(unittest.TestCase):
             self.assertTrue(any(f"{rid}: high-sill" in e for e in self.errors()))
             opening["privacy_glass"] = True
 
+    def test_revision_reclaims_twenty_percent_of_master_and_preserves_other_floors(self):
+        prior = load_json(ROOT / "assets/models/study-013/layout-snapshot.json")
+        for key in ["site", "ramp", "outdoor", "balconies", "weather_protection", "structure"]:
+            self.assertEqual(self.layout[key], prior[key], key)
+        for before, floor in zip(prior["floors"], self.layout["floors"]):
+            if floor["id"] != "ground":
+                self.assertEqual(floor, before)
+        floor = self.layout["floors"][1]
+        rooms = {r["id"]: r for r in floor["rooms"]}
+        old = {r["id"]: r for r in prior["floors"][1]["rooms"]}
+        self.assertAlmostEqual(room_area(floor, rooms["master_bedroom"]), 365.5 * .8)
+        self.assertAlmostEqual(room_area(floor, rooms["family_living"]), 467.85)
+        self.assertNotEqual(rooms["prayer_alcove"]["rect"], old["prayer_alcove"]["rect"])
+        self.assertEqual(rooms["prayer_alcove"]["rect"], [47, 46.5, 6.5, 7])
+        rooms["master_bedroom"]["rect"][2] += 1
+        self.assertTrue(any("20% smaller" in e for e in self.errors()))
+
+    def test_living_net_area_excludes_dining_and_kitchen_without_double_counting(self):
+        floor = self.layout["floors"][1]
+        rooms = {r["id"]: r for r in floor["rooms"]}
+        for part in room_footprints(floor, rooms["family_living"]):
+            for rid in ["master_wardrobe", "master_bedroom", "dining", "kitchen", "pantry"]:
+                self.assertAlmostEqual(overlap(part, rooms[rid]["rect"]), 0)
+        sofa = next(i for i in floor["furniture"] if i["id"] == "family_sofa")
+        sofa["rect"] = [rooms["kitchen"]["rect"][0], 60, 3, 9]
+        self.assertTrue(any("excluded child" in e for e in self.errors()))
+
+    def test_kitchen_is_wide_but_still_longer_than_wide_with_workable_aisles(self):
+        floor = self.layout["floors"][1]
+        rooms = {r["id"]: r for r in floor["rooms"]}
+        items = {i["id"]: i for i in floor["furniture"]}
+        kitchen, pantry, dining = rooms["kitchen"]["rect"], rooms["pantry"]["rect"], rooms["dining"]["rect"]
+        self.assertEqual(kitchen, [40, 54, 13.5, 19.5])
+        self.assertGreater(kitchen[3], kitchen[2])
+        self.assertEqual((kitchen[0] + kitchen[2], pantry[0] + pantry[2]), (53.5, 53.5))
+        self.assertGreaterEqual(kitchen[0], dining[0] + dining[2])
+        self.assertGreaterEqual(room_area(floor, rooms["kitchen"]), 168)
+        island = items["island"]["rect"]
+        self.assertGreaterEqual(items["kitchen_counter"]["rect"][1] - island[1] - island[3], 3.5)
+        self.assertGreaterEqual(pantry[0] - island[0] - island[2], 3.5)
+        self.assertEqual(items["cooking_counter"]["appliance"], "cooktop_with_hood")
+
+    def test_wrap_around_windows_run_above_the_whole_rear_and_east_kitchen_counters(self):
+        floor = self.layout["floors"][1]
+        items = {i["id"]: i for i in floor["furniture"]}
+        rear = next(o for o in floor["openings"] if o.get("id") == "kitchen_counter_window")
+        east = next(o for o in floor["openings"] if o.get("id") == "kitchen_east_counter_window")
+        hood, sink, corner = items["cooking_counter"]["rect"], items["kitchen_counter"]["rect"], items["kitchen_corner_counter"]["rect"]
+        landing = items["fridge_landing_counter"]["rect"]
+        self.assertEqual((rear["axis"], rear["at"], rear["width"], rear["sections"]), ("x", 73.75, 9, 3))
+        self.assertEqual((east["axis"], east["at"], east["width"], east["sections"]), ("y", 53.75, 5, 2))
+        self.assertTrue(rear["operable"] and east["operable"])
+        self.assertGreaterEqual(rear["start"], hood[0] + hood[2])
+        self.assertLessEqual(rear["start"], sink[0] + .5)
+        self.assertGreaterEqual(rear["start"] + rear["width"], corner[0] + corner[2] - .5)
+        self.assertLessEqual(east["start"], landing[1] + .5)
+        self.assertGreaterEqual(east["start"] + east["width"], corner[1] + corner[3] - .5)
+        for window in (rear, east):
+            self.assertGreaterEqual(window["sill"], 3)
+        rear["start"] -= 1
+        self.assertTrue(any("wrap-around windows" in e for e in self.errors()))
+
+    def test_high_sill_windows_dip_the_cut_wall_so_the_kitchen_windows_are_visible(self):
+        floor = self.layout["floors"][1]
+        section = self.layout["section_height"]
+        shown = [{**o, "sill": min(o["sill"], section - .4)} if o.get("kind") == "window" and o.get("sill", 0) >= section - .4 else o
+                 for o in floor["openings"]]
+        rear = next(w for w in walls(floor, self.layout["wall_thickness"]) if w["axis"] == "x" and w["at"] == 73.75 and w["start"] <= 44.2 < w["end"])
+        parts = wall_parts(rear, shown, section)
+        self.assertIn((44.2, 53.2, 2.6), parts)
+
+    def test_living_garden_slider_is_as_big_as_the_master_slider(self):
+        floor = self.layout["floors"][1]
+        living = next(o for o in floor["openings"] if o.get("id") == "family_garden_exit")
+        master = next(o for o in floor["openings"] if o["connects"] == ["master_bedroom", "outside"] and o.get("kind") == "slider")
+        self.assertEqual((living["width"], living["height"]), (master["width"], master["height"]))
+        self.assertEqual((living["width"], living["height"]), (10, 8))
+        living["width"] = 7
+        self.assertTrue(any("as big as the master bedroom slider" in e for e in self.errors()))
+
+    def test_dining_table_runs_parallel_to_the_gallery_wall_with_eight_seats(self):
+        floor = self.layout["floors"][1]
+        table = next(i["rect"] for i in floor["furniture"] if i["id"] == "dining_table")
+        self.assertGreater(table[2], table[3])
+        chairs = dining_chairs(table)
+        self.assertEqual(len(chairs), 8)
+        self.assertEqual(sum(1 for c in chairs if c[1] < table[1]), 3)
+        self.assertEqual(sum(1 for c in chairs if c[1] > table[1] + table[3]), 3)
+        self.assertEqual(sum(1 for c in chairs if c[0] < table[0]), 1)
+        self.assertEqual(len(dining_chair_turns(table)), 8)
+        self.assertEqual(len(dining_chair_turns([0, 0, 3.5, 7.5])), 8)
+        self.assertEqual(dining_chairs([0, 0, 3.5, 7.5])[0], [-1.8, 0, 1.5, 1.5])
+
+    def test_dining_keeps_eight_seats_on_the_privacy_wall_side_and_frees_the_living_room(self):
+        floor = self.layout["floors"][1]
+        rooms = {r["id"]: r for r in floor["rooms"]}
+        items = {i["id"]: i for i in floor["furniture"]}
+        chairs = dining_chairs(items["dining_table"]["rect"])
+        self.assertEqual(len(chairs), 8)
+        self.assertTrue(all(contains(rooms["dining"]["rect"], chair) for chair in chairs))
+        self.assertLessEqual(rooms["dining"]["rect"][1] + rooms["dining"]["rect"][3], items["family_tv"]["rect"][1])
+        self.assertTrue({"conversation_chair", "conversation_table", "garden_reading_chair"}.isdisjoint(items))
+        door = next(o for o in floor["openings"] if o.get("id") == "master_family_door")
+        self.assertTrue(all(overlap(door_inside_approach(rooms["family_living"], door), c) == 0 for c in chairs))
+        stools = [i["rect"] for i in floor["furniture"] if i["kind"] == "stool"]
+        self.assertTrue(all(overlap(stool, chair) == 0 for stool in stools for chair in chairs))
+
+    def test_prayer_corner_is_rotated_into_the_north_east_corner_of_the_east_wall(self):
+        floor = self.layout["floors"][1]
+        rooms = {r["id"]: r for r in floor["rooms"]}
+        items = {i["id"]: i for i in floor["furniture"]}
+        living, prayer, shelf = rooms["family_living"]["rect"], rooms["prayer_alcove"]["rect"], items["prayer_shelf"]
+        self.assertEqual(prayer, [47, 46.5, 6.5, 7])
+        self.assertEqual((prayer[0] + prayer[2], prayer[1]), (living[0] + living[2], living[1]))
+        self.assertEqual((shelf["back_edge"], shelf["rect"][0] + shelf["rect"][2]), ("right", living[0] + living[2]))
+        window = next(o for o in floor["openings"] if o.get("id") == "living_side_window")
+        self.assertEqual(window["start"] + window["width"] / 2, prayer[1] + prayer[3] / 2)
+        self.assertGreaterEqual(window["sill"], 3.5)
+        self.assertTrue(window["start"] <= shelf["rect"][1] and shelf["rect"][1] + shelf["rect"][3] <= window["start"] + window["width"])
+        window["start"] = 52
+        self.assertTrue(any("directly behind the prayer corner" in e for e in self.errors()))
+
+    def test_garden_slider_is_left_of_the_kitchen_and_its_approach_is_clear(self):
+        floor = self.layout["floors"][1]
+        rooms = {r["id"]: r for r in floor["rooms"]}
+        slider = next(o for o in floor["openings"] if o.get("id") == "family_garden_exit")
+        self.assertLess(slider["start"] + slider["width"], rooms["kitchen"]["rect"][0])
+        approach = door_inside_approach(rooms["family_living"], slider)
+        self.assertTrue(all(overlap(approach, i["rect"]) == 0 for i in floor["furniture"]))
+
+    def test_living_tv_is_on_the_west_wall_with_the_sofa_facing_it_from_a_proper_distance(self):
+        floor = self.layout["floors"][1]
+        items = {i["id"]: i for i in floor["furniture"]}
+        rooms = {r["id"]: r for r in floor["rooms"]}
+        living, tv, sofa = rooms["family_living"]["rect"], items["family_tv"], items["family_sofa"]
+        self.assertTrue(tv["wooden_cabinet"])
+        self.assertEqual((tv["back_edge"], tv["rect"][0]), ("left", living[0]))
+        self.assertEqual(sofa["back_edge"], "right")
+        self.assertGreaterEqual(sofa["rect"][0] - tv["rect"][0] - tv["rect"][2], 8)
+        self.assertGreaterEqual(rooms["kitchen"]["rect"][0] - sofa["rect"][0] - sofa["rect"][2], 3)
+        coffee = items["family_coffee_table"]["rect"]
+        self.assertTrue(tv["rect"][0] + tv["rect"][2] < coffee[0] and coffee[0] + coffee[2] < sofa["rect"][0])
+        door = next(o for o in floor["openings"] if o.get("id") == "master_family_door")
+        self.assertLessEqual(door["start"] + door["width"], tv["rect"][1])
+        sofa["rect"][0] = tv["rect"][0] + tv["rect"][2] + 5
+        self.assertTrue(any("at least 8 ft away" in e for e in self.errors()))
+        self.setUp()
+        floor = self.layout["floors"][1]
+        next(i for i in floor["furniture"] if i["id"] == "family_tv")["back_edge"] = "right"
+        self.assertTrue(any("west-wall wooden cabinet" in e for e in self.errors()))
+
     def test_centred_master_sliding_window_and_bed_leave_both_doors_and_garden_access_clear(self):
         floor = self.layout["floors"][1]
         room = next(r for r in floor["rooms"] if r["id"] == "master_bedroom")
         opening = next(o for o in floor["openings"] if o.get("id") == "master_side_window")
-        self.assertEqual((opening["start"], opening["width"], opening["height"]), (60.5, 9, 7))
+        self.assertEqual((opening["start"], opening["width"], opening["height"], opening["sill"]), (60.5, 9, 3, 4.5))
         self.assertEqual(opening["operation"], "horizontal_sliding_intent")
         self.assertEqual(opening["start"] + opening["width"] / 2, room["rect"][1] + room["rect"][3] / 2)
         for door in floor["openings"]:
@@ -697,20 +882,6 @@ class LayoutTests(unittest.TestCase):
                 self.assertTrue(all(overlap(approach, item["rect"]) == 0 for item in floor["furniture"]))
         opening["start"] += .5
         self.assertTrue(any("centred operable window" in e for e in self.errors()))
-
-    def test_living_tv_has_a_north_wooden_cabinet_and_does_not_obscure_the_centred_window(self):
-        floor = self.layout["floors"][1]
-        items = {i["id"]: i for i in floor["furniture"]}
-        room = next(r for r in floor["rooms"] if r["id"] == "family_living")
-        opening = next(o for o in floor["openings"] if o.get("id") == "living_side_window")
-        self.assertEqual((opening["start"], opening["width"], opening["sections"]), (55, 10, 3))
-        self.assertEqual(opening["start"] + opening["width"] / 2, room["rect"][1] + room["rect"][3] / 2)
-        self.assertTrue(items["family_tv"]["wooden_cabinet"])
-        self.assertEqual((items["family_tv"]["rect"][1], items["family_tv"]["back_edge"]), (room["rect"][1], "front"))
-        self.assertEqual(items["family_sofa"]["back_edge"], "back")
-        items["family_tv"]["rect"] = [51.5, 56.5, 2, 6.5]
-        items["family_tv"]["back_edge"] = "right"
-        self.assertTrue(any("must not obstruct" in e for e in self.errors()))
 
     def test_child_one_front_left_suite_has_a_side_window_and_keeps_private_connections(self):
         floor = self.layout["floors"][2]
@@ -761,21 +932,21 @@ class LayoutTests(unittest.TestCase):
 
     def test_master_door_approach_and_bed_direction_cannot_be_blocked(self):
         floor = self.layout["floors"][1]
-        floor["furniture"].append({"id": "blocking_chest", "room": "master_bedroom", "kind": "table", "rect": [23, 57, 2, 2]})
+        floor["furniture"].append({"id": "blocking_chest", "room": "master_bedroom", "kind": "table", "rect": [19, 57, 2, 2]})
         self.assertTrue(any("furniture-free 3 ft approaches" in e for e in self.errors()))
         self.setUp()
         floor = self.layout["floors"][1]
         bed = next(i for i in floor["furniture"] if i["id"] == "master_bed")
-        bed["rect"][0], bed["back_edge"] = 4.5, "left"
+        bed["rect"][0], bed["back_edge"] = 14.7, "right"
         for table in (i for i in floor["furniture"] if i.get("bed_id") == "master_bed"):
-            table["rect"][0], table["back_edge"] = 4.5, "left"
-        self.assertTrue(any("facing the west window" in e for e in self.errors()))
+            table["rect"][0], table["back_edge"] = 19.95, "right"
+        self.assertTrue(any("opposite the living-room TV wall" in e for e in self.errors()))
 
     def test_facade_tiles_each_outer_wall_and_hosts_every_exterior_opening(self):
         spec = self.layout["exterior"]
         for floor in self.layout["floors"][1:3]:
             openings = facade_openings(floor, self.layout)
-            self.assertEqual(len(openings), 11, floor["id"])
+            self.assertEqual(len(openings), 12 if floor["id"] == "ground" else 11, floor["id"])
             self.assertEqual(sum(1 for o in openings if o["kind"] == "door"), 1 if floor["id"] == "ground" else 0)
             pieces = facade_pieces(floor, self.layout, 0, 2 * spec["storey_height"])
             for name, edge in facade_edges(floor, self.layout["wall_thickness"]).items():
@@ -1021,31 +1192,44 @@ class LayoutTests(unittest.TestCase):
         wc["rect"][1] += .5
         self.assertTrue(any("WC must back onto a real bathroom wall" in e for e in self.errors()))
 
-    def test_refrigerator_cannot_return_to_the_open_kitchen(self):
+    def test_refrigerator_cannot_return_into_the_pantry(self):
         fridge = next(i for i in self.layout["floors"][1]["furniture"] if i["id"] == "kitchen_fridge")
-        fridge["room"], fridge["rect"] = "kitchen", [35.5, 56, 3, 2.5]
-        self.assertTrue(any("Refrigerator must be inside" in e for e in self.errors()))
+        fridge["room"], fridge["rect"] = "pantry", [49, 58.5, 2.5, 3]
+        self.assertTrue(any("Refrigerator must be in the kitchen" in e for e in self.errors()))
 
-    def test_privacy_wall_is_public_boundary_not_internal_family_partition(self):
+    def test_horizontal_gallery_privacy_wall_is_restored_without_a_prayer_return(self):
         floor = self.layout["floors"][1]
         graph = access_graph(floor)
-        self.assertNotIn("dining", graph["cross_passage"])
-        self.assertTrue({"dining", "kitchen"} <= graph["family_living"])
-        floor["partitions"] = []
-        self.assertTrue(any("opaque dining boundary" in e for e in self.errors()))
+        self.assertEqual({p["id"] for p in floor["partitions"]}, {"public_dining_screen", "public_family_screen"})
+        self.assertTrue(all(p["axis"] == "x" and p["role"] == "privacy_wall" and p["at"] == 46.25 for p in floor["partitions"]))
+        self.assertTrue({"dining", "kitchen", "prayer_alcove"} <= graph["family_living"])
+        self.assertTrue(partition_between(floor, *(next(r for r in floor["rooms"] if r["id"] == rid)
+                                                    for rid in ["cross_passage", "family_living"])))
+        floor["partitions"].append({"id": "prayer_return", "role": "privacy_wall", "axis": "y", "at": 46.25,
+                                    "start": 46.25, "end": 50.75, "intended_height": 9.5})
+        self.assertTrue(any("prayer corner stays open" in e for e in self.errors()))
 
-    def test_restored_guest_room_wall_also_protects_entrance_privacy(self):
+    def test_removing_the_gallery_privacy_wall_is_rejected(self):
         floor = self.layout["floors"][1]
-        floor["partitions"] = [p for p in floor["partitions"] if p["id"] != "family_entry_return"]
-        self.assertEqual(self.errors(), [])
+        floor["partitions"] = []
+        self.assertTrue(any("horizontal privacy wall" in e for e in self.errors()))
 
-    def test_family_entry_is_wide_doorless_and_clear_of_furniture(self):
+    def test_privacy_wall_blocks_sampled_gallery_sightlines_into_the_family_zone(self):
         floor = self.layout["floors"][1]
         entry = next(o for o in floor["openings"] if o.get("id") == "family_entry")
-        self.assertEqual(entry["kind"], "open_archway")
-        self.assertEqual(entry["width"], 6.5)
-        chair = next(i for i in floor["furniture"] if i["id"] == "garden_reading_chair")
-        chair["rect"] = [entry["start"], entry["at"] + .25, 3, 3]
+        self.assertEqual((entry["kind"], entry["width"], entry["start"]), ("open_archway", 6.5, 39))
+        items = {i["id"]: i["rect"] for i in floor["furniture"]}
+        for observer in floor["privacy_observers"]:
+            for key in ["family_sofa", "family_coffee_table", "island", "dining_table", "prayer_shelf"]:
+                x, y, w, d = items[key]
+                for corner in [[x, y], [x + w, y], [x, y + d], [x + w, y + d]]:
+                    self.assertTrue(sightline_blocked(floor, observer, corner, self.layout["wall_thickness"]))
+
+    def test_family_entry_approach_must_stay_clear_of_furniture(self):
+        floor = self.layout["floors"][1]
+        entry_start = next(o["start"] for o in floor["openings"] if o.get("id") == "family_entry")
+        chair = next(i for i in floor["furniture"] if i["id"] == "family_coffee_table")
+        chair["rect"] = [entry_start, 46.5, 3, 3]
         self.assertTrue(any("entry approach must remain free" in e for e in self.errors()))
 
     def test_garden_entry_path_is_aligned_with_the_only_front_door(self):

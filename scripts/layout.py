@@ -96,6 +96,19 @@ def room_footprints(floor, room):
     return subtract_rectangles(room["rect"], holes)
 
 
+def room_contains_room(floor, parent, child):
+    by_id = {room["id"]: room for room in floor["rooms"]}
+    visited = {child["id"]}
+    while child.get("parent") in by_id:
+        child = by_id[child["parent"]]
+        if child["id"] == parent["id"]:
+            return True
+        if child["id"] in visited:
+            break
+        visited.add(child["id"])
+    return False
+
+
 def room_area(floor, room):
     return sum(r[2] * r[3] for r in room_footprints(floor, room))
 
@@ -170,10 +183,23 @@ def stair_profile(floor):
 
 
 def dining_chairs(rect):
+    """Eight seats: three per long side and one at each end, whichever way the table runs."""
     x, y, w, d = rect
+    if w > d:
+        seats = [[x + (w - 1.5) * t, y - 1.8, 1.5, 1.5] for t in [0, 0.5, 1]]
+        seats += [[x + (w - 1.5) * t, y + d + 0.3, 1.5, 1.5] for t in [0, 0.5, 1]]
+        return seats + [[x - 1.8, y + d / 2 - 0.75, 1.5, 1.5], [x + w + 0.3, y + d / 2 - 0.75, 1.5, 1.5]]
     seats = [[x - 1.8, y + (d - 1.5) * t, 1.5, 1.5] for t in [0, 0.5, 1]]
     seats += [[x + w + 0.3, y + (d - 1.5) * t, 1.5, 1.5] for t in [0, 0.5, 1]]
     return seats + [[x + w / 2 - 0.75, y - 1.8, 1.5, 1.5], [x + w / 2 - 0.75, y + d + 0.3, 1.5, 1.5]]
+
+
+def dining_chair_turns(rect):
+    """Z rotation of each dining_chairs() seat so it faces the table (left -90, right +90, top 0, bottom 180 degrees)."""
+    quarter = math.pi / 2
+    if rect[2] > rect[3]:
+        return [0] * 3 + [math.pi] * 3 + [-quarter, quarter]
+    return [-quarter] * 3 + [quarter] * 3 + [0, math.pi]
 
 
 def wall_partition(floor, wall):
@@ -689,9 +715,10 @@ def validate(spec, layout):
                 if not parent or (not contains(parent["rect"], a["rect"]) and not boundary_cutout):
                     errors.append(f"{fid}/{a['id']}: invalid nested zone")
             for b in rs[i + 1:]:
-                intended = a.get("parent") == b["id"] or b.get("parent") == a["id"]
+                intended = room_contains_room(f, a, b) or room_contains_room(f, b, a)
                 shared_route = a["kind"] == b["kind"] == "circulation"
-                if overlap(a["rect"], b["rect"]) > 1e-6 and not (intended or shared_route):
+                if not (intended or shared_route) and any(
+                        overlap(pa, pb) > 1e-6 for pa in room_footprints(f, a) for pb in room_footprints(f, b)):
                     errors.append(f"{fid}: unintended overlap {a['id']} / {b['id']}")
         missing = required.get(fid, set()) - set(room_ids)
         if missing:
@@ -883,29 +910,30 @@ def validate(spec, layout):
             master_links = graph.get("master_bedroom", set()) - {"outside"}
             if ("master_entry" in ground_rooms
                     or master_door is None or master_door["axis"] != "y" or master_door["width"] != 3
-                    or set(master_door["connects"]) != {"master_bedroom", "dining"}
-                    or master_links != {"dining", "master_wardrobe"}
+                    or set(master_door["connects"]) != {"master_bedroom", "family_living"}
+                    or master_links != {"family_living", "master_wardrobe"}
                     or graph.get("master_wardrobe") != {"master_bedroom", "master_bathroom"}
                     or graph.get("master_bathroom") != {"master_wardrobe"}):
                 errors.append("Master bedroom needs one 3 ft family-zone door, no House Gallery entry and private bedroom-dressing-bath access")
             if master_door and master_door["axis"] == "y":
                 bedroom_approach = door_inside_approach(master, master_door)
-                dining_approach = door_inside_approach(ground_rooms["dining"], master_door)
+                living_approach = door_inside_approach(ground_rooms["family_living"], master_door)
                 chairs = [chair for item in ground["furniture"] if item["kind"] == "dining_table" for chair in dining_chairs(item["rect"])]
-                if (not contains(master["rect"], bedroom_approach) or not contains(ground_rooms["dining"]["rect"], dining_approach)
-                        or any(overlap(approach, rect) > 1e-6 for approach in (bedroom_approach, dining_approach)
+                if (not contains(master["rect"], bedroom_approach) or not contains(ground_rooms["family_living"]["rect"], living_approach)
+                        or any(overlap(approach, rect) > 1e-6 for approach in (bedroom_approach, living_approach)
                                for rect in [item["rect"] for item in ground["furniture"]] + chairs)):
-                    errors.append("Master family door needs furniture-free 3 ft approaches inside the bedroom and dining zone")
+                    errors.append("Master family door needs furniture-free 3 ft approaches inside the bedroom and living zone")
                 bed = next((item for item in ground["furniture"] if item["id"] == "master_bed"), None)
-                if bed is None or bed.get("back_edge") != "right":
-                    errors.append("Master bed headboard must be on the solid east wall, facing the west window")
+                if bed is None or bed.get("back_edge") != "left":
+                    errors.append("Master bed headboard must be on the west wall, opposite the living-room TV wall")
             entry_opening = next((o for o in ground["openings"] if o.get("id") == "family_entry"), None)
-            dining_boundaries = [public for public in [entry, gallery] if adjacent(public["rect"], ground_rooms["dining"]["rect"])]
-            if ("dining" in graph["cross_passage"] or not dining_boundaries
-                    or any(not partition_between(ground, public, ground_rooms["dining"]) for public in dining_boundaries)
+            if ("family_living" not in graph["cross_passage"] or "dining" in graph["cross_passage"]
+                    or not partition_between(ground, gallery, ground_rooms["family_living"])
                     or entry_opening is None
                     or entry_opening.get("kind") != "open_archway" or entry_opening["width"] < 6):
-                errors.append("Public gallery needs an opaque dining boundary and wide doorless offset family entry")
+                errors.append("House Gallery needs an opaque horizontal privacy wall with a wide doorless offset family entry")
+            if any(p["axis"] != "x" or p.get("role") != "privacy_wall" for p in ground.get("partitions", [])):
+                errors.append("Only the horizontal gallery privacy wall may partition the family zone; the prayer corner stays open")
             targets = [item for item in ground["furniture"] if item["id"] in
                        {"family_sofa", "family_coffee_table", "prayer_shelf", "dining_table", "island"}]
             observers = ground.get("privacy_observers", [])
@@ -917,9 +945,7 @@ def validate(spec, layout):
                    for ty in [item["rect"][1], item["rect"][1] + item["rect"][3]]):
                 errors.append("Entrance Gallery has an unblocked sightline into the private family furniture")
             if entry_opening:
-                approach = ([entry_opening["start"], entry_opening["at"] + thickness / 2, entry_opening["width"], 8]
-                            if entry_opening["axis"] == "x" else
-                            [entry_opening["at"] + thickness / 2, entry_opening["start"], 3.5, entry_opening["width"]])
+                approach = [entry_opening["start"], entry_opening["at"] + thickness / 2, entry_opening["width"], 8]
                 if any(overlap(approach, item["rect"]) > 1e-6 for item in ground["furniture"]):
                     errors.append("Wide family entry approach must remain free of furniture")
             family_ids = {"family_living", "dining", "kitchen"}
@@ -934,8 +960,8 @@ def validate(spec, layout):
         for rid, oid, width, height, sill, sections in [
                 ("family_toilet", "ground_wc_window", 2, 2, 5, 1),
                 ("master_bathroom", "master_bath_window", 5, 4, 4.5, 2),
-                ("master_bedroom", "master_side_window", 9, 7, 1.5, 3),
-                ("family_living", "living_side_window", 10, 7, 1.5, 3)]:
+                ("master_bedroom", "master_side_window", 9, 3, 4.5, 3),
+                ("family_living", "living_side_window", 6, 4, 3.5, 3)]:
             opening = next((o for o in ground["openings"] if o.get("id") == oid), None)
             room = ground_rooms.get(rid)
             if room is None:
@@ -944,7 +970,8 @@ def validate(spec, layout):
             if (not opening or opening.get("kind") != "window" or opening.get("operable") is not True
                     or set(opening["connects"]) != {rid, "outside"} or opening["axis"] != "y"
                     or (opening["width"], opening.get("height"), opening.get("sill"), opening.get("sections")) != (width, height, sill, sections)
-                    or not math.isclose(opening["start"] + width / 2, room["rect"][1] + room["rect"][3] / 2, abs_tol=1e-6)):
+                    or (rid != "family_living" and not math.isclose(
+                        opening["start"] + width / 2, room["rect"][1] + room["rect"][3] / 2, abs_tol=1e-6))):
                 errors.append(f"{rid}: centred operable window must retain its agreed size, sill and sections")
             elif room["kind"] == "bathroom":
                 if opening.get("privacy_glass") is not True:
@@ -954,18 +981,89 @@ def validate(spec, layout):
         television = next((item for item in ground["furniture"] if item["id"] == "family_tv"), None)
         sofa = next((item for item in ground["furniture"] if item["id"] == "family_sofa"), None)
         living = ground_rooms["family_living"]["rect"]
-        if (not television or not sofa or not television.get("wooden_cabinet") or television.get("back_edge") != "front"
-                or not math.isclose(television["rect"][1], living[1], abs_tol=1e-6)
-                or sofa.get("back_edge") != "back"):
-            errors.append("Living TV needs its north-wall wooden cabinet with the sofa facing north")
-        side_window = next((o for o in ground["openings"] if o.get("id") == "living_side_window"), None)
-        if side_window and television:
-            window_approach = [living[0] + living[2] - 3, side_window["start"], 3, side_window["width"]]
-            if overlap(television["rect"], window_approach) > 1e-6:
-                errors.append("Living TV/cabinet must not obstruct the centred east window")
+        if (not television or not sofa or not television.get("wooden_cabinet") or television.get("back_edge") != "left"
+                or not math.isclose(television["rect"][0], living[0], abs_tol=1e-6)
+                or sofa.get("back_edge") != "right"
+                or sofa["rect"][0] - television["rect"][0] - television["rect"][2] < 8
+                or sofa["rect"][0] + sofa["rect"][2] + 3 > ground_rooms["kitchen"]["rect"][0]
+                or overlap([sofa["rect"][1], 0, sofa["rect"][3], 1],
+                           [television["rect"][1], 0, television["rect"][3], 1]) <= 0):
+            errors.append("Living TV needs its west-wall wooden cabinet with the sofa facing it at least 8 ft away and 3 ft clear of the kitchen")
+        master_room = ground_rooms["master_bedroom"]
+        bath, dressing = ground_rooms["master_bathroom"], ground_rooms["master_wardrobe"]
+        if (not math.isclose(room_area(ground, master_room), 365.5 * .8, abs_tol=1e-6)
+                or not math.isclose(dressing["rect"][0] + dressing["rect"][2], master_room["rect"][0] + master_room["rect"][2], abs_tol=1e-6)
+                or not math.isclose(bath["rect"][0], master_room["rect"][0], abs_tol=1e-6)
+                or not math.isclose(dressing["rect"][0] - bath["rect"][0] - bath["rect"][2], thickness, abs_tol=1e-6)):
+            errors.append("Master bedroom must be 20% smaller than Study 013, with bath and dressing aligned to its length")
+        if room_area(ground, ground_rooms["family_living"]) < 343.5 * 1.3:
+            errors.append("Open family living must gain at least 30% net area")
+        kitchen, pantry, dining = ground_rooms["kitchen"], ground_rooms["pantry"], ground_rooms["dining"]
+        prayer_room = ground_rooms.get("prayer_alcove")
+        pantry_door = next((o for o in ground["openings"] if set(o["connects"]) == {"pantry", "kitchen"} and o.get("kind") != "window"), None)
+        if (pantry.get("open") or pantry.get("parent") != "kitchen" or not pantry.get("exclude_from_parent")
+                or room_area(ground, pantry) < 30 or pantry_door is None
+                or not math.isclose(pantry["rect"][0] + pantry["rect"][2], living[0] + living[2], abs_tol=1e-6)
+                or not contains(pantry["rect"], door_inside_approach(pantry, pantry_door))
+                or any(overlap(door_inside_approach(pantry, pantry_door), item["rect"]) > 1e-6
+                       for item in ground["furniture"])):
+            errors.append("Kitchen needs a dedicated enclosed walk-in pantry (at least 30 sq ft) on the east wall with a clear door approach")
+        if (room_area(ground, kitchen) < 168
+                or not math.isclose(kitchen["rect"][0] + kitchen["rect"][2], living[0] + living[2], abs_tol=1e-6)
+                or kitchen["rect"][3] <= kitchen["rect"][2]):
+            errors.append("Kitchen must stay on the east wall, deeper than wide, with at least its previous 168 sq ft net")
+        if (dining["rect"][0] + dining["rect"][2] > kitchen["rect"][0]
+                or not television or dining["rect"][1] + dining["rect"][3] > television["rect"][1]):
+            errors.append("Dining must sit in the north strip beside the privacy wall, clear of the kitchen and the TV lounge")
+        if prayer_room and (prayer_room["rect"] != [47, 46.5, 6.5, 7]):
+            errors.append("Prayer corner must be rotated into the north-east corner of the east wall")
+        shelf = next((item for item in ground["furniture"] if item["id"] == "prayer_shelf"), None)
+        if shelf is None or shelf.get("back_edge") != "right" or not math.isclose(shelf["rect"][0] + shelf["rect"][2], living[0] + living[2], abs_tol=1e-6):
+            errors.append("Prayer shelf must stand against the east wall")
+        living_window = next((o for o in ground["openings"] if o.get("id") == "living_side_window"), None)
+        if prayer_room and (not living_window or living_window["sill"] < 3.5 or not shelf
+                            or not math.isclose(living_window["start"] + living_window["width"] / 2,
+                                                prayer_room["rect"][1] + prayer_room["rect"][3] / 2, abs_tol=1e-6)
+                            or shelf["rect"][1] < living_window["start"]
+                            or shelf["rect"][1] + shelf["rect"][3] > living_window["start"] + living_window["width"]):
+            errors.append("East window must sit directly behind the prayer corner, centred on it and above the shelf (sill at least 3.5 ft)")
         fridge = [item for item in fixtures if item["id"] == "kitchen_fridge"]
-        if len(fridge) != 1 or fridge[0]["room"] != "pantry":
-            errors.append("Refrigerator must be inside the enlarged pantry, not kitchen")
+        if len(fridge) != 1 or fridge[0]["room"] != "kitchen":
+            errors.append("Refrigerator must be in the kitchen, outside the pantry")
+        else:
+            near = [fridge[0]["rect"][0] - 3, fridge[0]["rect"][1] - 3, fridge[0]["rect"][2] + 6, fridge[0]["rect"][3] + 6]
+            kx, ky, kw, kd = kitchen["rect"]
+            if (any(overlap(near, [cx - .01, cy - .01, .02, .02]) > 0 for cx in (kx, kx + kw) for cy in (ky, ky + kd))
+                    or overlap(fridge[0]["rect"], pantry["rect"]) > 0):
+                errors.append("Refrigerator must be accessible, outside the pantry and not in a kitchen corner")
+        hob = next((item for item in ground["furniture"] if item.get("appliance") == "cooktop_with_hood"), None)
+        kx, ky, kw, kd = kitchen["rect"]
+        wall_counters = [item for item in ground["furniture"] if item["room"] == "kitchen" and item["kind"] == "counter"
+                         and item is not hob and item["id"] != "island"]
+        rear = [c["rect"] for c in wall_counters if math.isclose(c["rect"][1] + c["rect"][3], ky + kd, abs_tol=1e-6)]
+        east = [c["rect"] for c in wall_counters if math.isclose(c["rect"][0] + c["rect"][2], kx + kw, abs_tol=1e-6)]
+        rear_window = next((o for o in ground["openings"] if o.get("id") == "kitchen_counter_window"), None)
+        east_window = next((o for o in ground["openings"] if o.get("id") == "kitchen_east_counter_window"), None)
+
+        def wraps(window, axis, runs, along):
+            return (window is not None and window["axis"] == axis and window.get("kind") == "window"
+                    and window.get("operable") is True and window["sill"] >= 3 and window.get("sections", 0) >= 2
+                    and set(window["connects"]) == {"kitchen", "outside"} and bool(runs)
+                    and window["start"] <= min(r[along] for r in runs) + .5
+                    and window["start"] + window["width"] >= max(r[along] + r[along + 2] for r in runs) - .5)
+
+        if (not hob or not wraps(rear_window, "x", [r for r in rear if r[0] >= hob["rect"][0] + hob["rect"][2] - 1e-6], 0)
+                or rear_window["width"] < 6 or rear_window["start"] < hob["rect"][0] + hob["rect"][2] - 1e-6
+                or not wraps(east_window, "y", east, 1)):
+            errors.append("Kitchen needs operable wrap-around windows (3 ft+ sill) above the whole rear and east counter runs, clear of the cooktop hood")
+        master_slider = next((o for o in ground["openings"] if o["connects"] == ["master_bedroom", "outside"] and o.get("kind") == "slider"), None)
+        living_slider = next((o for o in ground["openings"] if o.get("id") == "family_garden_exit"), None)
+        if (not master_slider or not living_slider or living_slider["axis"] != "x"
+                or (living_slider["width"], living_slider.get("height")) != (master_slider["width"], master_slider.get("height"))):
+            errors.append("Living-room garden slider must be as big as the master bedroom slider")
+        pantry_area = room_area(ground, pantry)
+        if not 50 <= pantry_area <= 70:
+            errors.append("Pantry should stay about 6 x 10 ft (50-70 sq ft)")
         if "prayer_alcove" in ground_rooms:
             prayer = ground_rooms["prayer_alcove"]["rect"]
             if any(adjacent(prayer, r["rect"]) or overlap(prayer, r["rect"]) > 0 for r in ground["rooms"] if r["kind"] == "bathroom"):

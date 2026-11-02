@@ -122,7 +122,7 @@ describe('the 360 degree exterior', () => {
     gltf.scene.updateMatrixWorld(true)
     const panes: Mesh[] = []
     gltf.scene.traverse((node) => { if (node instanceof Mesh && node.userData.role === 'exterior_glazing') panes.push(node) })
-    const ids = ['ground_wc_window', 'master_bath_window', 'master_side_window', 'living_side_window',
+    const ids = ['ground_wc_window', 'master_bath_window', 'master_side_window', 'living_side_window', 'kitchen_east_counter_window',
       'child1_side_window', 'lounge_west_window', 'lounge_east_window']
     for (const id of ids) {
       const floor = layout.floors.find((f: { openings: { id?: string }[] }) => f.openings.some((o) => o.id === id))

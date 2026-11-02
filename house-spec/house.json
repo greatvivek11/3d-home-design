@@ -4,7 +4,7 @@
     "version": 2,
     "status": "user_approved_brief",
     "brief_approved_on": "2026-10-17",
-    "latest_brief_revision_on": "2026-10-18",
+    "latest_brief_revision_on": "2026-11-02",
     "layout_approved": false,
     "input_units": "ft",
     "internal_units": "m",
@@ -26,7 +26,7 @@
     "protect": ["five_bedrooms", "usable_gardens", "basement_parking", "construction_quality"],
     "defer_or_cut_first": ["double_height_space", "premium_finishes"],
     "space_planning_basis": "Furniture, storage, seating and clear movement; no approved room dimensions",
-    "conflict_policy": "Preserve the spacious Study 011 house and room sizes. The user explicitly approved a 70 x 116 ft / 8,120 sq ft illustrative plot to enlarge whole front/rear yard bands by 20%/40%. Retain front-lawn lift, internal galleries and no external stair-side link. Report conflicts rather than silently growing the plot further."
+    "conflict_policy": "Preserve the spacious house and 70 x 116 ft / 8,120 sq ft illustrative plot. Study 015 reduces the master sleeping area by 20% (bath and dressing trimmed to its length) for larger open living, keeping dining, the prayer position and other floors. The horizontal House Gallery privacy wall is mandatory. Retain front-lawn lift, internal galleries and no external stair-side link. Report conflicts rather than silently growing the plot further."
   },
   "site": {
     "user_allowed_study_cap_ft": {"width": 70, "depth": 116},
@@ -111,11 +111,13 @@
     "vastu": {"preference": "where_practical_not_mandatory", "specific_rules": null},
     "layout_relationships": [
       "Receiving zone near front entrance and formal front tea terrace",
-      "Receiving and family zones connected, but no direct view into family living or kitchen",
-      "Build a public/family privacy boundary behind the entrance galleries and in front of dining; wide offset family opening at the former prayer position, no door, optional curtain. No internal walls between living, dining and kitchen except pantry",
+      "Receiving and family zones connected, but no direct view into family living or kitchen from the Entrance Gallery",
+      "Keep the horizontal public/family privacy wall between House Gallery and the family zone, with one wide doorless offset archway at the former prayer-side position and optional curtain. No other partitions between living, dining, kitchen and prayer: the small return that cut off the prayer corner is removed",
       "Kitchen faces backyard with a garden view; family living retains garden access",
       "Dining moves inward and may be smaller while retaining eight seats and usable clearances",
-      "Enlarge the pantry adjacent to the kitchen and place the refrigerator inside it, retaining appliance ventilation and usable access",
+      "Place dining on the privacy-wall side of the family zone with its table running horizontally, parallel to the gallery wall, to free the living room. Make the kitchen a wide east-wall room (still deeper than wide) with an island, a free-standing refrigerator that is outside the pantry and not in a corner, and wide operable windows (3 ft+ sill) above the whole rear and east counter runs, wrapping the north-east corner into the backyard; the living garden slider stays left and matches the master slider (10 x 8 ft)",
+      "Provide a dedicated enclosed walk-in pantry room of about 6 x 10 ft against the east perimeter for household groceries, cutlery and kitchen stores, with its own door from the kitchen; review ventilation, capacity and appliance clearances",
+      "Reduce master sleeping area by approximately 20% and trim the master bath and dressing so together they match the bedroom length; use the recovered area to maximise family living on the west side",
       "Children reach backyard without crossing master bedroom or office",
       "Master bedroom has private direct garden access",
       "Covered verandas provide garden connection, rain protection and shade",
@@ -134,8 +136,8 @@
       "Master retains one wall-backed toilet cubicle, bathtub, separate shower and one basin; favor a larger walk-in closet over an oversized bathroom",
       "All five bed headboards belong against solid walls, not glazing or the middle of rooms; provide two usable bedside tables with lamps for every bed",
       "Add small single high-sill privacy glazing to the ground common WC and normal-size double privacy glazing to the master bath; retain mechanical extraction intent",
-      "Centre a large dedicated sliding window in the master west wall, retaining rear garden slider, solid east-wall headboard and both clear bedroom doors",
-      "Centre a large three-section sliding east window in family living; keep it clear and place TV on a dedicated wooden cabinet at the north privacy wall, with sofa facing north and pantry/prayer/entrance/garden routes clear",
+      "Place a large dedicated sliding window high in the master west wall (4.5 ft sill) above a west-wall headboard, retaining the rear garden slider and both clear bedroom doors; the bed sits on the wall opposite the living-room TV",
+      "Place the living TV on its wooden cabinet against the west wall with the sofa at least 8 ft away facing it, maximising the west side for living; rotate the open prayer corner into the north-east corner of the east wall, with its shelf against that wall and a high east window directly behind it",
       "Add big operable sliding windows on both side walls of the unified upstairs lounge; the east window must not cut into the common WC",
       "Move the entire Child 1 suite front-left and office front-right without changing room sizes or lounge area; Child 1 gains a west side window like Child 3 and keeps its front balcony slider. Office retains its front balcony slider only, with the loss of side glazing explicitly accepted",
       "Retain operable side-wall windows to drawing and family living; coordinate all glazing with furniture, shading, privacy and ramp/exhaust locations",
@@ -220,7 +222,7 @@
           "cooking": "Vegetarian Indian cooking including frying/tadka",
           "equipment": ["island_breakfast_counter", "dishwasher", "induction", "lpg_cooking", "effective_stove_extraction"]
         },
-        {"id": "pantry", "type": "food_storage_room", "required": true, "adjacent_to": "kitchen", "equipment": ["refrigerator", "food_shelving"], "direction": "Slightly enlarge for refrigerator, door operation and ventilation"},
+        {"id": "pantry", "type": "walk_in_pantry_room", "required": true, "adjacent_to": "kitchen", "equipment": ["food_shelving", "crockery_and_cutlery_storage"], "direction": "Dedicated enclosed walk-in room on the east wall with its own door from the kitchen, for daily groceries, cutlery and kitchen stores; the refrigerator stays outside it in the kitchen. Capacity, ventilation and door operation need review"},
         {
           "id": "master_bedroom",
           "type": "bedroom",

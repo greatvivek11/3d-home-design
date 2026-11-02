@@ -1,18 +1,18 @@
 {
   "schema_version": 2,
-  "study_id": "study-013",
-  "revision": "1f6204c4cb0e",
+  "study_id": "study-015",
+  "revision": "49ab192d4bd1",
   "visual_quality": "refined-01",
-  "layout_sha256": "100e8c6002cf65d29fbe80e97f97eee4d64374e0511e07d04d5003109873b05e",
-  "brief_sha256": "0b67fd2eaffdd3d3622698cfa0b11fe1a33e54d6ec1b443f495a1aacc0e9261f",
+  "layout_sha256": "06e68c534a3c71bd8000c6988757654e957de89231816d4886e24465de07d336",
+  "brief_sha256": "1f31f776b007cde5620146bc2d73af957660aecb96dffc74b52da6788c87422f",
   "compression": "lossless_meshopt",
-  "uncompressed_model_bytes": 32941880,
+  "uncompressed_model_bytes": 35590812,
   "status": "unapproved_concept",
-  "model_bytes": 23308272,
+  "model_bytes": 25094624,
   "mesh_counts": {
     "site": 74,
     "basement": 259,
-    "ground": 325,
+    "ground": 353,
     "first": 310,
     "roof": 79
   },
@@ -722,25 +722,25 @@
         },
         {
           "id": "dining",
-          "name": "Open eight-seat dining / screened from House Gallery",
+          "name": "Open eight-seat dining beside the privacy wall",
           "label": "Dining",
           "kind": "living",
           "width_ft": 12,
-          "depth_ft": 13,
-          "area_sq_ft": 156.0,
+          "depth_ft": 9.5,
+          "area_sq_ft": 114.0,
           "footprints": [
             {
-              "x": 8.077200000000001,
-              "z": -18.1356,
+              "x": 7.9248,
+              "z": -17.2212,
               "width": 3.6576000000000004,
-              "depth": 3.9624
+              "depth": 2.8956
             }
           ],
           "bounds": {
-            "x": 8.077200000000001,
-            "z": -18.1356,
+            "x": 7.9248,
+            "z": -17.2212,
             "width": 3.6576000000000004,
-            "depth": 3.9624
+            "depth": 2.8956
           }
         },
         {
@@ -768,82 +768,136 @@
         },
         {
           "id": "family_living",
-          "name": "Open rear family living",
+          "name": "Expanded open family living / west-side TV lounge and conversation seating",
           "label": "Family living",
           "kind": "living",
-          "width_ft": 14.5,
+          "width_ft": 31.3,
           "depth_ft": 27,
-          "area_sq_ft": 343.5,
+          "area_sq_ft": 467.85,
           "footprints": [
             {
-              "x": 11.8872,
-              "z": -19.9644,
-              "width": 1.8288000000000002,
-              "depth": 5.7912
+              "x": 6.76656,
+              "z": -14.325600000000001,
+              "width": 1.1582400000000004,
+              "depth": 0.1524
             },
             {
-              "x": 13.716000000000001,
-              "z": -19.9644,
-              "width": 2.5908,
-              "depth": 5.7912
+              "x": 6.76656,
+              "z": -16.4592,
+              "width": 1.1582400000000004,
+              "depth": 2.1336
             },
             {
-              "x": 13.716000000000001,
+              "x": 6.76656,
+              "z": -17.2212,
+              "width": 1.1582400000000004,
+              "depth": 0.762
+            },
+            {
+              "x": 6.76656,
               "z": -22.402800000000003,
-              "width": 2.5908,
-              "depth": 2.4384
+              "width": 1.1582400000000004,
+              "depth": 5.1816
+            },
+            {
+              "x": 7.9248,
+              "z": -14.325600000000001,
+              "width": 3.6576000000000004,
+              "depth": 0.1524
+            },
+            {
+              "x": 7.9248,
+              "z": -22.402800000000003,
+              "width": 3.6576000000000004,
+              "depth": 5.1816
+            },
+            {
+              "x": 11.5824,
+              "z": -14.325600000000001,
+              "width": 0.6096,
+              "depth": 0.1524
+            },
+            {
+              "x": 11.5824,
+              "z": -16.4592,
+              "width": 0.6096,
+              "depth": 2.1336
+            },
+            {
+              "x": 11.5824,
+              "z": -17.2212,
+              "width": 0.6096,
+              "depth": 0.762
+            },
+            {
+              "x": 11.5824,
+              "z": -22.402800000000003,
+              "width": 0.6096,
+              "depth": 5.1816
+            },
+            {
+              "x": 12.192,
+              "z": -14.325600000000001,
+              "width": 4.1148,
+              "depth": 0.1524
+            },
+            {
+              "x": 12.192,
+              "z": -16.4592,
+              "width": 4.1148,
+              "depth": 2.1336
             }
           ],
           "bounds": {
-            "x": 11.8872,
+            "x": 6.76656,
             "z": -22.402800000000003,
-            "width": 4.4196,
+            "width": 9.54024,
             "depth": 8.2296
           }
         },
         {
           "id": "prayer_alcove",
-          "name": "Open prayer corner / clear of entry and WCs",
+          "name": "Open prayer corner on the east wall / north-east corner / clear of entry and WCs",
           "label": "Prayer",
           "kind": "prayer",
-          "width_ft": 7,
-          "depth_ft": 6.5,
+          "width_ft": 6.5,
+          "depth_ft": 7,
           "area_sq_ft": 45.5,
           "footprints": [
             {
-              "x": 14.173200000000001,
-              "z": -17.2212,
-              "width": 2.1336,
-              "depth": 1.9812
+              "x": 14.325600000000001,
+              "z": -16.3068,
+              "width": 1.9812,
+              "depth": 2.1336
             }
           ],
           "bounds": {
-            "x": 14.173200000000001,
-            "z": -17.2212,
-            "width": 2.1336,
-            "depth": 1.9812
+            "x": 14.325600000000001,
+            "z": -16.3068,
+            "width": 1.9812,
+            "depth": 2.1336
           }
         },
         {
           "id": "master_bedroom",
-          "name": "Rear master / family-zone door / private garden access",
+          "name": "20% smaller rear master / private garden access",
           "label": "Master bedroom",
           "kind": "bedroom",
-          "width_ft": 21.5,
+          "width_ft": 17.2,
           "depth_ft": 17,
-          "area_sq_ft": 365.5,
+          "area_sq_ft": 292.4,
           "footprints": [
             {
               "x": 1.3716000000000002,
               "z": -22.402800000000003,
-              "width": 6.5532,
+              "width": 5.24256,
               "depth": 5.1816
             }
           ],
           "bounds": {
             "x": 1.3716000000000002,
             "z": -22.402800000000003,
-            "width": 6.5532,
+            "width": 5.24256,
             "depth": 5.1816
           }
         },
@@ -852,91 +906,103 @@
           "name": "Private master walk-in dressing / bathroom access",
           "label": "Master dressing",
           "kind": "storage",
-          "width_ft": 9,
+          "width_ft": 7.5,
           "depth_ft": 9.5,
-          "area_sq_ft": 85.5,
+          "area_sq_ft": 71.25,
           "footprints": [
             {
-              "x": 5.1816,
+              "x": 4.32816,
               "z": -17.0688,
-              "width": 2.7432000000000003,
+              "width": 2.286,
               "depth": 2.8956
             }
           ],
           "bounds": {
-            "x": 5.1816,
+            "x": 4.32816,
             "z": -17.0688,
-            "width": 2.7432000000000003,
+            "width": 2.286,
             "depth": 2.8956
           }
         },
         {
           "id": "master_bathroom",
-          "name": "Extended master bath / access through private dressing",
+          "name": "Master bath aligned to bedroom length / access through private dressing",
           "label": "Master bath",
           "kind": "bathroom",
-          "width_ft": 12,
+          "width_ft": 9.2,
           "depth_ft": 8.5,
-          "area_sq_ft": 102.0,
+          "area_sq_ft": 78.19999999999999,
           "footprints": [
             {
               "x": 1.3716000000000002,
               "z": -17.0688,
-              "width": 3.6576000000000004,
+              "width": 2.80416,
               "depth": 2.5908
             }
           ],
           "bounds": {
             "x": 1.3716000000000002,
             "z": -17.0688,
-            "width": 3.6576000000000004,
+            "width": 2.80416,
             "depth": 2.5908
           }
         },
         {
           "id": "kitchen",
-          "name": "Open garden kitchen / adjacent pantry refrigerator",
+          "name": "Wide garden kitchen along the east wall / dedicated pantry room / free-standing refrigerator",
           "label": "Kitchen",
           "kind": "kitchen",
-          "width_ft": 12,
-          "depth_ft": 14,
-          "area_sq_ft": 168.0,
+          "width_ft": 13.5,
+          "depth_ft": 19.5,
+          "area_sq_ft": 203.25,
           "footprints": [
             {
-              "x": 8.077200000000001,
+              "x": 12.192,
+              "z": -19.5072,
+              "width": 2.286,
+              "depth": 3.048
+            },
+            {
+              "x": 12.192,
               "z": -22.402800000000003,
-              "width": 3.6576000000000004,
-              "depth": 4.2672
+              "width": 2.286,
+              "depth": 2.8956
+            },
+            {
+              "x": 14.478000000000002,
+              "z": -22.402800000000003,
+              "width": 1.8288000000000002,
+              "depth": 2.8956
             }
           ],
           "bounds": {
-            "x": 8.077200000000001,
+            "x": 12.192,
             "z": -22.402800000000003,
-            "width": 3.6576000000000004,
-            "depth": 4.2672
+            "width": 4.1148,
+            "depth": 5.9436
           }
         },
         {
           "id": "pantry",
-          "name": "Enlarged food pantry / refrigerator",
-          "label": "Pantry + fridge",
+          "name": "Dedicated walk-in pantry room / groceries, cutlery and kitchen stores",
+          "label": "Pantry",
           "kind": "storage",
           "width_ft": 6,
-          "depth_ft": 8,
-          "area_sq_ft": 48.0,
+          "depth_ft": 10,
+          "area_sq_ft": 60.0,
           "footprints": [
             {
-              "x": 11.8872,
-              "z": -22.402800000000003,
+              "x": 14.478000000000002,
+              "z": -19.5072,
               "width": 1.8288000000000002,
-              "depth": 2.4384
+              "depth": 3.048
             }
           ],
           "bounds": {
-            "x": 11.8872,
-            "z": -22.402800000000003,
+            "x": 14.478000000000002,
+            "z": -19.5072,
             "width": 1.8288000000000002,
-            "depth": 2.4384
+            "depth": 3.048
           }
         }
       ]
@@ -1695,22 +1761,76 @@
         "room_id": "family_living",
         "footprints": [
           {
-            "x": 11.8872,
-            "z": -19.9644,
-            "width": 1.8288000000000002,
-            "depth": 5.7912
+            "x": 6.76656,
+            "z": -14.325600000000001,
+            "width": 1.1582400000000004,
+            "depth": 0.1524
           },
           {
-            "x": 13.716000000000001,
-            "z": -19.9644,
-            "width": 2.5908,
-            "depth": 5.7912
+            "x": 6.76656,
+            "z": -16.4592,
+            "width": 1.1582400000000004,
+            "depth": 2.1336
           },
           {
-            "x": 13.716000000000001,
+            "x": 6.76656,
+            "z": -17.2212,
+            "width": 1.1582400000000004,
+            "depth": 0.762
+          },
+          {
+            "x": 6.76656,
             "z": -22.402800000000003,
-            "width": 2.5908,
-            "depth": 2.4384
+            "width": 1.1582400000000004,
+            "depth": 5.1816
+          },
+          {
+            "x": 7.9248,
+            "z": -14.325600000000001,
+            "width": 3.6576000000000004,
+            "depth": 0.1524
+          },
+          {
+            "x": 7.9248,
+            "z": -22.402800000000003,
+            "width": 3.6576000000000004,
+            "depth": 5.1816
+          },
+          {
+            "x": 11.5824,
+            "z": -14.325600000000001,
+            "width": 0.6096,
+            "depth": 0.1524
+          },
+          {
+            "x": 11.5824,
+            "z": -16.4592,
+            "width": 0.6096,
+            "depth": 2.1336
+          },
+          {
+            "x": 11.5824,
+            "z": -17.2212,
+            "width": 0.6096,
+            "depth": 0.762
+          },
+          {
+            "x": 11.5824,
+            "z": -22.402800000000003,
+            "width": 0.6096,
+            "depth": 5.1816
+          },
+          {
+            "x": 12.192,
+            "z": -14.325600000000001,
+            "width": 4.1148,
+            "depth": 0.1524
+          },
+          {
+            "x": 12.192,
+            "z": -16.4592,
+            "width": 4.1148,
+            "depth": 2.1336
           }
         ]
       }
@@ -1773,10 +1893,10 @@
     "style": "pahadi-modern",
     "status": "Presentation-only concept facade; materials, window products, glazing performance, roof edge, drainage, lighting and planting are not designed or approved.",
     "model": "models/exterior.glb",
-    "model_bytes": 4703964,
-    "uncompressed_model_bytes": 6346460,
-    "mesh_count": 48,
-    "revision": "61df3a694fea",
+    "model_bytes": 4734620,
+    "uncompressed_model_bytes": 6391116,
+    "mesh_count": 49,
+    "revision": "c9c615b120f6",
     "views": [
       {
         "id": "front",
